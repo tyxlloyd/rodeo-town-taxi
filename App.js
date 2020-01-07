@@ -1,37 +1,19 @@
-import React, { Component } from 'react';
-//import * as React from 'react';
-import {
-  Text,
-  View,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
-  KeyboardAvoidingView,
-  TextInput
-} from 'react-native';
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 
-import { createAppContainer } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
-import HomeScreen from './app/components/Home'
-import CLogin from './app/components/CLogin'
-import DLogin from './app/components/DLogin'
-import ALogin from './app/components/ALogin'
-import CMainScreen from './app/components/CMainScreen'
-import DMainScreen from './app/components/DMainScreen'
-import AMainScreen from './app/components/AMainScreen'
+export default function App() {
+  return (
+    <View style={styles.container}>
+      <Text>Open up App.js to start working on your app!</Text>
+    </View>
+  );
+}
 
-//each screen is a component/module
-
-
-const RootStack = createStackNavigator({
-  Home: HomeScreen,
-  CustomerLogin: CLogin,
-  CustomerMain: CMainScreen ,
-  DriverLogin: DLogin,
-  DriverMain: DMainScreen,
-  AdminLogin: ALogin,
-  AdminMain: AMainScreen
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
-
-export default createAppContainer(RootStack);
