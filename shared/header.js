@@ -10,29 +10,26 @@ export default function Header({ navigation, title }) {
     return (
         <View style = {styles.header}>
             <MaterialIcons name = 'menu' size = {28} onPress = {openMenu} style = {styles.icon}/>
-            <View>
-                <Text style = {styles.headerText}>{ title }</Text>
-            </View>
         </View>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
     header: {
-        width: '100%',
-        height: '100%',
-        flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
+        padding: 24,
     },
 
     headerText: {
         fontWeight: 'bold',
-        fontSize: 24,
+        fontSize: 20,
+        textAlign: 'center',
     },
 
     icon: {
         position: 'absolute',
-        paddingRight: 340,
+        left: 16,
+        //paddingRight: 340,
     },
 })

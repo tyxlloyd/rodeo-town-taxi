@@ -8,7 +8,7 @@ const screens = {
         screen: Home,
         navigationOptions: ({ navigation }) => {
             return {
-                headerTitle: () => <Header navigation = {navigation} title = 'Rodeo Town Taxi' />
+                headerTitle: () => <Header navigation = {navigation} title = 'Rodeo Town Taxi' />,
             }
         }
     },
@@ -17,7 +17,7 @@ const screens = {
 const HomeStack = createStackNavigator(screens, {
     defaultNavigationOptions: {
         headerTintColor: '#444',
-        headerStyle: { backgroundColor: '#eee', height: 100}
+        headerStyle: { backgroundColor: '#eee', height: 100},
     }
 });
 
