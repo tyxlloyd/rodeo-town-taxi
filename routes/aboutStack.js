@@ -1,3 +1,4 @@
+/*
 import { createStackNavigator } from 'react-navigation-stack';
 import About from '../screens/about'
 import Header from '../shared/header';
@@ -22,3 +23,4 @@ const AboutStack = createStackNavigator(screens, {
 });
 
 export default AboutStack;
+*/

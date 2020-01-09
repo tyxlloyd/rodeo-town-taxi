@@ -1,7 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, Linking, Platform } from 'react-native';
+import { Header, Icon } from 'react-native-elements';
 
-export default function About() {
+export default function About({ navigation }) {
 
   const dial = () => {
     if (Platform.OS === 'android') {
@@ -13,12 +14,19 @@ export default function About() {
   }
 
   return (
-    <View style={styles.container}>
-      <Text>About.js!</Text>
+    <View>
+      <Header
+        leftComponent={ <Icon name = 'menu' color = '#000' onPress={(() => navigation.openDrawer())}/>}
+        centerComponent={{ text: 'About', style: { color: '#000' } }}
+        containerStyle={{backgroundColor: '#F7FF00'}}
+      />
+      <View style={styles.container}>
+        <Text>About.js!</Text>
         <TouchableOpacity onPress = {dial}>
           {/* Placeholder phone number. Change to Rodeo Town later */}
           <Text>(719)-838-4002</Text>
         </TouchableOpacity>
+      </View>
     </View>
   );
 }

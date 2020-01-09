@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
 export default function Header({ navigation, title }) {
+/*
     const openMenu = () => {
         navigation.openDrawer();
     }
@@ -33,3 +34,4 @@ const styles = StyleSheet.create({
         //paddingRight: 340,
     },
 })
+*/
