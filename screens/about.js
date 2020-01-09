@@ -17,7 +17,7 @@ export default function About({ navigation }) {
     <View>
       <Header
         leftComponent={ <Icon name = 'menu' color = '#000' onPress={(() => navigation.openDrawer())}/>}
-        centerComponent={{ text: 'About', style: { color: '#000' } }}
+        centerComponent={{ text: 'About', style: { color: '#000', fontFamily: 'arvo-regular', fontSize: 24 } }}
         containerStyle={{backgroundColor: '#F7FF00'}}
       />
       <Text style = {styles.container}>About.js!</Text>
