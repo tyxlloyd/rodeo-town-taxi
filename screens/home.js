@@ -11,18 +11,13 @@ export default function Home({ navigation }) {
         centerComponent={{ text: 'Home', style: { color: '#000' } }}
         containerStyle={{backgroundColor: '#F7FF00'}}
       />
-      <View style={styles.container}>
-        <Text>Home.js!</Text>
-      </View>
+      <Text style = {styles.container}>Home.js!</Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    //flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    textAlign: 'center',
   },
 });
