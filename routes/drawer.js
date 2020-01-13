@@ -3,11 +3,6 @@ import { createAppContainer } from 'react-navigation';
 import Home from '../screens/home';
 import About from '../screens/about';
 
-/*
-import HomeStack from './homeStack';
-import AboutStack from './aboutStack';
-*/
-
 const RootDrawerNavigator = createDrawerNavigator({
     Home: {
         screen: Home,
