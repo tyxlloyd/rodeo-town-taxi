@@ -1,12 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import Navigator from './routes/drawer';
+import * as Font from 'expo-font';
+import { AppLoading } from 'expo';
+
+const getFonts = () => Font.loadAsync({
+  'arvo-regular': require('./assets/fonts/Arvo-Regular.ttf'),
+  'arvo-bold': require('./assets/fonts/Arvo-Bold.ttf'),
+});
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-    </View>
-  );
+  const [fontsLoaded, setFontsLoaded] = useState(false);
+  if(fontsLoaded){
+    return (
+      <Navigator />
+    );
+  } else {
+    return(
+      <AppLoading
+        startAsync = {getFonts}
+        onFinish = {() => setFontsLoaded(true)}
+      />
+    )
+  }
 }
 
 const styles = StyleSheet.create({
