@@ -38,7 +38,23 @@ export default function About({ navigation }) {
           source={{uri: 'https://lh3.googleusercontent.com/g2GhbnfgVBIAiENoxutMki-7Kp7-RIblq8QIg9JDnsMxMHRGsEGz2N_Bn2pnlFZnN8oOWIMM=w1080-h608-p-no-v0'}}
         />
 		<Text style={{fontWeight:'bold'}}> This app is developed by Rodeo Speedwagon (Tyler Lloyd, Junyu Lu, Austin Richardson, Jose Rodriguez, and Stephen Stengel )</Text>
+		<Text style={{fontWeight:'bold'}}> Special thanks to Dr. Szliard Vajda and Kenneth Swanson! )</Text>
+		
+    </ScrollView>
 	
+	
+	
+	
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    textAlign: 'center',
+  },
+  
+});
+
     </ScrollView>
 	
 	
