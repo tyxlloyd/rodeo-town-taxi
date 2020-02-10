@@ -1,10 +1,8 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import AdminLogin from './screens/AdminLogin';
 import AdminMain from './screens/AdminMain';
 import CustomerLogin from './screens/CustomerLogin';
-import {UserHome} from './screens/userHome';
-//import Navigator from 'routes-drawer';
-//import About from './screens/about';
+import Home from './screens/userHome';
 import DriverLogin from './screens/DriverLogin';
 import driverHome from './screens/driverHome';
 import UserRoles from './screens/UserRoles';
@@ -17,8 +15,10 @@ import ForgotPassword from './screens/ForgotPassword';
 import CustomerLoginAsGuest from './screens/CustomerLoginAsGuest';
 import ApiKeys from './shared/ApiKeys';
 import { createSwitchNavigator, createAppContainer } from 'react-navigation';
+import { createDrawerNavigator } from 'react-navigation-drawer';
 import * as firebase from 'firebase';
 import '@firebase/firestore';
+import userHome from './screens/userHome';
 
 
 // Initialize Firebase
@@ -26,11 +26,19 @@ if (!firebase.apps.length) {
   firebase.initializeApp(ApiKeys.firebaseConfig);
 }
 
+
+export default class App extends React.Component {
+  render() {
+    return <AppNavigator />
+  } 
+}
+
+const AppNavigator = createAppContainer(AppSwitchNavigator);
 const AppSwitchNavigator = createSwitchNavigator({
   URoles: UserRoles,
   CLogin: CustomerLogin,
   CGuest: CustomerLoginAsGuest,
-  CMain: UserHome,
+  CMain: userHome,
   CInfo: CustomerInfo,
   DLogin: DriverLogin,
   DMain: driverHome,
@@ -41,18 +49,8 @@ const AppSwitchNavigator = createSwitchNavigator({
   AddDriver: AddDriver,
   RemoveDriver: RemoveDriver,
   ForgotPassword: ForgotPassword
+
+
 });
-const AppNavigator = createAppContainer(AppSwitchNavigator);
-
-
-export default class App extends React.Component {
-  render() {
-    return <AppNavigator /> 
-  } 
-}
-
-
-
-
 
 
