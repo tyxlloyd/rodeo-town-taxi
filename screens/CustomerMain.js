@@ -54,6 +54,14 @@ class CustomerMain extends React.Component {
           <Button style={styles.button}
             full
             rounded
+            onPress={() => this.props.navigation.navigate("Map")}
+          >
+            <Text style={styles.buttonText}>Go To Map</Text>
+          </Button>
+
+          <Button style={styles.button}
+            full
+            rounded
             //onPress={() => this.props.navigation.navigate('CInfo')}
             onPress={() => this.navigateToProfile(this.state.name, this.state.email, this.state.phoneNumber)}
           >

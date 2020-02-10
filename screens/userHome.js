@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Dimensions, View, StatusBar, TouchableOpacity, Text } from 'react-native';
 import { Header, Icon } from 'react-native-elements';
 import { Map } from '../shared/userMap';
+import { createDrawerNavigator } from 'react-navigation-drawer';
 import About from '../screens/about';
 
 export default function userHome () {
