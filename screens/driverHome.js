@@ -12,7 +12,7 @@ export default function userHome() {
         centerComponent={{ text: 'Rodeo Town Taxi', style: { color: '#000', fontFamily: 'arvo-regular', fontSize: 24 } }}
         containerStyle={{backgroundColor: '#F7FF00'}}
       />
-      <Map/>
+      <DriverMap/>
       </View>
   );
 }
