@@ -54,7 +54,7 @@ class CustomerMain extends React.Component {
           <Button style={styles.button}
             full
             rounded
-            onPress={() => this.props.navigation.navigate("Map")}
+            onPress={() => this.props.navigation.navigate("CustomerMap")}
           >
             <Text style={styles.buttonText}>Go To Map</Text>
           </Button>
