@@ -49,6 +49,13 @@ class DriverMain extends React.Component {
           >
             <Text style={styles.buttonText}>Sign Out</Text>
           </Button>
+          <Button style={styles.button}
+            full
+            rounded
+            onPress={() => this.props.navigation.navigate("DriverMap")}
+          >
+            <Text style={styles.buttonText}>Go To Map</Text>
+          </Button>
 
         </Form>
       </Container>
