@@ -5,7 +5,7 @@ import CustomerLogin from './screens/CustomerLogin';
 import CustomerMain from './screens/CustomerMain';
 import Home from './screens/userHome';
 import DriverLogin from './screens/DriverLogin';
-import driverHome from './screens/driverHome';
+import driverMain from './screens/DriverMain';
 import UserRoles from './screens/UserRoles';
 import AddDriver from './screens/AddDriver';
 import RemoveDriver from './screens/RemoveDriver';
@@ -16,6 +16,8 @@ import ForgotPassword from './screens/ForgotPassword';
 import CustomerLoginAsGuest from './screens/CustomerLoginAsGuest';
 import ApiKeys from './shared/ApiKeys';
 import { Map } from './shared/map';
+import { CustomerMap } from './shared/customerMap';
+import { DriverMap } from './shared/driverMap-stephen';
 import Drawer from './routes/drawer'
 import { createSwitchNavigator, createAppContainer } from 'react-navigation';
 import { createDrawerNavigator } from 'react-navigation-drawer';
@@ -36,7 +38,7 @@ const AppSwitchNavigator = createSwitchNavigator({
   CMain: CustomerMain,
   CInfo: CustomerInfo,
   DLogin: DriverLogin,
-  DMain: driverHome,
+  DMain: driverMain,
   DInfo: DriverInfo,
   DModify: ModifyDriver,
   ALogin: AdminLogin,
@@ -45,6 +47,8 @@ const AppSwitchNavigator = createSwitchNavigator({
   RemoveDriver: RemoveDriver,
   ForgotPassword: ForgotPassword,
   Map: Map,
+  CustomerMap: CustomerMap,
+  DriverMap: DriverMap,
 });
 
 const AppNavigator = createAppContainer(AppSwitchNavigator);
