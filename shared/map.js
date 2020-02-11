@@ -1,7 +1,7 @@
 import React from 'react';
-import { StyleSheet, Dimensions, Alert, View } from 'react-native';
-import { Button, Image } from 'react-native-elements';
-import MapView, { PROVIDER_GOOGLE, Marker} from 'react-native-maps';
+import { StyleSheet, Dimensions, Alert, View, StatusBar } from 'react-native';
+import { Header, Icon, Button } from 'react-native-elements';
+import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
@@ -11,35 +11,28 @@ const config = require('./config').default
 
 var KEY = config.mapKey;
 var SERVER = config.server;
+var customers = 0;
 
 export class Map extends React.Component {
     constructor(props) {
         super(props);
 
-        this._getLocationAsync();
-
         this.state = {
-            region: null
+            region: null,
+            destination: null,
         }
-    }
-    handleLocation = () => {
-        this.watchID = navigator.geolocation.watchPosition(
-            (position) => {
-                this.setState({
-                    coordinate:this.state.region
-                });
-            },
-            { enableHighAccuracy: true}
-        )
+
+        this._getLocationAsync();
     }
 
     _getLocationAsync = async () => {
-        try {
+        try{
             let { status } = await Permissions.askAsync(Permissions.LOCATION);
 
-            if (status !== 'granted') {
+            if(status !== 'granted'){
                 console.log('Location permission denied.');
             }
+                
             let location = await Location.getCurrentPositionAsync({ enableHighAccuracy: true });
             let region = {
                 latitude: location.coords.latitude,
@@ -48,9 +41,15 @@ export class Map extends React.Component {
                 longitudeDelta: 0.045,
             }
 
-            this.setState({ region: region });
+            let destination = {
+                latitude: location.coords.latitude,
+                longitude: location.coords.longitude,
+            }
+
+            this.setState({region: region});
+            this.setState({destination: destination});
         }
-        catch (e) {
+        catch(e){
             console.log('_getLocationAsyncError: ' + e)
         }
     }
@@ -58,60 +57,86 @@ export class Map extends React.Component {
     componentDidMount() {
         this.socket = io(SERVER);
         this.socket.on('ride request', request => {
-            Alert.alert(request);
+            Alert.alert('You have a new ride request: latitude: ' + request.lat + '\nlongitude: ' + request.long + '\nid: ' + request.id);
+            
+            let destination = {
+                latitude: request.lat,
+                longitude: request.long,
+            }
+            this.setState({destination: destination});
+        }),
+        this.socket.on('confirmation', message => {
+            Alert.alert(message);
+        }),
+        this.socket.on('error', message => {
+            Alert.alert(message);
+        }),
+        this.socket.on('queue size', message => {
+            customers = message;
         })
     }
 
-    sendRideRequest() {
-        this.socket.emit('ride request', "You have a new ride request: <coordinates>")
+    sendRideRequest(){
+        var request = {
+            long: this.state.region.longitude,
+            lat: this.state.region.latitude,
+            id: this.socket.id,
+        }
+        this.socket.emit('ride request', request);
+        Alert.alert("Your request has been sent!");
     }
 
-    render() {
+    receiveRideRequest(){
+        this.socket.emit('customer request', this.socket.id);
+    }
+
+      render () {
         return (
-            <View style={styles.container}>
-                <MapView
-                    style={styles.mapStyle}
-                    provider={PROVIDER_GOOGLE}
-                    initialRegion={this.state.region}
-                    rotateEnabled={false}
-                    //showsUserLocation={true}
-                >
-                    <Marker
-                        coordinate={this.state.region}
-                    >
-                        <Image source={require('../assets/images/user.png')} style={{ height: 35, width: 35 }} />
-                    </Marker>
-
-                </MapView>
-
-                {/* <MapViewDirections
-                        origin={this.state.region}
-                        destination={{latitude: 46.991595, longitude: -120.552111}}
-                        apikey={KEY}
-                        strokeWidth={3}
-                        strokeColor="hotpink"
-                    /> */}
-
+            <View>
+                <StatusBar barStyle = "dark-content"/>
+                <Header
+                    //leftComponent={ <Icon name = 'menu' color = '#000' onPress={(() => navigation.openDrawer())}/>}
+                    centerComponent={{ text: 'Rodeo Town Taxi', style: { color: '#000', fontFamily: 'arvo-regular', fontSize: 24 } }}
+                    containerStyle={{backgroundColor: '#F7FF00'}}
+                />
                 <Button
                     title="Request A Ride"
                     onPress={(() => this.sendRideRequest())}
                 />
-            </View>
+                <Button
+                    title="Request A Customer"
+                    onPress={(() => this.receiveRideRequest())}
+                />
+                <MapView
+                    style={styles.mapStyle}
+                    provider={MapView.PROVIDER_GOOGLE}
+                    initialRegion={this.state.region}
+                    rotateEnabled={false}
+                    showsUserLocation={true}
+                    >
+                    <MapViewDirections
+                        origin={this.state.region}
+                        destination={this.state.destination}
+                        apikey={KEY}
+                        strokeWidth={3}
+                        strokeColor="hotpink"
+                    />
+                   </MapView>
+                </View>
         )
-    }
+      }
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff'
-    },
+    
     mapStyle: {
-        width: Dimensions.get('window').width,
-        flex: 1
+      width: Dimensions.get('window').width,
+      height: Dimensions.get('window').height,
     },
+
     button: {
         position: 'absolute',
-        bottom: 1000
-    }
-});
+        bottom:1000
+      },
+
+  });

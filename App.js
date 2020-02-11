@@ -22,7 +22,7 @@ import { createDrawerNavigator } from 'react-navigation-drawer';
 import * as firebase from 'firebase';
 import '@firebase/firestore';
 import userHome from './screens/userHome';
-
+import * as Font from 'expo-font';
 
 // Initialize Firebase
 if (!firebase.apps.length) {
@@ -50,6 +50,12 @@ const AppSwitchNavigator = createSwitchNavigator({
 const AppNavigator = createAppContainer(AppSwitchNavigator);
 
 export default class App extends React.Component {
+  componentDidMount(){
+    Font.loadAsync({
+      'arvo-regular': require('./assets/fonts/Arvo-Regular.ttf'),
+      'arvo-bold': require('./assets/fonts/Arvo-Bold.ttf'),
+    });
+  }
   render() {
     return <AppNavigator />
   } 
