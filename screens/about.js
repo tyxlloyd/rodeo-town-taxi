@@ -6,10 +6,10 @@ export default function About({ navigation }) {
 
   const dial = () => {
     if (Platform.OS === 'android') {
-      phoneNumber = Linking.openURL('tel:${7198384002}');
+      phoneNumber = Linking.openURL('tel:${5099294222}');
     }
     else {
-      phoneNumber = Linking.openURL('telprompt:${7198384002}');
+      phoneNumber = Linking.openURL('telprompt:${5099294222}');
     }
   }
 	
@@ -24,25 +24,20 @@ export default function About({ navigation }) {
       />
       <Text style = {styles.container}>Rodeo Town Taxi</Text>
       <TouchableOpacity onPress = {dial}>
-        {/* Placeholder phone number. Change to Rodeo Town later */}
-        <Text style = {styles.container}>(719)-838-4002</Text>
+
+        <Text style = {styles.container}>(509)-929-4222</Text>
       </TouchableOpacity>
 	  
-	 
-		{/* 
 		<Image
 		style={{width: 330, height: 250}}
 		source={require('./assets/about.jpg')} />
 			<Image
           style={{width: 320, height: 250}}
           source={{uri: 'https://lh3.googleusercontent.com/g2GhbnfgVBIAiENoxutMki-7Kp7-RIblq8QIg9JDnsMxMHRGsEGz2N_Bn2pnlFZnN8oOWIMM=w1080-h608-p-no-v0'}}
-        />*/}
-		<Text style={{fontWeight:'bold'}}> This app is developed by Rodeo Speedwagon (Tyler Lloyd, Junyu Lu, Austin Richardson, Jose Rodriguez, and Stephen Stengel )</Text>
+        />
+		<Text style={{fontWeight:'bold'}}> This app is developed by Rodeo Speedwagon (Tyler Lloyd, Junyu Lu, Austin Richardson, Jose Rodriguez, and Stephen Stengel)</Text>
 	
     </ScrollView>
-	
-	
-	
 	
   );
 }

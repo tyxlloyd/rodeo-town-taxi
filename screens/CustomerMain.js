@@ -22,7 +22,7 @@ class CustomerMain extends React.Component {
     if (email == null || phoneNumber == null) {
 
       Alert.alert(
-        'You are logged in as guest',
+        'You are logged in as a guest',
         'Would you like to create account?',
         [
           //{ text: 'Ask me later', onPress: () => console.log('Ask me later pressed') },
@@ -54,7 +54,7 @@ class CustomerMain extends React.Component {
           <Button style={styles.button}
             full
             rounded
-            onPress={() => this.props.navigation.navigate("Map")}
+            onPress={() => this.props.navigation.navigate("CustomerMap")}
           >
             <Text style={styles.buttonText}>Go To Map</Text>
           </Button>
