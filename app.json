@@ -24,7 +24,20 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
-    }
+      "supportsTablet": true,
+      "bundleIdentifier": "com.rodeotowntaxi.rodeotown",
+      "config": {
+        "googleMapsApiKey": "AIzaSyBEX9_M7ziAfFA2g1c2wwKyxBlWvm_2-bo"
+      }
+    },
+    "android": {
+      "package": "com.rodeotowntaxi.rodeotown",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyBEX9_M7ziAfFA2g1c2wwKyxBlWvm_2-bo"
+        }
+      }
+    },
+    "description": ""
   }
 }
