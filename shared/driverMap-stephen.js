@@ -121,6 +121,10 @@ export class DriverMap extends React.Component {
                     title = "Clear Ride Request"
                     onPress={(() => this.clearAmIRequestedFlag())}
                 />
+                <Button
+                    title="Back"
+                    onPress={( () => this.props.navigation.navigate("DMain") )}
+                />
                 <MapView
                     style={styles.mapStyle}
                     provider={MapView.PROVIDER_GOOGLE}
