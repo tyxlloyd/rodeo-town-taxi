@@ -151,6 +151,10 @@ export class CustomerMap extends React.Component {
                     title = "Set location to Oregon"
                     onPress = { ( () => alert(this.setLocationToOregon())  ) }
                 />
+                <Button
+                    title="Back"
+                    onPress={( () => this.props.navigation.navigate("CMain") )}
+                />
                 <MapView
                     style={styles.mapStyle}
                     provider={MapView.PROVIDER_GOOGLE}
