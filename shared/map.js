@@ -26,6 +26,10 @@ export class CustomerMap extends React.Component {
                 longitudeDelta: 0.045,
             },
             markerVisibility: 0.0,
+            driverAcceptedRequest: false,
+            driverID: null,
+            requestSent: false,
+            buttonTitle: "Hail A Cab",
         }
 
         this._getLocationAsync();
@@ -74,6 +78,8 @@ export class CustomerMap extends React.Component {
             this.socket.on('confirmation', message => {
                 Alert.alert(message.message);
                 this.showDriverLocation(message.driverID);
+                this.setState({ driverID: message.driverID });
+                this.setState({ driverAcceptedRequest: true });
                 //this.setState({markerVisibility: 0.0});
             }),
             this.socket.on('error', message => {
@@ -98,7 +104,20 @@ export class CustomerMap extends React.Component {
             }),
             this.socket.on('recieve driver location', message => {
                 this.setState({ driverLocation: message });
+            }),
+            this.socket.on('cancel ride', message => {
+                Alert.alert(message);
+                this.setState({ destination: this.state.region });
             })
+    }
+
+    pressHandler(){
+        if(this.state.requestSent == false){
+            this.sendRideRequest();
+        }
+        else{
+            this.cancelRideRequest();
+        }
     }
 
     sendRideRequest() {
@@ -109,6 +128,23 @@ export class CustomerMap extends React.Component {
         }
         this.socket.emit('ride request', request);
         Alert.alert("Your request has been sent!");
+        this.setState({ buttonTitle: "Cancel Request" });
+        this.setState({ requestSent: true });
+    }
+
+    cancelRideRequest(){
+        if(this.state.driverID == null){
+            Alert.alert("Sorry, you can't cancel your request this soon.");
+        }
+        else{
+            this.socket.emit('cancel ride request', this.state.driverID);
+            this.setState({ driverID: null });
+            this.setState({ markerVisibility: 0.0 });
+            this.setState({ driverAcceptedRequest: false });
+            this.setState({ buttonTitle: "Hail A Cab" });
+            this.setState({ requestSent: false });
+            Alert.alert("You have cancelled your ride request!");
+        }
     }
 
     receiveRideRequest() {
@@ -155,19 +191,11 @@ export class CustomerMap extends React.Component {
                     />
                 </MapView>
                 <Button
-                    title="Hail A Cab"
-                    onPress={(() => this.sendRideRequest())}
+                    title={this.state.buttonTitle}
+                    onPress={(() => this.pressHandler())}
                     buttonStyle={styles.enabled}
                     titleStyle={styles.buttonText}
                 />
-                {/* 
-                <Button
-                    title=" "
-                    disabled="true"
-                    disabledStyle={styles.disabled}
-                    type="clear"
-                />
-                */}
             </View>
         )
     }
