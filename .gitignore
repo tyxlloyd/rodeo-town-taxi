@@ -1,2 +1,6 @@
 config.js
 ApiKeys.js
+.expo/packager-info.json
+.expo/settings.json
+./shared/ApiKeys.js
+./shared/config.js
