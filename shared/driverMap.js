@@ -98,6 +98,10 @@ export class DriverMap extends React.Component {
         }),
         this.socket.on('recieve driver location', message => {
             this.setState({driverLocation: message});
+        }),
+        this.socket.on('cancel ride', message => {
+            Alert.alert(message);
+            this.setState({ destination: this.state.region });
         })
     }
 
