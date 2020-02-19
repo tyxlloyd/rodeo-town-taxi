@@ -1,11 +1,13 @@
 import React from 'react';
 import { StyleSheet, Dimensions, Alert, View, StatusBar } from 'react-native';
-import { Header, Icon, Button, Image } from 'react-native-elements';
-import MapView from 'react-native-maps';
+import { Header, Button } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/AntDesign';
+import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
 import io from 'socket.io-client';
+
 
 const config = require('./config').default
 
@@ -25,7 +27,7 @@ export class DriverMap extends React.Component {
                 latitudeDelta: 0.045,
                 longitudeDelta: 0.045,
             },
-            markerVisibility: 0.0,
+            markerVisibility: 1.0, //1.0 for testing
         }
 
         this._getLocationAsync();
@@ -80,7 +82,9 @@ export class DriverMap extends React.Component {
             Alert.alert(message);
         }),
         this.socket.on('queue size', message => {
-            customers = message;
+            var customers = message;
+            Alert.alert("Customers in queue: " + customers);
+            console.log("Customers in queue: " + customers);
         }),
         this.socket.on('request driver location', message => {
             var response = {
@@ -128,27 +132,44 @@ export class DriverMap extends React.Component {
         this.socket.emit('get driver location', request);
         //this.setState({driverLocation: driverLocation});
     }
+    
+
+    getSizeOfQueue(){
+        this.socket.emit('get queue size', this.socket.id);
+        Alert.alert("Getting the queue size...");
+        console.log("Getting size of queue...");
+    }
 
       render () {
         return (
             <View style={styles.container}>
                 <StatusBar barStyle = "dark-content"/>
                 <Header
-                    //leftComponent={ <Icon name = 'menu' color = '#000' onPress={(() => navigation.openDrawer())}/>}
+                    leftComponent={
+                        <Icon name={'logout'}
+                        size={28}
+                          onPress={(() => this.props.navigation.navigate("DLogin"))}/>
+                    }
+                    rightComponent={
+                        <Icon name={'mail'}
+                        size={28}
+                        onPress={(() => this.props.navigation.navigate("DriverChat"))} />
+                    }
                     centerComponent={{ text: 'Rodeo Town Taxi', style: { color: '#000', fontFamily: 'arvo-regular', fontSize: 24 } }}
-                    containerStyle={{backgroundColor: '#F7FF00'}}
+                    containerStyle={{backgroundColor: '#fec33a'}}
                 />
                 <MapView
                     style={styles.mapStyle}
-                    provider={MapView.PROVIDER_GOOGLE}
+                    provider={PROVIDER_GOOGLE} //This line is iOS only! No effect on android. No crash.
                     initialRegion={this.state.region}
                     rotateEnabled={false}
                     showsUserLocation={true}
                     >
-                    <MapView.Marker
+                    <Marker
                         coordinate={this.state.driverLocation}
                         opacity={this.state.markerVisibility}
-                        //<Image source={require('../assets/images/user.png')} style={{ height: 35, width: 35 }} />
+                        image={require('../assets/images/user.png')}
+                        pinColor="yellow" //In case image fails to load. Comment the image line to see.
                     />
                     <MapViewDirections
                         origin={this.state.region}
@@ -169,6 +190,7 @@ export class DriverMap extends React.Component {
       }
 }
 
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -188,5 +210,8 @@ const styles = StyleSheet.create({
     buttonText: {
         fontSize: 24,
         fontFamily: 'arvo-regular'
-    }
+    },
+    button: {
+        backgroundColor: '#484848'
+      }
   });
