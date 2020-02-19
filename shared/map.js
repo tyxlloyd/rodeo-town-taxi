@@ -17,8 +17,18 @@ export class CustomerMap extends React.Component {
         super(props);
 
         this.state = {
-            region: null,
-            destination: null,
+            region: {
+                latitude: 0,
+                longitude: 0,
+                latitudeDelta: 0,
+                longitudeDelta: 0
+            },
+            destination: {
+                latitude: 0,
+                longitude: 0,
+                latitudeDelta: 0,
+                longitudeDelta: 0
+            },
             driverLocation: {
                 latitude: 47.0085,
                 longitude: -120.5291,
@@ -32,7 +42,7 @@ export class CustomerMap extends React.Component {
             buttonTitle: "Hail A Cab",
         }
 
-        this._getLocationAsync();
+        //this._getLocationAsync();
     }
 
     _getLocationAsync = async () => {
@@ -51,13 +61,16 @@ export class CustomerMap extends React.Component {
                 longitudeDelta: 0.045,
             }
 
+            /*
             let destination = {
                 latitude: location.coords.latitude,
                 longitude: location.coords.longitude,
             }
+            */
 
+            console.log(region);
             this.setState({ region: region });
-            this.setState({ destination: destination });
+            //this.setState({ destination: destination });
         }
         catch (e) {
             console.log('_getLocationAsyncError: ' + e)
@@ -65,6 +78,41 @@ export class CustomerMap extends React.Component {
     }
 
     componentDidMount() {
+        //this.setState({driverLocation: this.state.region});
+        /*
+        navigator.geolocation.getCurrentPosition((position) => {
+            var lat = parseFloat(position.coords.latitude)
+            var long = parseFloat(position.coords.longitude)
+
+            var initialRegion = {
+                latitude: lat,
+                longitude: long,
+                latitudeDelta: 0.045,
+                longitudeDelta: 0.045
+            }
+
+            this.setState({region: initialRegion})
+            this.setState({driverLocation: initialRegion})
+        }, 
+        (error) => { console.log(error) },
+            {enableHighAccuracy: true, timeout: 20000})
+    */
+            this.watchID = navigator.geolocation.watchPosition((position) => {
+                console.log('reached')
+                var lat = parseFloat(position.coords.latitude)
+                var long = parseFloat(position.coords.longitude)
+
+                var lastRegion = {
+                    latitude: lat,
+                    longitude: long,
+                    longitudeDelta: 0.045,
+                    latitudeDelta: 0.045
+                }
+
+                this.setState({region: lastRegion})
+            }, (error) => { console.log(error) },
+            { enableHighAccuracy: true, timeout: 20000, maximumAge: 10000, }
+        );
         this.socket = io(SERVER);
         this.socket.on('ride request', request => {
             Alert.alert('You have a new ride request: latitude: ' + request.lat + '\nlongitude: ' + request.long + '\nid: ' + request.id);
@@ -80,7 +128,7 @@ export class CustomerMap extends React.Component {
                 this.showDriverLocation(message.driverID);
                 this.setState({ driverID: message.driverID });
                 this.setState({ driverAcceptedRequest: true });
-                //this.setState({markerVisibility: 0.0});
+                //this.setState({markerVisibility: 1.0});
             }),
             this.socket.on('error', message => {
                 Alert.alert(message);
@@ -108,7 +156,12 @@ export class CustomerMap extends React.Component {
             this.socket.on('cancel ride', message => {
                 Alert.alert(message);
                 this.setState({ destination: this.state.region });
+                this.setState({ markerVisibility: 0.0 });
             })
+    }
+
+    componentWillUnmount() {
+        navigator.geolocation.clearWatch(this.watchID)
     }
 
     pressHandler(){
@@ -121,11 +174,15 @@ export class CustomerMap extends React.Component {
     }
 
     sendRideRequest() {
+        console.log('new request:');
+        //await this._getLocationAsync();
         var request = {
             long: this.state.region.longitude,
             lat: this.state.region.latitude,
             id: this.socket.id,
         }
+        console.log("lat: " + request.lat);
+        console.log("long: " + request.long);
         this.socket.emit('ride request', request);
         Alert.alert("Your request has been sent!");
         this.setState({ buttonTitle: "Cancel Request" });
@@ -173,7 +230,7 @@ export class CustomerMap extends React.Component {
                 <MapView
                     style={styles.mapStyle}
                     provider={MapView.PROVIDER_GOOGLE}
-                    initialRegion={this.state.region}
+                    region={this.state.region}
                     rotateEnabled={false}
                     showsUserLocation={true}
                 >
@@ -182,6 +239,7 @@ export class CustomerMap extends React.Component {
                         opacity={this.state.markerVisibility}
                         //<Image source={require('../assets/images/user.png')} style={{ height: 35, width: 35 }} />
                     />
+                    {/*
                     <MapViewDirections
                         origin={this.state.region}
                         destination={this.state.destination}
@@ -189,6 +247,7 @@ export class CustomerMap extends React.Component {
                         strokeWidth={3}
                         strokeColor="hotpink"
                     />
+                    */}
                 </MapView>
                 <Button
                     title={this.state.buttonTitle}
