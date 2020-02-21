@@ -32,7 +32,21 @@ export class DriverMap extends React.Component {
             requestSent: false,
             buttonTitle: "Hail A Cab",
         }
-        console.log(this.state.taxiNumber)
+        this._getPermissionAsync();
+    }
+
+    _getPermissionAsync = async () => {
+        try {
+            let { status } = await Permissions.askAsync(Permissions.LOCATION);
+
+            if (status !== 'granted') {
+                console.log('Location permission denied.');
+            }
+        }
+
+        catch (e) {
+            console.log('_getLocationAsyncError: ' + e)
+        }
     }
 
     componentDidMount() {
