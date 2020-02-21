@@ -17,6 +17,7 @@ export class DriverMap extends React.Component {
         super(props);
 
         this.state = {
+            taxiNumber: this.props.navigation.getParam('taxiNumber'),
             region: null,
             destination: null,
             driverLocation: {
@@ -31,40 +32,7 @@ export class DriverMap extends React.Component {
             requestSent: false,
             buttonTitle: "Hail A Cab",
         }
-
-        //this._getLocationAsync();
-    }
-
-    _getLocationAsync = async () => {
-        try {
-            let { status } = await Permissions.askAsync(Permissions.LOCATION);
-
-            if (status !== 'granted') {
-                console.log('Location permission denied.');
-            }
-
-            let location = await Location.getCurrentPositionAsync({ enableHighAccuracy: true });
-            let region = {
-                latitude: location.coords.latitude,
-                longitude: location.coords.longitude,
-                latitudeDelta: 0.045,
-                longitudeDelta: 0.045,
-            }
-
-            /*
-            let destination = {
-                latitude: location.coords.latitude,
-                longitude: location.coords.longitude,
-            }
-            */
-
-            console.log(region);
-            this.setState({ region: region });
-            //this.setState({ destination: destination });
-        }
-        catch (e) {
-            console.log('_getLocationAsyncError: ' + e)
-        }
+        console.log(this.state.taxiNumber)
     }
 
     componentDidMount() {
@@ -82,7 +50,7 @@ export class DriverMap extends React.Component {
             }
 
             this.setState({region: lastRegion})
-        }, (error) => { console.log(error) },
+        }, (error) => { console.log(error.message) },
             { enableHighAccuracy: true, timeout: 20000, maximumAge: 10000, }
         );
         this.socket = io(SERVER);
@@ -90,7 +58,7 @@ export class DriverMap extends React.Component {
             fetch('https://maps.googleapis.com/maps/api/geocode/json?address=' + request.lat + ',' + request.long + '&key=' + KEY)
             .then((response) => response.json())
             .then((responseJson) => {
-                Alert.alert('You have a new ride request: ' + responseJson.results[0].formatted_address);
+                Alert.alert('You have a new ride request!', request.name + " is waiting for you at:\n" + responseJson.results[0].formatted_address);
                 //Alert.alert('You have a new ride request: ' + JSON.stringify(responseJson));
             });
             //Alert.alert('You have a new ride request: latitude: ' + request.lat + '\nlongitude: ' + request.long + '\nid: ' + request.id);
@@ -104,7 +72,7 @@ export class DriverMap extends React.Component {
             this.setState({markerVisibility: 1.0});
         }),
         this.socket.on('confirmation', message => {
-            Alert.alert(message.message);
+            Alert.alert("Your taxi is on the way!", "Cab #" + message.taxiNumber + " is on its way to pick you up!");
             this.showDriverLocation(message.driverID);
             //this.setState({markerVisibility: 0.0});
         }),
@@ -138,9 +106,12 @@ export class DriverMap extends React.Component {
         })
     }
 
+    componentWillUnmount() {
+        navigator.geolocation.clearWatch(this.watchID)
+    }
+
     sendRideRequest() {
         console.log('new request:');
-        //this._getLocationAsync();
         var request = {
             long: this.state.region.longitude,
             lat: this.state.region.latitude,
@@ -155,8 +126,11 @@ export class DriverMap extends React.Component {
     }
 
     receiveRideRequest(){
-        this._getLocationAsync();
-        this.socket.emit('customer request', this.socket.id);
+        var request= {
+            taxiNumber: this.state.taxiNumber,
+            id: this.socket.id,
+        }
+        this.socket.emit('customer request', request);
     }
 
     showDriverLocation(driverID){

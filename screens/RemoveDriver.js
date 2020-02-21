@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Alert } from 'react-native';
+import { StyleSheet, Text, View, Alert, StatusBar, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { Container, Content, Header, Form, Input, Item, Button, Label } from 'native-base';
 import * as WebBrowser from 'expo-web-browser';
 import Constants from 'expo-constants';
@@ -65,50 +65,53 @@ class RemoveDriver extends React.Component {
 
     render() {
         return (
-            <Container style={styles.container}>
+            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
+                <Container style={styles.container}>
+                    <StatusBar barStyle="dark-content" />
 
-                <Form>
-                    <Label style={styles.titleLabel}> Remove Driver</Label>
+                    <Form>
+                        <Label style={styles.titleLabel}> Remove Driver</Label>
 
-                    <Item floatingLabel>
-                        <Label style={styles.label}> Name </Label>
-                        <Input
-                            style={styles.textInput}
-                            autoCorrect={true}
-                            autoCapitalize="words"
-                            onChangeText={(name) => this.setState({ name })}
-                        />
-                    </Item>
+                        <Item floatingLabel>
+                            <Label style={styles.label}> Name </Label>
+                            <Input
+                                style={styles.textInput}
+                                autoCorrect={true}
+                                autoCapitalize="words"
+                                onChangeText={(name) => this.setState({ name })}
+                            />
+                        </Item>
 
-                    <Item floatingLabel>
-                        <Label style={styles.label}> Email </Label>
-                        <Input
-                            style={styles.textInput}
-                            autoCorrect={false}
-                            autoCapitalize="none"
-                            onChangeText={(email) => this.setState({ email })}
-                        />
-                    </Item>
+                        <Item floatingLabel>
+                            <Label style={styles.label}> Email </Label>
+                            <Input
+                                style={styles.textInput}
+                                autoCorrect={false}
+                                autoCapitalize="none"
+                                onChangeText={(email) => this.setState({ email })}
+                            />
+                        </Item>
 
-                    <Button style={styles.button}
-                        full
-                        rounded
-                        onPress={() => this.removeDriver(this.state.name, this.state.email)}
-                    >
-                        <Text style={styles.buttonText}>Remove Driver</Text>
-                    </Button>
+                        <Button style={styles.button}
+                            full
+                            rounded
+                            onPress={() => this.removeDriver(this.state.name, this.state.email)}
+                        >
+                            <Text style={styles.buttonText}>Remove Driver</Text>
+                        </Button>
 
-                    <Button style={styles.button}
-                        full
-                        rounded
+                        <Button style={styles.button}
+                            full
+                            rounded
 
-                        onPress={() => this.props.navigation.navigate('AMain')}
-                    >
-                        <Text style={styles.buttonText}>Done</Text>
-                    </Button>
+                            onPress={() => this.props.navigation.navigate('AMain')}
+                        >
+                            <Text style={styles.buttonText}>Done</Text>
+                        </Button>
 
-                </Form>
-            </Container>
+                    </Form>
+                </Container>
+            </TouchableWithoutFeedback>
         );
 
 

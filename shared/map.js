@@ -17,6 +17,7 @@ export class CustomerMap extends React.Component {
         super(props);
 
         this.state = {
+            name: this.props.navigation.getParam('name'),
             region: {
                 latitude: 0,
                 longitude: 0,
@@ -41,40 +42,7 @@ export class CustomerMap extends React.Component {
             requestSent: false,
             buttonTitle: "Hail A Cab",
         }
-
-        //this._getLocationAsync();
-    }
-
-    _getLocationAsync = async () => {
-        try {
-            let { status } = await Permissions.askAsync(Permissions.LOCATION);
-
-            if (status !== 'granted') {
-                console.log('Location permission denied.');
-            }
-
-            let location = await Location.getCurrentPositionAsync({ enableHighAccuracy: true });
-            let region = {
-                latitude: location.coords.latitude,
-                longitude: location.coords.longitude,
-                latitudeDelta: 0.045,
-                longitudeDelta: 0.045,
-            }
-
-            /*
-            let destination = {
-                latitude: location.coords.latitude,
-                longitude: location.coords.longitude,
-            }
-            */
-
-            console.log(region);
-            this.setState({ region: region });
-            //this.setState({ destination: destination });
-        }
-        catch (e) {
-            console.log('_getLocationAsyncError: ' + e)
-        }
+        console.log(this.state.name);
     }
 
     componentDidMount() {
@@ -110,7 +78,7 @@ export class CustomerMap extends React.Component {
                 }
 
                 this.setState({region: lastRegion})
-            }, (error) => { console.log(error) },
+        }, (error) => { console.log(error.message) },
             { enableHighAccuracy: true, timeout: 20000, maximumAge: 10000, }
         );
         this.socket = io(SERVER);
@@ -124,10 +92,11 @@ export class CustomerMap extends React.Component {
             this.setState({ destination: destination });
         }),
             this.socket.on('confirmation', message => {
-                Alert.alert(message.message);
+                Alert.alert("Your taxi is on the way!", "Cab #" + message.taxiNumber + " is on its way to pick you up!");
                 this.showDriverLocation(message.driverID);
                 this.setState({ driverID: message.driverID });
                 this.setState({ driverAcceptedRequest: true });
+                this.setState({ buttonTitle: "Cancel Request" });
                 //this.setState({markerVisibility: 1.0});
             }),
             this.socket.on('error', message => {
@@ -175,8 +144,8 @@ export class CustomerMap extends React.Component {
 
     sendRideRequest() {
         console.log('new request:');
-        //await this._getLocationAsync();
         var request = {
+            name: this.state.name,
             long: this.state.region.longitude,
             lat: this.state.region.latitude,
             id: this.socket.id,
@@ -184,14 +153,16 @@ export class CustomerMap extends React.Component {
         console.log("lat: " + request.lat);
         console.log("long: " + request.long);
         this.socket.emit('ride request', request);
-        Alert.alert("Your request has been sent!");
-        this.setState({ buttonTitle: "Cancel Request" });
+        Alert.alert("Your request has been sent!",
+            "Please do not turn off your phone or close the app or you will lose your spot in line." );
+        this.setState({ buttonTitle: "Finding a driver..." });
         this.setState({ requestSent: true });
     }
 
     cancelRideRequest(){
         if(this.state.driverID == null){
-            Alert.alert("Sorry, you can't cancel your request this soon.");
+            Alert.alert("Please be patient", 
+                "Your request will be processed in the order it was recieved. Please do not turn off your phone or close the app. You will lose your spot in line if you do.");
         }
         else{
             this.socket.emit('cancel ride request', this.state.driverID);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, ScrollView, TouchableOpacity, Linking, Platform, Image } from 'react-native';
+import { StyleSheet, Text, ScrollView, TouchableOpacity, Linking, Platform, Image, StatusBar } from 'react-native';
 import { Header, Icon } from 'react-native-elements';
 
 export default function About({ navigation }) {
@@ -17,6 +17,7 @@ export default function About({ navigation }) {
 	
   return (
     <ScrollView>
+      <StatusBar barStyle="dark-content" />
       <Header
         leftComponent={ <Icon name = 'menu' color = '#000' onPress={(() => navigation.openDrawer())}/>}
         centerComponent={{ text: 'About', style: { color: '#000',  fontSize: 24, fontWeight:'bold' } }}
