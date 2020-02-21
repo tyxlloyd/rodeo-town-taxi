@@ -60,25 +60,6 @@ export class CustomerMap extends React.Component {
     }
 
     componentDidMount() {
-        //this.setState({driverLocation: this.state.region});
-        /*
-        navigator.geolocation.getCurrentPosition((position) => {
-            var lat = parseFloat(position.coords.latitude)
-            var long = parseFloat(position.coords.longitude)
-
-            var initialRegion = {
-                latitude: lat,
-                longitude: long,
-                latitudeDelta: 0.045,
-                longitudeDelta: 0.045
-            }
-
-            this.setState({region: initialRegion})
-            this.setState({driverLocation: initialRegion})
-        }, 
-        (error) => { console.log(error) },
-            {enableHighAccuracy: true, timeout: 20000})
-    */
             this.watchID = navigator.geolocation.watchPosition((position) => {
                 console.log('reached')
                 var lat = parseFloat(position.coords.latitude)
@@ -91,7 +72,14 @@ export class CustomerMap extends React.Component {
                     latitudeDelta: 0.045
                 }
 
-                this.setState({region: lastRegion})
+                this.setState({region: lastRegion});
+                if(this.state.driverID != null){
+                    var response = {
+                        driverID: this.state.driverID,
+                        customerLocation: this.state.region,
+                    }
+                    this.socket.emit('recieve customer location', response);
+                }
         }, (error) => { console.log(error.message) },
             { enableHighAccuracy: true, timeout: 20000, maximumAge: 10000, }
         );
@@ -108,10 +96,10 @@ export class CustomerMap extends React.Component {
             this.socket.on('confirmation', message => {
                 Alert.alert("Your taxi is on the way!", "Cab #" + message.taxiNumber + " is on its way to pick you up!");
                 this.showDriverLocation(message.driverID);
+                this.setState({ markerVisibility: 1.0 });
                 this.setState({ driverID: message.driverID });
                 this.setState({ driverAcceptedRequest: true });
                 this.setState({ buttonTitle: "Cancel Request" });
-                //this.setState({markerVisibility: 1.0});
             }),
             this.socket.on('error', message => {
                 Alert.alert(message);
@@ -194,7 +182,6 @@ export class CustomerMap extends React.Component {
     }
 
     showDriverLocation(driverID) {
-        this.setState({ markerVisibility: 1.0 });
         var request = {
             customerID: this.socket.id,
             driverID: driverID,
