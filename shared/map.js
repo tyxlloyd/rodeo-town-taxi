@@ -84,6 +84,10 @@ export class CustomerMap extends React.Component {
             { enableHighAccuracy: true, timeout: 20000, maximumAge: 10000, }
         );
         this.socket = io(SERVER);
+        this.socketListener();
+    }
+
+    socketListener(){
         this.socket.on('ride request', request => {
             Alert.alert('You have a new ride request: latitude: ' + request.lat + '\nlongitude: ' + request.long + '\nid: ' + request.id);
 
@@ -93,42 +97,45 @@ export class CustomerMap extends React.Component {
             }
             this.setState({ destination: destination });
         }),
-            this.socket.on('confirmation', message => {
-                Alert.alert("Your taxi is on the way!", "Cab #" + message.taxiNumber + " is on its way to pick you up!");
-                this.showDriverLocation(message.driverID);
-                this.setState({ markerVisibility: 1.0 });
-                this.setState({ driverID: message.driverID });
-                this.setState({ driverAcceptedRequest: true });
-                this.setState({ buttonTitle: "Cancel Request" });
-            }),
-            this.socket.on('error', message => {
-                Alert.alert(message);
-            }),
-            this.socket.on('queue size', message => {
-                customers = message;
-            }),
-            this.socket.on('request driver location', message => {
-                var response = {
-                    customerID: message,
-                    driverLocation: this.state.region,
-                }
-                this.socket.emit('recieve driver location', response);
-            }),
-            this.socket.on('request customer location', message => {
-                var response = {
-                    driverID: message.driverID,
-                    customerLocation: this.state.region,
-                }
-                this.socket.emit('recieve customer location', response);
-            }),
-            this.socket.on('recieve driver location', message => {
-                this.setState({ driverLocation: message });
-            }),
-            this.socket.on('cancel ride', message => {
-                Alert.alert(message);
-                this.setState({ destination: this.state.region });
-                this.setState({ markerVisibility: 0.0 });
-            })
+
+        this.socket.on('confirmation', message => {
+            Alert.alert("Your taxi is on the way!", "Cab #" + message.taxiNumber + " is on its way to pick you up!");
+            this.showDriverLocation(message.driverID);
+            this.setState({ markerVisibility: 1.0 });
+            this.setState({ driverID: message.driverID });
+            this.setState({ driverAcceptedRequest: true });
+            this.setState({ buttonTitle: "Cancel Request" });
+        }),
+
+        this.socket.on('queue size', message => {
+            customers = message;
+        }),
+
+        this.socket.on('request driver location', message => {
+            var response = {
+                customerID: message,
+                driverLocation: this.state.region,
+            }
+            this.socket.emit('recieve driver location', response);
+        }),
+
+        this.socket.on('request customer location', message => {
+            var response = {
+                driverID: message.driverID,
+                customerLocation: this.state.region,
+            }
+            this.socket.emit('recieve customer location', response);
+        }),
+
+        this.socket.on('recieve driver location', message => {
+            this.setState({ driverLocation: message });
+        }),
+
+        this.socket.on('cancel ride', message => {
+            Alert.alert(message);
+            this.setState({ destination: this.state.region });
+            this.setState({ markerVisibility: 0.0 });
+        })
     }
 
     componentWillUnmount() {

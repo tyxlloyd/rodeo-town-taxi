@@ -2,7 +2,7 @@
   "expo": {
     "name": "Rodeo Town Taxi",
     "slug": "rodeo-town-taxi",
-    "privacy": "public",
+    "privacy": "unlisted",
     "sdkVersion": "36.0.0",
     "platforms": [
       "ios",
