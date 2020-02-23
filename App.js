@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import AdminLogin from './screens/AdminLogin';
 import AdminMain from './screens/AdminMain';
+import About from './screens/About';
 import CustomerLogin from './screens/CustomerLogin';
 import CustomerMain from './screens/CustomerMain';
 import DriverLogin from './screens/DriverLogin';
 import UserRoles from './screens/UserRoles';
 import AddDriver from './screens/AddDriver';
 import RemoveDriver from './screens/RemoveDriver';
+import CustomerChat from './shared/CustomerChat';
+import DriverChat from './shared/DriverChat';
 import CustomerInfo from './screens/CustomerInfo';
 import DriverInfo from './screens/DriverInfo';
 import ModifyDriver from './screens/ModifyDriver';
@@ -44,6 +47,9 @@ const AppSwitchNavigator = createSwitchNavigator({
   RemoveDriver: RemoveDriver,
   ForgotPassword: ForgotPassword,
   CustomerMap: CustomerMap,
+  DriverChat: DriverChat,
+  CustomerChat: CustomerChat,
+  About: About,
   DriverMap: DriverMap,
 });
 
