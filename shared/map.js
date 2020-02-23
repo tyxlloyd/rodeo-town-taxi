@@ -54,21 +54,21 @@ export class CustomerMap extends React.Component {
                 console.log('Location permission denied.');
             }
 //vvvv maybe not merge this section? idk lol
-            let location = await Location.getCurrentPositionAsync({ enableHighAccuracy: true });
-            let region = {
-                latitude: location.coords.latitude,
-                longitude: location.coords.longitude,
-                latitudeDelta: 0.045,
-                longitudeDelta: 0.045,
-            }
+            //~ let location = await Location.getCurrentPositionAsync({ enableHighAccuracy: true });
+            //~ let region = {
+                //~ latitude: location.coords.latitude,
+                //~ longitude: location.coords.longitude,
+                //~ latitudeDelta: 0.045,
+                //~ longitudeDelta: 0.045,
+            //~ }
 
-            let destination = {
-                latitude: location.coords.latitude,
-                longitude: location.coords.longitude,
-            }
+            //~ let destination = {
+                //~ latitude: location.coords.latitude,
+                //~ longitude: location.coords.longitude,
+            //~ }
 
-            this.setState({ region: region });
-            this.setState({ destination: destination });
+            //~ this.setState({ region: region });
+            //~ this.setState({ destination: destination });
 //^^^^lol
         }
 
@@ -252,7 +252,8 @@ export class CustomerMap extends React.Component {
                 <MapView
                     style={styles.mapStyle}
                     provider={PROVIDER_GOOGLE}
-                    initialRegion={this.state.region} //region or initial region? lol
+                    //~ initialRegion={this.state.region} //region or initial region? lol
+                    region={this.state.region} //region or initial region? lol
                     rotateEnabled={false}
                     showsUserLocation={true}
                 >

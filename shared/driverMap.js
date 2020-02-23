@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Dimensions, Alert, View, StatusBar } from 'react-native';
-import { Header, Button, Icon, Image } from 'react-native-elements';
+import { Header, Button, Image } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/AntDesign';
 import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
@@ -105,6 +105,7 @@ export class DriverMap extends React.Component {
 
         this.socket.on('empty queue', message => {
             Alert.alert("Error", message);
+        }),
 
         this.socket.on('confirmation', message => {
             Alert.alert(message.message);
