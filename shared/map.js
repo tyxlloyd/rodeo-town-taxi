@@ -126,9 +126,9 @@ export class CustomerMap extends React.Component {
             this.setState({ buttonTitle: "Cancel Request" });
         }),
 
-            this.socket.on('error', message => {
-                Alert.alert(message);
-            }),
+        //~ this.socket.on('error', message => {
+            //~ Alert.alert(message);
+        //~ }),
 
         this.socket.on('queue size', message => {
             customers = message;

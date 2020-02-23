@@ -113,9 +113,9 @@ export class DriverMap extends React.Component {
             //this.setState({markerVisibility: 0.0});
         }),
 
-        this.socket.on('error', message => {
-            Alert.alert(message);
-        }),
+        //~ this.socket.on('error', message => {
+            //~ Alert.alert(message);
+        //~ }),
 
         this.socket.on('queue size', message => {
             var customers = message;
