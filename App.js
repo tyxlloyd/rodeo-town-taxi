@@ -21,6 +21,7 @@ import * as firebase from 'firebase';
 import '@firebase/firestore';
 import * as Font from 'expo-font';
 import DriverMain from './screens/DriverMain';
+import { BackHandler } from 'react-native'; //For disabling the back button.
 
 // Initialize Firebase
 if (!firebase.apps.length) {
@@ -54,7 +55,20 @@ export default class App extends React.Component {
       'arvo-regular': require('./assets/fonts/Arvo-Regular.ttf'),
       'arvo-bold': require('./assets/fonts/Arvo-Bold.ttf'),
     });
+
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
   }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+  }
+
+  handleBackButton() {
+    console.log("Back button is disabled!");
+    //alert("Back button disabled!");
+    return true;
+  }
+
   render() {
     return <AppNavigator />
   } 
