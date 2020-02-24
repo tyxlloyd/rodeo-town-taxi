@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Alert } from 'react-native';
+import { StyleSheet, Text, View, Alert, StatusBar, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { Container, Content, Header, Form, Input, Item, Button, Label } from 'native-base';
 import * as firebase from 'firebase';
 
@@ -47,7 +47,7 @@ class DriverLogin extends React.Component {
       if (doc.exists) {
         firebase.auth()
           .signInWithEmailAndPassword(email, password)
-          .then(() => this.props.navigation.navigate('DMain', { email }))
+          .then(() => this.props.navigation.navigate('DMain', { email, taxiNumber }))
           .catch(error => alert(error));
         //console.log("Document data:", doc.data());
 
@@ -68,73 +68,76 @@ class DriverLogin extends React.Component {
 
   render() {
     return (
-      <Container style={styles.container}>
+      <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
+        <Container style={styles.container}>
+          <StatusBar barStyle="dark-content" />
 
-        <Form>
-          <Label style={styles.titleLabel}> Login</Label>
-          <Item floatingLabel>
-            <Label style={styles.label}> Email </Label>
-            <Input
-              style={styles.textInput}
-              autoCorrect={false}
-              autoCapitalize="none"
-              autoCompleteType="email"
-              onChangeText={(email) => this.setState({ email })}
-            />
-          </Item>
+          <Form>
+            <Label style={styles.titleLabel}> Login</Label>
+            <Item floatingLabel>
+              <Label style={styles.label}> Email </Label>
+              <Input
+                style={styles.textInput}
+                autoCorrect={false}
+                autoCapitalize="none"
+                autoCompleteType="email"
+                onChangeText={(email) => this.setState({ email })}
+              />
+            </Item>
 
-          <Item floatingLabel>
-            <Label style={styles.label}> Taxi Number </Label>
-            <Input
-              style={styles.textInput}
-              autoCorrect={false}
-              autoCapitalize="none"
+            <Item floatingLabel>
+              <Label style={styles.label}> Taxi Number </Label>
+              <Input
+                style={styles.textInput}
+                autoCorrect={false}
+                autoCapitalize="none"
 
-              onChangeText={(taxiNumber) => this.setState({ taxiNumber })}
-            />
-          </Item>
+                onChangeText={(taxiNumber) => this.setState({ taxiNumber })}
+              />
+            </Item>
 
-          <Item floatingLabel>
-            <Label style={styles.label}> Password </Label>
-            <Input
-              style={styles.textInput}
-              secureTextEntry={true}
-              autoCorrect={false}
-              autoCapitalize="none"
-              autoCompleteType="password"
-              onChangeText={(password) => this.setState({ password })}
-            />
-          </Item>
+            <Item floatingLabel>
+              <Label style={styles.label}> Password </Label>
+              <Input
+                style={styles.textInput}
+                secureTextEntry={true}
+                autoCorrect={false}
+                autoCapitalize="none"
+                autoCompleteType="password"
+                onChangeText={(password) => this.setState({ password })}
+              />
+            </Item>
 
-          <Button style={styles.button}
-            full
-            rounded
+            <Button style={styles.button}
+              full
+              rounded
 
-            onPress={() => this.loginUser(this.state.email, this.state.taxiNumber, this.state.password)}
-          >
-            <Text style={styles.buttonText}>Log in</Text>
-          </Button>
+              onPress={() => this.loginUser(this.state.email, this.state.taxiNumber, this.state.password)}
+            >
+              <Text style={styles.buttonText}>Log in</Text>
+            </Button>
 
-          <Button style={styles.button}
-            full
-            rounded
+            <Button style={styles.button}
+              full
+              rounded
 
-            onPress={() => this.props.navigation.navigate('ForgotPassword')}
-          >
-            <Text style={styles.buttonText}>Reset Password</Text>
-          </Button>
+              onPress={() => this.props.navigation.navigate('ForgotPassword')}
+            >
+              <Text style={styles.buttonText}>Reset Password</Text>
+            </Button>
 
-          <Button style={styles.button}
-            full
-            rounded
+            <Button style={styles.button}
+              full
+              rounded
 
-            onPress={() => this.props.navigation.navigate('URoles')}
-          >
-            <Text style={styles.buttonText}>Home</Text>
-          </Button>
+              onPress={() => this.props.navigation.navigate('URoles')}
+            >
+              <Text style={styles.buttonText}>Home</Text>
+            </Button>
 
-        </Form>
-      </Container>
+          </Form>
+        </Container>
+      </TouchableWithoutFeedback>
     );
 
 

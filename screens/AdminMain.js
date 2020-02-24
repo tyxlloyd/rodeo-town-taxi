@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Alert } from 'react-native';
+import { StyleSheet, Text, View, Alert, StatusBar } from 'react-native';
 import { Container, Content, Header, Form, Input, Item, Button, Label } from 'native-base';
 import * as firebase from 'firebase';
 import * as WebBrowser from 'expo-web-browser';
@@ -31,6 +31,7 @@ class AdminMain extends React.Component {
   render() {
     return (
       <Container style={styles.container}>
+        <StatusBar barStyle="dark-content" />
 
         <Form>
           <Label style={styles.titleLabel}>Welcome Admin</Label>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Alert } from 'react-native';
+import { StyleSheet, Text, View, Alert, StatusBar, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { Container, Content, Header, Form, Input, Item, Button, Label } from 'native-base';
 
 import * as firebase from 'firebase';
@@ -28,64 +28,67 @@ class DriverInfo extends React.Component {
 
   render() {
     return (
-      <Container style={styles.container}>
+      <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
+        <Container style={styles.container}>
+          <StatusBar barStyle="dark-content" />
 
-        <Form>
-          <Label style={styles.titleLabel}>Info of Driver to Modify</Label>
+          <Form>
+            <Label style={styles.titleLabel}>Info of Driver to Modify</Label>
 
-          <Item floatingLabel>
-            <Label style={styles.label}> Name </Label>
-            <Input
-              style={styles.textInput}
-              autoCorrect={false}
-              autoCapitalize="words"
-              autoCompleteType="name"
-              onChangeText={(name) => this.setState({ name })}
-            />
-          </Item>
+            <Item floatingLabel>
+              <Label style={styles.label}> Name </Label>
+              <Input
+                style={styles.textInput}
+                autoCorrect={false}
+                autoCapitalize="words"
+                autoCompleteType="name"
+                onChangeText={(name) => this.setState({ name })}
+              />
+            </Item>
 
-          <Item floatingLabel>
-            <Label style={styles.label}> Email </Label>
-            <Input
-              style={styles.textInput}
-              autoCorrect={false}
-              autoCapitalize="none"
-              autoCompleteType="email"
-              onChangeText={(email) => this.setState({ email })}
-            />
-          </Item>
+            <Item floatingLabel>
+              <Label style={styles.label}> Email </Label>
+              <Input
+                style={styles.textInput}
+                autoCorrect={false}
+                autoCapitalize="none"
+                autoCompleteType="email"
+                onChangeText={(email) => this.setState({ email })}
+              />
+            </Item>
 
-          <Item floatingLabel>
-            <Label style={styles.label}> Phone Number </Label>
-            <Input
-              style={styles.textInput}
-              autoCorrect={false}
-              autoCapitalize="none"
-              autoCompleteType="tel"
-              onChangeText={(phoneNumber) => this.setState({ phoneNumber })}
-            />
-          </Item>
+            <Item floatingLabel>
+              <Label style={styles.label}> Phone Number </Label>
+              <Input
+                style={styles.textInput}
+                autoCorrect={false}
+                autoCapitalize="none"
+                autoCompleteType="tel"
+                onChangeText={(phoneNumber) => this.setState({ phoneNumber })}
+              />
+            </Item>
 
-          <Button style={styles.button}
-            full
-            rounded
+            <Button style={styles.button}
+              full
+              rounded
 
-            onPress={() => this.navigateToProfile(this.state.name, this.state.email, this.state.phoneNumber)}
-          >
-            <Text style={styles.buttonText}>Continue</Text>
-          </Button>
+              onPress={() => this.navigateToProfile(this.state.name, this.state.email, this.state.phoneNumber)}
+            >
+              <Text style={styles.buttonText}>Continue</Text>
+            </Button>
 
-          <Button style={styles.button}
-            full
-            rounded
+            <Button style={styles.button}
+              full
+              rounded
 
-            onPress={() => this.props.navigation.navigate('AMain')}
-          >
-            <Text style={styles.buttonText}>Back</Text>
-          </Button>
+              onPress={() => this.props.navigation.navigate('AMain')}
+            >
+              <Text style={styles.buttonText}>Back</Text>
+            </Button>
 
-        </Form>
-      </Container>
+          </Form>
+        </Container>
+      </TouchableWithoutFeedback>
     );
 
 

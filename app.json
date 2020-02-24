@@ -2,7 +2,7 @@
   "expo": {
     "name": "Rodeo Town Taxi",
     "slug": "rodeo-town-taxi",
-    "privacy": "public",
+    "privacy": "unlisted",
     "sdkVersion": "36.0.0",
     "platforms": [
       "ios",
@@ -13,7 +13,7 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/RTTIcon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -26,12 +26,14 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.rodeotowntaxi.rodeotown",
+      "buildNumber": "1.0.0",
       "config": {
-        "googleMapsApiKey": "AIzaSyBEX9_M7ziAfFA2g1c2wwKyxBlWvm_2-bo"
+        "googleMapsApiKey": "AIzaSyD8dx8ZaMrgRLPmjTWOCcOkdwFAxLHmYPY"
       }
     },
     "android": {
       "package": "com.rodeotowntaxi.rodeotown",
+      "versionCode": 1,
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyBEX9_M7ziAfFA2g1c2wwKyxBlWvm_2-bo"

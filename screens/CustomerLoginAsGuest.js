@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Alert } from 'react-native';
+import { StyleSheet, Text, View, Alert, StatusBar, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { Container, Content, Header, Form, Input, Item, Button, Label } from 'native-base';
 
 import * as firebase from 'firebase';
@@ -42,44 +42,47 @@ class CustomerLogin extends React.Component {
 
     render() {
         return (
-            <Container style={styles.container}>
+            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
+                <Container style={styles.container}>
+                    <StatusBar barStyle="dark-content" />
 
-                <Form>
-                    <Label style={styles.titleLabel}> Login</Label>
+                    <Form>
+                        <Label style={styles.titleLabel}> Login</Label>
 
-                    <Item floatingLabel>
-                        <Label style={styles.label}> Name </Label>
-                        <Input
-                            style={styles.textInput}
-                            autoCorrect={false}
-                            autoCapitalize="words"
-                            autoCompleteType="name"
-                            onChangeText={(name) => this.setState({ name })}
-                        />
-                    </Item>
-
-
-                    <Button style={styles.button}
-                        full
-                        rounded
-
-                        onPress={() => this.loginUser(this.state.name)}
-                    >
-                        <Text style={styles.buttonText}>Log in</Text>
-                    </Button>
+                        <Item floatingLabel>
+                            <Label style={styles.label}> Name </Label>
+                            <Input
+                                style={styles.textInput}
+                                autoCorrect={false}
+                                autoCapitalize="words"
+                                autoCompleteType="name"
+                                onChangeText={(name) => this.setState({ name })}
+                            />
+                        </Item>
 
 
-                    <Button style={styles.button}
-                        full
-                        rounded
+                        <Button style={styles.button}
+                            full
+                            rounded
 
-                        onPress={() => this.props.navigation.navigate('CLogin')}
-                    >
-                        <Text style={styles.buttonText}>Back</Text>
-                    </Button>
+                            onPress={() => this.loginUser(this.state.name)}
+                        >
+                            <Text style={styles.buttonText}>Log in</Text>
+                        </Button>
 
-                </Form>
-            </Container>
+
+                        <Button style={styles.button}
+                            full
+                            rounded
+
+                            onPress={() => this.props.navigation.navigate('CLogin')}
+                        >
+                            <Text style={styles.buttonText}>Back</Text>
+                        </Button>
+
+                    </Form>
+                </Container>
+            </TouchableWithoutFeedback>
         );
 
 

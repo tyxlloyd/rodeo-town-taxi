@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Alert } from 'react-native';
+import { StyleSheet, Text, View, Alert, StatusBar } from 'react-native';
 import { Container, Content, Header, Form, Input, Item, Button, Label } from 'native-base';
 import * as firebase from 'firebase';
 
@@ -10,7 +10,7 @@ class DriverMain extends React.Component {
 
     this.state = ({
       email: this.props.navigation.getParam('email'),
-
+      taxiNumber: this.props.navigation.getParam('taxiNumber'),
     })
   }
 
@@ -34,9 +34,14 @@ class DriverMain extends React.Component {
     this.props.navigation.navigate('DLogin')
   }
 
+  navigateToMap = (taxiNumber) => {
+    this.props.navigation.navigate("DriverMap", { taxiNumber })
+  }
+
   render() {
     return (
       <Container style={styles.container}>
+        <StatusBar barStyle="dark-content" />
 
         <Form>
           <Label style={styles.titleLabel}> Welcome Driver</Label>
@@ -44,7 +49,7 @@ class DriverMain extends React.Component {
           <Button style={styles.button}
             full
             rounded
-            onPress={() => this.props.navigation.navigate("DriverMap")}
+            onPress={() => this.navigateToMap(this.state.taxiNumber)}
           >
             <Text style={styles.buttonText}>Go To Map</Text>
           </Button>
