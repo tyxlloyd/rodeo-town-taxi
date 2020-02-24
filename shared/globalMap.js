@@ -1,7 +1,8 @@
 import React from 'react';
 import { StyleSheet, Dimensions, Alert, View, StatusBar } from 'react-native';
-import { Header, Icon, Button } from 'react-native-elements';
-import MapView from 'react-native-maps';
+import { Header, Button, Image } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/AntDesign';
+import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import io from 'socket.io-client';
 
@@ -167,6 +168,8 @@ export class GlobalMap extends React.Component {
 
         this.socket.on('queue size', message => {
             customers = message;
+            Alert.alert("Customers in queue: " + customers);
+            console.log("Customers in queue: " + customers);
         }),
 
         this.socket.on('request driver location', message => {
@@ -264,21 +267,32 @@ export class GlobalMap extends React.Component {
             <View style={styles.container}>
                 <StatusBar barStyle="dark-content" />
                 <Header
-                    //leftComponent={ <Icon name = 'menu' color = '#000' onPress={(() => navigation.openDrawer())}/>}
+                    leftComponent={
+                        <Icon name={'logout'}
+                        size={28}
+                          onPress={(() => this.props.navigation.navigate("DLogin"))}/>
+                    }
+                    rightComponent={
+                        <Icon name={'mail'}
+                        size={28}
+                        onPress={(() => this.props.navigation.navigate("DriverChat"))} />
+                    }
                     centerComponent={{ text: 'Rodeo Town Taxi', style: { color: '#000', fontFamily: 'arvo-regular', fontSize: 24 } }}
-                    containerStyle={{ backgroundColor: '#fec33a' }}
+                    containerStyle={{backgroundColor: '#fec33a'}}
                 />
                 <MapView
                     style={styles.mapStyle}
-                    provider={MapView.PROVIDER_GOOGLE}
+                    provider={PROVIDER_GOOGLE}
                     region={this.state.region}
                     rotateEnabled={false}
                     showsUserLocation={true}
                     loadingEnabled={true}
                 >
-                    <MapView.Marker
+                    <Marker
                         coordinate={this.state.locationOfOtherUser}
                         opacity={this.state.markerVisibility}
+                        image={require('../assets/images/user.png')}
+                        pinColor="yellow" //In case image fails to load. Comment the image line to see.
                     />
                     <MapViewDirections
                         origin={this.state.region}
@@ -318,5 +332,8 @@ const styles = StyleSheet.create({
     buttonText: {
         fontSize: 24,
         fontFamily: 'arvo-regular'
+    },
+    button: {
+        backgroundColor: '#484848'
     }
 });

@@ -6,7 +6,6 @@ import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import io from 'socket.io-client';
 
-
 const config = require('./config').default
 
 var KEY = config.mapKey;
