@@ -16,8 +16,6 @@ import ModifyDriver from './screens/ModifyDriver';
 import ForgotPassword from './screens/ForgotPassword';
 import CustomerLoginAsGuest from './screens/CustomerLoginAsGuest';
 import ApiKeys from './shared/ApiKeys';
-import { CustomerMap } from './shared/map';
-import { DriverMap } from './shared/driverMap';
 import { GlobalMap } from './shared/globalMap';
 import { createSwitchNavigator, createAppContainer } from 'react-navigation';
 import { createDrawerNavigator } from 'react-navigation-drawer';
@@ -47,11 +45,9 @@ const AppSwitchNavigator = createSwitchNavigator({
   AddDriver: AddDriver,
   RemoveDriver: RemoveDriver,
   ForgotPassword: ForgotPassword,
-  CustomerMap: CustomerMap,
   DriverChat: DriverChat,
   CustomerChat: CustomerChat,
   About: About,
-  DriverMap: DriverMap,
   GlobalMap: GlobalMap,
 });
 

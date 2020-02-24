@@ -11,7 +11,7 @@ class DriverChat extends React.Component {
           leftComponent={
             <Icon name={'back'}
             size={28}
-            onPress={(() => this.props.navigation.navigate("DriverMap"))} />
+            onPress={(() => this.props.navigation.navigate("GlobalMap"))} />
           }
           centerComponent={{ text: 'Chat Customer', style: { color: '#000', fontSize: 24, fontWeight: 'bold' } }}
           containerStyle={{ backgroundColor: '#fec33a' }}

@@ -275,7 +275,7 @@ export class GlobalMap extends React.Component {
                     rightComponent={
                         <Icon name={'mail'}
                         size={28}
-                        onPress={(() => this.props.navigation.navigate("DriverChat"))} />
+                        onPress={(() => this.props.navigation.navigate("DriverChat"))} /> //split into driverChat/customerchat
                     }
                     centerComponent={{ text: 'Rodeo Town Taxi', style: { color: '#000', fontFamily: 'arvo-regular', fontSize: 24 } }}
                     containerStyle={{backgroundColor: '#fec33a'}}
