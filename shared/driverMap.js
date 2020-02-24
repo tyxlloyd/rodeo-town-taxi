@@ -3,8 +3,6 @@ import { StyleSheet, Dimensions, Alert, View, StatusBar } from 'react-native';
 import { Header, Icon, Button, Image } from 'react-native-elements';
 import MapView from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
-import * as Location from 'expo-location';
-import * as Permissions from 'expo-permissions';
 import io from 'socket.io-client';
 
 const config = require('./config').default
@@ -33,25 +31,9 @@ export class DriverMap extends React.Component {
             requestSent: false,
             buttonTitle: "Hail A Cab",
         }
-        this._getPermissionAsync();
-    }
-
-    _getPermissionAsync = async () => {
-        try {
-            let { status } = await Permissions.askAsync(Permissions.LOCATION);
-
-            if (status !== 'granted') {
-                console.log('Location permission denied.');
-            }
-        }
-
-        catch (e) {
-            console.log('_getLocationAsyncError: ' + e)
-        }
     }
 
     componentDidMount() {
-        //this.setState({driverLocation: this.state.region});
         this.watchID = navigator.geolocation.watchPosition((position) => {
             console.log('called');
             var lat = parseFloat(position.coords.latitude)
