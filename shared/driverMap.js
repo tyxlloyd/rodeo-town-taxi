@@ -35,7 +35,6 @@ export class DriverMap extends React.Component {
 
     componentDidMount() {
         this.watchID = navigator.geolocation.watchPosition((position) => {
-            console.log('called');
             var lat = parseFloat(position.coords.latitude)
             var long = parseFloat(position.coords.longitude)
 
