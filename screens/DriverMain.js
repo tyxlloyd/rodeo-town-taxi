@@ -35,7 +35,9 @@ class DriverMain extends React.Component {
   }
 
   navigateToMap = (taxiNumber) => {
-    this.props.navigation.navigate("DriverMap", { taxiNumber })
+    var name = " ";
+    var role = "driver";
+    this.props.navigation.navigate("GlobalMap", { name, taxiNumber, role })
   }
 
   render() {

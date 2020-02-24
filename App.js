@@ -18,6 +18,7 @@ import CustomerLoginAsGuest from './screens/CustomerLoginAsGuest';
 import ApiKeys from './shared/ApiKeys';
 import { CustomerMap } from './shared/map';
 import { DriverMap } from './shared/driverMap';
+import { GlobalMap } from './shared/globalMap';
 import { createSwitchNavigator, createAppContainer } from 'react-navigation';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import * as firebase from 'firebase';
@@ -51,6 +52,7 @@ const AppSwitchNavigator = createSwitchNavigator({
   CustomerChat: CustomerChat,
   About: About,
   DriverMap: DriverMap,
+  GlobalMap: GlobalMap,
 });
 
 const AppNavigator = createAppContainer(AppSwitchNavigator);

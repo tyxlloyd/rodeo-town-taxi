@@ -45,7 +45,9 @@ class CustomerMain extends React.Component {
   }
 
   navigateToMap = (name) => {
-    this.props.navigation.navigate("CustomerMap", { name })
+    var taxiNumber = 0;
+    var role = "customer";
+    this.props.navigation.navigate("GlobalMap", { name, taxiNumber, role })
   }
   
   render() {
