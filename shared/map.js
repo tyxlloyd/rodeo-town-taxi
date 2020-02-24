@@ -1,7 +1,8 @@
 import React from 'react';
 import { StyleSheet, Dimensions, Alert, View, StatusBar } from 'react-native';
-import { Header, Icon, Button } from 'react-native-elements';
-import MapView from 'react-native-maps';
+import { Header, Button } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/AntDesign';
+import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 import io from 'socket.io-client';
 
@@ -125,11 +126,11 @@ export class CustomerMap extends React.Component {
         navigator.geolocation.clearWatch(this.watchID)
     }
 
-    pressHandler(){
-        if(this.state.requestSent == false){
+    pressHandler() {
+        if (this.state.requestSent == false) {
             this.sendRideRequest();
         }
-        else{
+        else {
             this.cancelRideRequest();
         }
     }
@@ -156,7 +157,7 @@ export class CustomerMap extends React.Component {
             Alert.alert("Please be patient", 
                 "Your request will be processed in the order it was recieved. Please do not turn off your phone or close the app. You will lose your spot in line if you do.");
         }
-        else{
+        else {
             this.socket.emit('cancel ride request', this.state.driverID);
             this.setState({ driverID: null });
             this.setState({ markerVisibility: 0.0 });
@@ -176,8 +177,14 @@ export class CustomerMap extends React.Component {
             customerID: this.socket.id,
             driverID: driverID,
         }
-        this.socket.emit('get driver location', request);
         //this.setState({driverLocation: driverLocation});
+    }
+
+
+    getSizeOfQueue() {
+        this.socket.emit('get queue size', this.socket.id);
+        Alert.alert("Getting the queue size...");
+        console.log("Getting size of queue...");
     }
 
     render() {
@@ -185,21 +192,37 @@ export class CustomerMap extends React.Component {
             <View style={styles.container}>
                 <StatusBar barStyle="dark-content" />
                 <Header
-                    //leftComponent={ <Icon name = 'menu' color = '#000' onPress={(() => navigation.openDrawer())}/>}
+                    leftComponent={
+                        // <Button
+                        //     title="About"
+                        //     buttonStyle={styles.button}
+                        //     onPress={( () => this.props.navigation.navigate("About") )} 
+                        // />
+                        <Icon name={'infocirlceo'}
+                            size={28}
+                            onPress={(() => this.props.navigation.navigate("About"))} />
+                    }
+                    rightComponent={
+                        <Icon name={'mail'}
+                            size={28}
+                            onPress={(() => this.props.navigation.navigate("CustomerChat"))} />
+                    }
                     centerComponent={{ text: 'Rodeo Town Taxi', style: { color: '#000', fontFamily: 'arvo-regular', fontSize: 24 } }}
-                    containerStyle={{ backgroundColor: '#F7FF00' }}
+                    containerStyle={{ backgroundColor: '#fec33a' }}
                 />
                 <MapView
                     style={styles.mapStyle}
-                    provider={MapView.PROVIDER_GOOGLE}
-                    region={this.state.region}
+                    provider={PROVIDER_GOOGLE}
+                    //~ initialRegion={this.state.region} //region or initial region? lol
+                    region={this.state.region} //region or initial region? lol
                     rotateEnabled={false}
                     showsUserLocation={true}
                 >
-                    <MapView.Marker
+                    <Marker
                         coordinate={this.state.driverLocation}
                         opacity={this.state.markerVisibility}
-                        //<Image source={require('../assets/images/user.png')} style={{ height: 35, width: 35 }} />
+                        image={require('../assets/images/driver.png')}
+                        pinColor="yellow"
                     />
                     {/*
                     <MapViewDirections
@@ -236,10 +259,13 @@ const styles = StyleSheet.create({
         padding: 20
     },
     disabled: {
-        backgroundColor:'#484848',
+        backgroundColor: '#484848',
     },
     buttonText: {
         fontSize: 24,
         fontFamily: 'arvo-regular'
+    },
+    button: {
+        backgroundColor: '#484848'
     }
 });

@@ -81,10 +81,7 @@ class UserRoles extends React.Component {
         </Form>
       </Container>
     );
-
-
   }
-
 }
 
 const styles = StyleSheet.create({

@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import AdminLogin from './screens/AdminLogin';
 import AdminMain from './screens/AdminMain';
+import About from './screens/About';
 import CustomerLogin from './screens/CustomerLogin';
 import CustomerMain from './screens/CustomerMain';
 import DriverLogin from './screens/DriverLogin';
 import UserRoles from './screens/UserRoles';
 import AddDriver from './screens/AddDriver';
 import RemoveDriver from './screens/RemoveDriver';
+import CustomerChat from './shared/CustomerChat';
+import DriverChat from './shared/DriverChat';
 import CustomerInfo from './screens/CustomerInfo';
 import DriverInfo from './screens/DriverInfo';
 import ModifyDriver from './screens/ModifyDriver';
@@ -21,6 +24,7 @@ import * as firebase from 'firebase';
 import '@firebase/firestore';
 import * as Font from 'expo-font';
 import DriverMain from './screens/DriverMain';
+import { BackHandler } from 'react-native'; //For disabling the back button.
 
 // Initialize Firebase
 if (!firebase.apps.length) {
@@ -43,6 +47,9 @@ const AppSwitchNavigator = createSwitchNavigator({
   RemoveDriver: RemoveDriver,
   ForgotPassword: ForgotPassword,
   CustomerMap: CustomerMap,
+  DriverChat: DriverChat,
+  CustomerChat: CustomerChat,
+  About: About,
   DriverMap: DriverMap,
 });
 
@@ -54,7 +61,20 @@ export default class App extends React.Component {
       'arvo-regular': require('./assets/fonts/Arvo-Regular.ttf'),
       'arvo-bold': require('./assets/fonts/Arvo-Bold.ttf'),
     });
+
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
   }
+
+  componentWillUnmount() {
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+  }
+
+  handleBackButton() {
+    console.log("Back button is disabled!");
+    //alert("Back button disabled!");
+    return true;
+  }
+
   render() {
     return <AppNavigator />
   } 
