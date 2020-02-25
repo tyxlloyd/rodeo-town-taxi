@@ -8,7 +8,7 @@ import * as firebase from 'firebase';
 import '@firebase/firestore';
 
 
-class RemoveDriver extends React.Component {
+class RemoveAdmin extends React.Component {
 
     constructor(props) {
         super(props)
@@ -25,44 +25,20 @@ class RemoveDriver extends React.Component {
         })
     }
 
-    removeDriver = async (name, email) => {
+    ifEmptyToggle = (email, name, phoneNumber, password) => {
+        if (email == '') {
 
+            this.toggleEmailError('true');
 
-        //check that user filled out all fields 
-        if (email == '' || name == '') {
-            if (email == '') {
-
-                this.toggleEmailError('true');
-
-            }
-            if (name == '') {
-
-                this.toggleNameError('true');
-
-            }
-
-            if (email != '') {
-
-                this.toggleEmailError('false');
-
-            }
-
-            if (name != '') {
-
-                this.toggleNameError('false');
-
-            }
-            Alert.alert(
-                'Empty Fields',
-                'Make sure all fields are filled out',
-                [
-                    { text: 'OK', onPress: () => console.log('OK Pressed') },
-                ],
-                { cancelable: false },
-            );
-            return;
         }
+        if (name == '') {
 
+            this.toggleNameError('true');
+
+        }
+    }
+
+    ifNotEmptyToggle = (email, name, phoneNumber, password) => {
         if (email != '') {
 
             this.toggleEmailError('false');
@@ -75,20 +51,41 @@ class RemoveDriver extends React.Component {
 
         }
 
+    }
+    removeDriver = async (name, email) => {
+
+
+        //check that user filled out all fields 
+        if (email == '' || name == '') {
+            this.ifEmptyToggle(email, name);
+            this.ifNotEmptyToggle(email, name);
+            Alert.alert(
+                'Empty Fields',
+                'Make sure all fields are filled out',
+                [
+                    { text: 'OK', onPress: () => console.log('OK Pressed') },
+                ],
+                { cancelable: false },
+            );
+            return;
+        }
+
+        this.ifNotEmptyToggle(email, name);
+
         try {
 
             //email made lowercase because .exists is case sensitive
             var lEmail = email.toLowerCase();
 
             const dbh = firebase.firestore();
-            var docName = dbh.collection("driver-info").doc(lEmail);
+            var docName = dbh.collection("admin-info").doc(lEmail);
 
             docName.get().then(function (doc) {
                 if (doc.exists) {
                     //requires google chrome on android
                     WebBrowser.openBrowserAsync('https://console.firebase.google.com/project/rodeo-town-taxi/authentication/users');
 
-                    dbh.collection("driver-info").doc(lEmail).delete().then(function () {
+                    dbh.collection("admin-info").doc(lEmail).delete().then(function () {
                         //alert("Driver deleted from database")
 
                     }).catch(function (error) {
@@ -98,7 +95,7 @@ class RemoveDriver extends React.Component {
                     });
 
                 } else {
-                    Alert.alert("Error", "This driver does not exist check info entered.")
+                    Alert.alert("Error", "This admin does not exist check info entered.")
                     //return;
                 }
 
@@ -108,8 +105,8 @@ class RemoveDriver extends React.Component {
 
             })
         } catch (error) {
-            //alert(error)
-            console.log(error.toString())
+            alert(error)
+            
         }
 
         //requires google chrome on android
@@ -151,7 +148,7 @@ class RemoveDriver extends React.Component {
         if (Platform.OS == 'android') {
             return (
 
-                <Text style={styles.titleLabel}>Remove Driver</Text>
+                <Text style={styles.titleLabel}>Remove Admin</Text>
 
 
             );
@@ -161,7 +158,7 @@ class RemoveDriver extends React.Component {
             return (
 
                 <Text adjustsFontSizeToFit
-                    numberOfLines={1} style={styles.titleLabel}>Remove Driver</Text>
+                    numberOfLines={1} style={styles.titleLabel}>Remove Admin</Text>
 
 
             );
@@ -278,4 +275,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default RemoveDriver
+export default RemoveAdmin

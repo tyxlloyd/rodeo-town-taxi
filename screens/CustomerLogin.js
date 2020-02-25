@@ -1,12 +1,13 @@
 import React from 'react';
-import { StyleSheet, Text, View, Alert, StatusBar, TouchableWithoutFeedback, Keyboard } from 'react-native';
-import { Container, Content, Header, Form, Input, Item, Button, Label } from 'native-base';
+import { StyleSheet, Text, View, Alert, KeyboardAvoidingView } from 'react-native';
+import { Container, Content, Header, Form, Input, Item, Button, Label, Icon } from 'native-base';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 import * as firebase from 'firebase';
 import '@firebase/firestore';
 
 class CustomerLogin extends React.Component {
-
+  mounted = false;
   constructor(props) {
     super(props)
 
@@ -14,13 +15,76 @@ class CustomerLogin extends React.Component {
       name: '',
       email: '',
       phoneNumber: '',
+      loading: false,
+      emailError: false,
+      nameError: false,
+      phoneNumberError: false,
+
 
     })
   }
 
+  componentWillUnmount() {
+    this.mounted = false;
+  }
+  changeStateOfLoading = () => {
+    if (this.mounted) {
+      this.setState({
+
+        loading: !this.state.loading,
+      });
+    }
+
+
+  }
+
+  ifEmptyToggle = (email, name, phoneNumber) => {
+    if (email == '') {
+
+      this.toggleEmailError('true');
+
+    }
+    if (name == '') {
+
+      this.toggleNameError('true');
+
+    }
+
+    if (phoneNumber == '') {
+
+      this.togglePhoneNumberError('true');
+
+    }
+
+  }
+
+  ifNotEmptyToggle = (email, name, phoneNumber) => {
+    if (email != '') {
+
+      this.toggleEmailError('false');
+
+    }
+
+    if (name != '') {
+
+      this.toggleNameError('false');
+
+    }
+
+    if (phoneNumber != '') {
+
+      this.togglePhoneNumberError('false');
+
+    }
+
+  }
+
   loginUser = (name, email, phoneNumber) => {
+    this.mounted = true;
     try {
       if (email == '' || phoneNumber == '' || name == '') {
+        this.ifEmptyToggle(email, name, phoneNumber);
+        this.ifNotEmptyToggle(email, name, phoneNumber);
         Alert.alert(
           'Empty Fields',
           'Make sure all fields are filled out',
@@ -31,6 +95,12 @@ class CustomerLogin extends React.Component {
         );
         return;
       }
+
+      this.ifNotEmptyToggle(email, name, phoneNumber);
+      this.changeStateOfLoading();
+
+
+
       //here there is no login with password you will simply add 
       //this users info to database along with user type: customer
 
@@ -44,99 +114,184 @@ class CustomerLogin extends React.Component {
       docName.get().then(function (doc) {
         if (doc.exists) {
           Alert.alert("Hello", "Welcome back " + name)
-          //add function to update other user data if necessary
+          this.props.navigation.navigate('CMain', { name, lEmail, phoneNumber })
+
         } else {
           dbh.collection("customer-info").doc(lEmail).set({
             Name: name,
             Email: email,
             PhoneNumber: phoneNumber,
             Type: "Customer"
-          })
+          });
+
           Alert.alert("Hello", "Welcome to the Rodeo Town Taxi App " + name)
+          this.props.navigation.navigate('CMain', { name, lEmail, phoneNumber })
         }
-      }.bind(this)).catch(error => alert(error));
+      }.bind(this)).catch(function (error) {
+        Alert.alert("Something went wrong", "Try again");
 
-
-      this.props.navigation.navigate('CMain', { name, lEmail, phoneNumber })
-
+      }).then(() => this.changeStateOfLoading());
 
     } catch (error) {
-      console.log(error.toString())
+      Alert.alert("Something went wrong", "Try again later");
+      this.props.navigation.navigate('URoles')
     }
 
 
 
   }
+  toggleEmailError = (bool) => {
+
+    if (bool == 'true') {
+      this.setState({
+        emailError: true,
+      });
+    } else {
+      this.setState({
+
+        emailError: false,
+      });
+    }
+
+
+  }
+
+  toggleNameError = (bool) => {
+    if (bool == 'true') {
+      this.setState({
+        nameError: true,
+      });
+    } else {
+      this.setState({
+
+        nameError: false,
+      });
+    }
+
+  }
+
+  togglePhoneNumberError = (bool) => {
+    if (bool == 'true') {
+      this.setState({
+        phoneNumberError: true,
+      });
+    } else {
+      this.setState({
+
+        phoneNumberError: false,
+      });
+    }
+
+  }
+  TitlePicker() {
+    //the reason we need this is becasue adjustfontsize only works with ios
+    if (Platform.OS == 'android') {
+      return (
+
+        <Text style={styles.titleLabel}>Customer Login</Text>
+
+
+      );
+
+    } else if (Platform.OS == 'ios') {
+
+      return (
+
+        <Text adjustsFontSizeToFit
+          numberOfLines={1} style={styles.titleLabel}>Customer Login</Text>
+
+
+      );
+
+    }
+  }
 
   render() {
     return (
-      <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
-        <Container style={styles.container}>
-          <StatusBar barStyle="dark-content" />
+      <KeyboardAvoidingView style={styles.container} behavior="padding">
+        <Spinner
+          //visibility of Overlay Loading Spinner
+          visible={this.state.loading}
+          //Text with the Spinner
+          //textContent={'Loading...'}
+          //Text style of the Spinner Text
+          textStyle={styles.spinnerTextStyle}
+        />
+        <Form>
 
-          <Form>
-            <Label style={styles.titleLabel}> Login</Label>
+          <View style={styles.titleContainer}>
+            {this.TitlePicker()}
+          </View>
 
-            <Item floatingLabel>
-              <Label style={styles.label}> Name </Label>
-              <Input
-                style={styles.textInput}
-                autoCorrect={false}
-                autoCapitalize="words"
-                autoCompleteType="name"
-                onChangeText={(name) => this.setState({ name })}
-              />
-            </Item>
+          <Item rounded error={this.state.nameError ? true : false} style={styles.inputBox}>
 
-            <Item floatingLabel>
-              <Label style={styles.label}> Email </Label>
-              <Input
-                style={styles.textInput}
-                autoCorrect={false}
-                autoCapitalize="none"
-                autoCompleteType="email"
-                onChangeText={(email) => this.setState({ email })}
-              />
-            </Item>
+            <Icon active name='contact' />
+            <Input
+              placeholder="Name"
+              style={styles.textInput}
+              autoCorrect={false}
+              autoCapitalize="words"
+              autoCompleteType="name"
+              onChangeText={(name) => this.setState({ name })}
+            />
+          </Item>
 
-            <Item floatingLabel>
-              <Label style={styles.label}> Phone Number </Label>
-              <Input
-                style={styles.textInput}
-                autoCorrect={false}
-                autoCapitalize="none"
-                autoCompleteType="tel"
-                onChangeText={(phoneNumber) => this.setState({ phoneNumber })}
-              />
-            </Item>
+          <Item rounded error={this.state.emailError ? true : false} style={styles.inputBox}>
+            <Icon active name='mail' />
+            <Input
+              placeholder="Email"
+              style={styles.textInput}
+              autoCorrect={false}
+              autoCapitalize="none"
+              autoCompleteType="email"
+              onChangeText={(email) => this.setState({ email })}
+            />
+          </Item>
 
-            <Button style={styles.button}
-              full
-              rounded
-              onPress={() => this.loginUser(this.state.name, this.state.email, this.state.phoneNumber)}
-            >
-              <Text style={styles.buttonText}>Log in</Text>
-            </Button>
+          <Item rounded error={this.state.phoneNumberError ? true : false} style={styles.inputBox}>
+            <Icon active name='call' />
+            <Input
+              placeholder="Phone Number"
+              style={styles.textInput}
+              autoCorrect={false}
+              autoCapitalize="none"
+              autoCompleteType="tel"
+              onChangeText={(phoneNumber) => this.setState({ phoneNumber })}
+            />
+          </Item>
 
-            <Button style={styles.button}
-              full
-              rounded
-              onPress={() => this.props.navigation.navigate('CGuest')}
-            >
-              <Text style={styles.buttonText}>Continue as a guest</Text>
-            </Button>
+          <Button style={styles.button}
+            full
+            rounded
+            onPress={() => this.loginUser(this.state.name, this.state.email, this.state.phoneNumber)}
+          >
+            <Text adjustsFontSizeToFit
+              numberOfLines={1} style={styles.regularButtonText}>Log in</Text>
+          </Button>
 
-            <Button style={styles.button}
-              full
-              rounded
-              onPress={() => this.props.navigation.navigate('URoles')}
-            >
-              <Text style={styles.buttonText}>Home</Text>
-            </Button>
+          <Button
+            full
+            transparent
+            rounded
+            onPress={() => this.props.navigation.navigate('CGuest')}
+          >
+            <Text adjustsFontSizeToFit
+              numberOfLines={1} style={styles.transparentButtonText}>Continue as a guest</Text>
+          </Button>
 
-          </Form>
-        </Container>
-      </TouchableWithoutFeedback>
+          <Button
+            full
+            rounded
+            transparent
+
+            onPress={() => this.props.navigation.navigate('URoles')}
+          >
+            <Text adjustsFontSizeToFit
+              numberOfLines={1} style={styles.transparentButtonText}>Home</Text>
+          </Button>
+
+        </Form>
+      </KeyboardAvoidingView>
     );
 
 
@@ -150,16 +305,25 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     //alignItems: 'center',
     justifyContent: 'center',
-    padding: 15
+    padding: 30
   },
   button: {
     marginTop: 50,
     backgroundColor: '#fec33a'
 
   },
-  buttonText: {
+  regularButtonText: {
     color: 'black',
-    fontSize: 23
+    fontSize: 30
+  },
+  transparentButtonText: {
+    color: 'black',
+    fontSize: 15
+  },
+  titleContainer: {
+    alignItems: "center",
+    marginBottom: 40,
+    width: "100%"
   },
   titleLabel: {
     fontSize: 40,
@@ -167,6 +331,12 @@ const styles = StyleSheet.create({
   },
   label: {
     color: 'black'
+  },
+  inputBox: {
+    marginTop: 30,
+    borderColor: 'black',
+    //backgroundColor: '#fff',
+
   },
   textInput: {
     fontSize: 20

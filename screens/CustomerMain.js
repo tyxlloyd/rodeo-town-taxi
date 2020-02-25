@@ -49,21 +49,51 @@ class CustomerMain extends React.Component {
     var role = "customer";
     this.props.navigation.navigate("GlobalMap", { name, taxiNumber, role })
   }
-  
+
+
+  TitlePicker() {
+    //the reason we need this is becasue adjustfontsize only works with ios
+    if (Platform.OS == 'android') {
+      return (
+
+        <Text style={styles.titleLabel}>Welcome Customer</Text>
+
+
+      );
+
+    } else if (Platform.OS == 'ios') {
+
+      return (
+
+        <Text adjustsFontSizeToFit
+          numberOfLines={1} style={styles.titleLabel}>Welcome Customer</Text>
+
+
+      );
+
+    }
+  }
+
+
   render() {
     return (
       <Container style={styles.container}>
         <StatusBar barStyle="dark-content" />
 
         <Form>
-          <Label style={styles.titleLabel}> Welcome Customer</Label>
+          <View style={styles.titleContainer}>
+            {this.TitlePicker()}
+          </View>
 
           <Button style={styles.button}
             full
             rounded
             onPress={() => this.navigateToMap(this.state.name)}
           >
-            <Text style={styles.buttonText}>Go To Map</Text>
+            <Text adjustFontSizeToFit
+				numberOfLines={1}
+			 	style={styles.regularButtonText}
+			>Go To Map</Text>
           </Button>
 
           <Button style={styles.button}
@@ -72,7 +102,8 @@ class CustomerMain extends React.Component {
             //onPress={() => this.props.navigation.navigate('CInfo')}
             onPress={() => this.navigateToProfile(this.state.name, this.state.email, this.state.phoneNumber)}
           >
-            <Text style={styles.buttonText}>Profile</Text>
+            <Text adjustsFontSizeToFit
+              numberOfLines={1} style={styles.regularButtonText}>Profile</Text>
           </Button>
 
           <Button style={styles.button}
@@ -82,7 +113,8 @@ class CustomerMain extends React.Component {
             onPress={() => this.props.navigation.navigate('CLogin')}
 
           >
-            <Text style={styles.buttonText}>Back</Text>
+            <Text adjustsFontSizeToFit
+              numberOfLines={1} style={styles.regularButtonText}>Back</Text>
           </Button>
 
         </Form>
@@ -107,13 +139,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#fec33a'
 
   },
-  buttonText: {
+  regularButtonText: {
     color: 'black',
-    fontSize: 23
+    fontSize: 30
   },
   titleLabel: {
     fontSize: 40,
 
+  },
+  titleContainer: {
+    alignItems: "center",
+    marginBottom: 40,
+    width: "100%"
   },
   label: {
     color: 'black'

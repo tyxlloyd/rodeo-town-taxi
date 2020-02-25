@@ -1,27 +1,62 @@
 import React from 'react';
-import { StyleSheet, Text, View, Alert, StatusBar, TouchableWithoutFeedback, Keyboard } from 'react-native';
-import { Container, Content, Header, Form, Input, Item, Button, Label } from 'native-base';
+import { StyleSheet, Text, View, Alert } from 'react-native';
+import { Container, Content, Header, Form, Input, Item, Button, Label, Icon } from 'native-base';
+import Spinner from 'react-native-loading-spinner-overlay';
 
 import * as firebase from 'firebase';
 import '@firebase/firestore';
 
 class CustomerLogin extends React.Component {
-
+    mounted = false;
     constructor(props) {
         super(props)
 
         this.state = ({
             name: '',
+            loading: false,
+            nameError: false,
 
 
         })
     }
 
+    componentWillUnmount() {
+        this.mounted = false;
+    }
+    changeStateOfLoading = () => {
+        if (this.mounted) {
+            this.setState({
+
+                loading: !this.state.loading,
+            });
+        }
+
+
+    }
+    ifEmptyToggle = (name) => {
+        if (name == '') {
+
+            this.toggleNameError('true');
+
+        }
+    }
+
+    ifNotEmptyToggle = (name) => {
+
+        if (name != '') {
+
+            this.toggleNameError('false');
+
+        }
+
+    }
     loginUser = (name) => {
         //As guest no user information is added to database 
         //if the user wishes to add their information this can be done 
         //in the profile page
         if (name == '') {
+            this.ifEmptyToggle(name);
+            this.ifNotEmptyToggle(name);
             Alert.alert(
                 'Empty Fields',
                 'Make sure all fields are filled out',
@@ -32,57 +67,105 @@ class CustomerLogin extends React.Component {
             );
             return;
         }
-
+        this.mounted = true;
+        this.ifNotEmptyToggle(name);
 
         this.props.navigation.navigate('CMain', { name })
 
     }
 
+    toggleNameError = (bool) => {
+        if (bool == 'true') {
+            this.setState({
+                nameError: true,
+            });
+        } else {
+            this.setState({
+
+                nameError: false,
+            });
+        }
+
+    }
+
+    TitlePicker() {
+        //the reason we need this is becasue adjustfontsize only works with ios
+        if (Platform.OS == 'android') {
+            return (
+
+                <Text style={styles.titleLabel}>Login as Guest</Text>
+
+
+            );
+
+        } else if (Platform.OS == 'ios') {
+
+            return (
+
+
+                <Text adjustsFontSizeToFit
+                    numberOfLines={1} style={styles.titleLabel}>Login as Guest</Text>
+
+
+            );
+
+        }
+    }
 
 
     render() {
         return (
-            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
-                <Container style={styles.container}>
-                    <StatusBar barStyle="dark-content" />
+            <Container style={styles.container}>
 
-                    <Form>
-                        <Label style={styles.titleLabel}> Login</Label>
+                <Form>
+                    <Spinner
+                        //visibility of Overlay Loading Spinner
+                        visible={this.state.loading}
+                        //Text with the Spinner
+                        //textContent={'Loading...'}
+                        //Text style of the Spinner Text
+                        textStyle={styles.spinnerTextStyle}
+                    />
+                    <View style={styles.titleContainer}>
+                        {this.TitlePicker()}
+                    </View>
 
-                        <Item floatingLabel>
-                            <Label style={styles.label}> Name </Label>
-                            <Input
-                                style={styles.textInput}
-                                autoCorrect={false}
-                                autoCapitalize="words"
-                                autoCompleteType="name"
-                                onChangeText={(name) => this.setState({ name })}
-                            />
-                        </Item>
+                    <Item rounded error={this.state.nameError ? true : false} style={styles.inputBox}>
+                        <Icon active name='contact' />
+                        <Input
+                            placeholder="Name"
+                            style={styles.textInput}
+                            autoCorrect={false}
+                            autoCapitalize="words"
+                            autoCompleteType="name"
+                            onChangeText={(name) => this.setState({ name })}
+                        />
+                    </Item>
 
 
-                        <Button style={styles.button}
-                            full
-                            rounded
+                    <Button style={styles.button}
+                        full
+                        rounded
 
-                            onPress={() => this.loginUser(this.state.name)}
-                        >
-                            <Text style={styles.buttonText}>Log in</Text>
-                        </Button>
+                        onPress={() => this.loginUser(this.state.name)}
+                    >
+                        <Text adjustsFontSizeToFit
+                            numberOfLines={1} style={styles.regularButtonText}>Log in</Text>
+                    </Button>
 
 
-                        <Button style={styles.button}
-                            full
-                            rounded
+                    <Button
+                        full
+                        rounded
+                        transparent
+                        onPress={() => this.props.navigation.navigate('CLogin')}
+                    >
+                        <Text adjustsFontSizeToFit
+                            numberOfLines={1} style={styles.transparentButtonText}>Back</Text>
+                    </Button>
 
-                            onPress={() => this.props.navigation.navigate('CLogin')}
-                        >
-                            <Text style={styles.buttonText}>Back</Text>
-                        </Button>
-
-                    </Form>
-                </Container>
-            </TouchableWithoutFeedback>
+                </Form>
+            </Container>
         );
 
 
@@ -96,16 +179,25 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         //alignItems: 'center',
         justifyContent: 'center',
-        padding: 15
+        padding: 30
     },
     button: {
         marginTop: 50,
         backgroundColor: '#fec33a'
 
     },
-    buttonText: {
+    regularButtonText: {
         color: 'black',
-        fontSize: 23
+        fontSize: 30
+    },
+    transparentButtonText: {
+        color: 'black',
+        fontSize: 15
+    },
+    titleContainer: {
+        alignItems: "center",
+        marginBottom: 50,
+        width: "100%"
     },
     titleLabel: {
         fontSize: 40,
@@ -113,6 +205,12 @@ const styles = StyleSheet.create({
     },
     label: {
         color: 'black'
+    },
+    inputBox: {
+        //marginTop: 30,
+        borderColor: 'black',
+        //backgroundColor: '#fff',
+
     },
     textInput: {
         fontSize: 20

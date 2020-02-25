@@ -1,6 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View, Alert, StatusBar, TouchableWithoutFeedback, Keyboard } from 'react-native';
-import { Container, Content, Header, Form, Input, Item, Button, Label } from 'native-base';
+import { StyleSheet, Text, View, Alert } from 'react-native';
+import { Container, Content, Header, Form, Input, Item, Button, Label, Icon } from 'native-base';
 
 
 import * as firebase from 'firebase';
@@ -14,62 +14,134 @@ class ForgotPassword extends React.Component {
 
         this.state = ({
             email: '',
+            emailError: false,
 
 
         })
     }
 
+    ifNotEmptyToggle = (email) => {
+        if (email != '') {
 
+            this.toggleEmailError('false');
+
+        }
+    }
+
+    ifEmptyToggle = (email) => {
+        if (email == '') {
+
+            this.toggleEmailError('true');
+
+        }
+
+    }
     resetPassword = (email) => {
+        if (email == '') {
+            this.ifEmptyToggle(email);
+            this.ifNotEmptyToggle(email);
+
+            Alert.alert(
+                'Empty Field',
+                'Make sure all fields are filled out',
+                [
+                    { text: 'OK', onPress: () => console.log('') },
+                ],
+                { cancelable: false },
+            );
+            return;
+        }
+        this.ifNotEmptyToggle(email);
         firebase.auth().sendPasswordResetEmail(email)
             .then(() => {
                 Alert.alert("Success", "Password reset email has been sent.");
             }, (error) => {
-                Alert.alert("Alert",error.message);
+                Alert.alert("Alert", error.message);
             });
+    }
+
+    toggleEmailError = (bool) => {
+
+        if (bool == 'true') {
+            this.setState({
+                emailError: true,
+            });
+        } else {
+            this.setState({
+
+                emailError: false,
+            });
+        }
+    }
+
+    TitlePicker() {
+        //the reason we need this is becasue adjustfontsize only works with ios
+        if (Platform.OS == 'android') {
+            return (
+
+                <Text style={styles.titleLabel}>Reset Password</Text>
+
+
+            );
+
+        } else if (Platform.OS == 'ios') {
+
+            return (
+
+                <Text adjustsFontSizeToFit
+                    numberOfLines={1} style={styles.titleLabel}>Reset Password</Text>
+
+
+            );
+
+        }
     }
 
     render() {
         return (
-            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
-                <Container style={styles.container}>
-                    <StatusBar barStyle="dark-content" />
+            <Container style={styles.container}>
 
-                    <Form>
-                        <Label style={styles.titleLabel}>Reset Password</Label>
-                        <Item floatingLabel>
-                            <Label style={styles.label}> Email </Label>
-                            <Input
-                                style={styles.textInput}
-                                autoCorrect={false}
-                                autoCapitalize="none"
-                                autoCompleteType="email"
-                                onChangeText={(email) => this.setState({ email })}
-                            />
-                        </Item>
+                <Form>
+                    <View style={styles.titleContainer}>
+                        {this.TitlePicker()}
+                    </View>
+
+                    <Item rounded error={this.state.emailError ? true : false} style={styles.inputBox}>
+                        <Icon active name='mail' />
+                        <Input
+                            placeholder="Email"
+                            style={styles.textInput}
+                            autoCorrect={false}
+                            autoCapitalize="none"
+                            autoCompleteType="email"
+                            onChangeText={(email) => this.setState({ email })}
+                        />
+                    </Item>
 
 
-                        <Button style={styles.button}
-                            full
-                            rounded
+                    <Button style={styles.button}
+                        full
+                        rounded
 
-                            onPress={() => this.resetPassword(this.state.email)}
-                        >
-                            <Text style={styles.buttonText}>Reset Password</Text>
-                        </Button>
+                        onPress={() => this.resetPassword(this.state.email)}
+                    >
+                        <Text adjustsFontSizeToFit
+                            numberOfLines={1} style={styles.regularButtonText}>Reset Password</Text>
+                    </Button>
 
-                        <Button style={styles.button}
-                            full
-                            rounded
+                    <Button
+                        full
+                        transparent
+                        rounded
 
-                            onPress={() => this.props.navigation.navigate('URoles')}
-                        >
-                            <Text style={styles.buttonText}>Home</Text>
-                        </Button>
+                        onPress={() => this.props.navigation.navigate('URoles')}
+                    >
+                        <Text adjustsFontSizeToFit
+                            numberOfLines={1} style={styles.transparentButtonText}>Back</Text>
+                    </Button>
 
-                    </Form>
-                </Container>
-            </TouchableWithoutFeedback>
+                </Form>
+            </Container>
         );
 
 
@@ -77,22 +149,33 @@ class ForgotPassword extends React.Component {
 
 }
 
+
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
         //alignItems: 'center',
         justifyContent: 'center',
-        padding: 15
+        padding: 30
     },
     button: {
         marginTop: 50,
         backgroundColor: '#fec33a'
 
     },
-    buttonText: {
+    regularButtonText: {
         color: 'black',
-        fontSize: 23
+        fontSize: 30
+    },
+    transparentButtonText: {
+        color: 'black',
+        fontSize: 15
+    },
+    titleContainer: {
+        alignItems: "center",
+        marginBottom: 40,
+        width: "100%"
     },
     titleLabel: {
         fontSize: 40,
@@ -100,6 +183,13 @@ const styles = StyleSheet.create({
     },
     label: {
         color: 'black'
+    },
+
+    inputBox: {
+        marginTop: 30,
+        borderColor: 'black',
+        //backgroundColor: '#fff',
+
     },
     textInput: {
         fontSize: 20
