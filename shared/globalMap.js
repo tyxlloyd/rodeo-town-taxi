@@ -291,7 +291,7 @@ export class GlobalMap extends React.Component {
                     <Marker
                         coordinate={this.state.locationOfOtherUser}
                         opacity={this.state.markerVisibility}
-                        image={require('../assets/images/user.png')}
+                        image={require('../assets/images/driver100.png')}
                         pinColor="yellow" //In case image fails to load. Comment the image line to see.
                     />
                     <MapViewDirections
