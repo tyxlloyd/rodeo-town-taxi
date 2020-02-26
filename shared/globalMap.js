@@ -38,16 +38,11 @@ export class GlobalMap extends React.Component {
             customerID: null,
             requestSent: false,
             buttonTitle: " ",
+            failedToConnect: false,
         }
     }
 
     componentDidMount() {
-        if(this.state.role == 'driver'){
-            this.setState({ buttonTitle: "Request A Customer" });
-        }
-        else {
-            this.setState({ buttonTitle: "Hail A Cab" });
-        }
         this.watchID = navigator.geolocation.watchPosition((position) => {
             var lat = parseFloat(position.coords.latitude)
             var long = parseFloat(position.coords.longitude)
@@ -79,9 +74,17 @@ export class GlobalMap extends React.Component {
                     this.socket.emit('recieve customer location', response);
                 }
             }
-        }, (error) => { console.log(error.message) },
+        }, (error) => { Alert.alert(error.message) },
             { enableHighAccuracy: true, timeout: 20000, maximumAge: 10000, }
         );
+
+        if(this.state.role == 'driver'){
+            this.setState({ buttonTitle: "Request A Customer" });
+        }
+        else {
+            this.setState({ buttonTitle: "Hail A Cab" });
+        }
+
         this.socket = io(SERVER);
         if(this.state.role == 'driver'){
             this.driverSocketListener();
@@ -91,7 +94,19 @@ export class GlobalMap extends React.Component {
         }
     }
 
+    componentWillUnmount() {
+        navigator.geolocation.clearWatch(this.watchID)
+    }
+
     driverSocketListener(){
+        this.socket.on('connect_error', () => {
+            if(this.state.failedToConnect == false){
+                Alert.alert('Failed to connect to server', 'Please call Rodeo Town Taxi to hail a taxi');
+                this.setState({ failedToConnect: true });
+                this.props.navigation.navigate('URoles');
+            }
+        });
+
         this.socket.on('ride request', request => {
             fetch('https://maps.googleapis.com/maps/api/geocode/json?address=' + request.lat + ',' + request.long + '&key=' + KEY)
             .then((response) => response.json())
@@ -147,6 +162,14 @@ export class GlobalMap extends React.Component {
     }
 
     customerSocketListener(){
+        this.socket.on('connect_error', () => {
+            if(this.state.failedToConnect == false){
+                Alert.alert('Failed to connect to server', 'Please call Rodeo Town Taxi to hail a taxi');
+                this.setState({ failedToConnect: true });
+                this.props.navigation.navigate('URoles');
+            }
+        });
+
         this.socket.on('ride request', request => {
             Alert.alert('You have a new ride request: latitude: ' + request.lat + '\nlongitude: ' + request.long + '\nid: ' + request.id);
 
@@ -196,20 +219,30 @@ export class GlobalMap extends React.Component {
             Alert.alert(message);
             this.setState({ destination: this.state.region });
             this.setState({ markerVisibility: 0.0 });
+            this.setState({ driverID: null });
+            this.setState({ buttonTitle: "Hail A Cab" });
+            this.setState({ requestSent: false });
         })
-    }
-
-    componentWillUnmount() {
-        navigator.geolocation.clearWatch(this.watchID)
     }
 
     pressHandler(){
         if(this.state.role == 'driver'){
-            var request= {
-                taxiNumber: this.state.taxiNumber,
-                id: this.socket.id,
+            if(this.state.customerID != null){
+                Alert.alert(
+                    'End ride request',
+                    'Are you sure you would like to end this ride request?',
+                    [
+                      {text: 'Yes, cancel this ride request', onPress: () => this.cancelCustomerRequest()},
+                      {
+                        text: 'No, do not cancel this ride request',
+                      },
+                    ],
+                    {cancelable: false},
+                  );
             }
-            this.socket.emit('customer request', request);
+            else{
+                this.sendCustomerRequest();
+            }
         }
         else{
             if(this.state.requestSent == false){
@@ -221,21 +254,35 @@ export class GlobalMap extends React.Component {
         }
     }
 
+    sendCustomerRequest(){
+        var request= {
+            taxiNumber: this.state.taxiNumber,
+            id: this.socket.id,
+        }
+        this.socket.emit('customer request', request);
+    }
+
     sendRideRequest() {
-        console.log('new request:');
         var request = {
             name: this.state.name,
             long: this.state.region.longitude,
             lat: this.state.region.latitude,
             id: this.socket.id,
         }
-        console.log("lat: " + request.lat);
-        console.log("long: " + request.long);
         this.socket.emit('ride request', request);
         Alert.alert("Your request has been sent!",
             "Please do not turn off your phone or close the app or you will lose your spot in line." );
         this.setState({ buttonTitle: "Finding a driver..." });
         this.setState({ requestSent: true });
+    }
+
+    cancelCustomerRequest(){
+        this.socket.emit('cancel ride request', this.state.customerID);
+        this.setState({ customerID: null });
+        this.setState({ destination: this.state.region });
+        this.setState({ buttonTitle: "Request A Customer" });
+        this.setState({ markerVisibility: 0.0 });
+        Alert.alert("You have cancelled your ride request");
     }
 
     cancelRideRequest(){
