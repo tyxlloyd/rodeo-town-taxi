@@ -12,6 +12,7 @@ var KEY = config.mapKey;
 var SERVER = config.server;
 
 export class GlobalMap extends React.Component {
+    mounted = false;
     constructor(props) {
         super(props);
 
@@ -95,7 +96,8 @@ export class GlobalMap extends React.Component {
     }
 
     componentWillUnmount() {
-        navigator.geolocation.clearWatch(this.watchID)
+        this.mounted = false;
+        navigator.geolocation.clearWatch(this.watchID);
     }
 
     driverSocketListener(){
@@ -119,6 +121,7 @@ export class GlobalMap extends React.Component {
                 latitude: request.lat,
                 longitude: request.long,
             }
+
             this.setState({customerID: request.id});
             this.setState({destination: destination});
             this.setState({locationOfOtherUser: destination});
@@ -154,10 +157,12 @@ export class GlobalMap extends React.Component {
 
         this.socket.on('cancel ride', message => {
             Alert.alert(message);
-            this.setState({ destination: this.state.region });
-            this.setState({ markerVisibility: 0.0 });
-            this.setState({ customerID: null });
-            this.setState({ buttonTitle: "Request A Customer" });
+            if(this.mounted){
+                this.setState({ destination: this.state.region });
+                this.setState({ markerVisibility: 0.0 });
+                this.setState({ customerID: null });
+                this.setState({ buttonTitle: "Request A Customer" });
+            }
         })
     }
 
@@ -192,7 +197,6 @@ export class GlobalMap extends React.Component {
         this.socket.on('queue size', message => {
             customers = message;
             Alert.alert("Customers in queue: " + customers);
-            console.log("Customers in queue: " + customers);
         }),
 
         this.socket.on('request driver location', message => {
@@ -216,12 +220,14 @@ export class GlobalMap extends React.Component {
         }),
 
         this.socket.on('cancel ride', message => {
-            Alert.alert(message);
-            this.setState({ destination: this.state.region });
-            this.setState({ markerVisibility: 0.0 });
-            this.setState({ driverID: null });
-            this.setState({ buttonTitle: "Hail A Cab" });
-            this.setState({ requestSent: false });
+            if(this.mounted){
+                Alert.alert(message);
+                this.setState({ destination: this.state.region });
+                this.setState({ markerVisibility: 0.0 });
+                this.setState({ driverID: null });
+                this.setState({ buttonTitle: "Hail A Cab" });
+                this.setState({ requestSent: false });
+            }
         })
     }
 
@@ -309,6 +315,10 @@ export class GlobalMap extends React.Component {
         this.socket.emit('get driver location', request);
     }
 
+    navigateToChat(name, taxiNumber, role){
+        this.props.navigation.navigate("DriverChat", { name, taxiNumber, role });
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -317,12 +327,12 @@ export class GlobalMap extends React.Component {
                     leftComponent={
                         <Icon name={'logout'}
                         size={28}
-                          onPress={(() => this.props.navigation.navigate("DLogin"))}/>
+                          onPress={(() => this.props.navigation.navigate("URoles"))}/>
                     }
                     rightComponent={
                         <Icon name={'mail'}
                         size={28}
-                        onPress={(() => this.props.navigation.navigate("DriverChat"))} /> //split into driverChat/customerchat
+                        onPress={(() => this.navigateToChat(this.state.name, this.state.taxiNumber, this.state.role))} /> //split into driverChat/customerchat
                     }
                     centerComponent={{ text: 'Rodeo Town Taxi', style: { color: '#000', fontFamily: 'arvo-regular', fontSize: 24 } }}
                     containerStyle={{backgroundColor: '#fec33a'}}
