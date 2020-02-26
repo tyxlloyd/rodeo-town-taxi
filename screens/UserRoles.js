@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Alert, Image, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, Alert, Image } from 'react-native';
 import { Container, Content, Header, Form, Input, Item, Button, Label } from 'native-base';
 import * as firebase from 'firebase';
 import * as Permissions from 'expo-permissions';
@@ -28,8 +28,6 @@ class UserRoles extends React.Component {
     }
   }
 
-
-
   constructor(props) {
     super(props)
     this.state = {
@@ -39,8 +37,6 @@ class UserRoles extends React.Component {
     this._getPermissionAsync();
 
   }
-
-
 
   _getPermissionAsync = async () => {
     try {
@@ -59,7 +55,6 @@ class UserRoles extends React.Component {
     }
   }
 
-
   checkIfPermissionGranted(pageToNavigateTo){
     if(this.state.allowLocation == true){
       this.props.navigation.navigate(pageToNavigateTo);
@@ -77,8 +72,8 @@ class UserRoles extends React.Component {
         <Form>
           <View style={styles.imageContainer}>
             <Image
-				style={{ flex: 1, width: Dimensions.get('window').width }}
-              source={require('../assets/mainTitleWithLogo.png')}
+              style={{ width: 310, height: 310 }}
+              source={require('../assets/RTTIconTransparent.png')}
             />
           </View>
 
