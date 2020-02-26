@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Alert, Image } from 'react-native';
+import { StyleSheet, Text, View, Alert, Image, Dimensions } from 'react-native';
 import { Container, Content, Header, Form, Input, Item, Button, Label } from 'native-base';
 import * as firebase from 'firebase';
 import * as Permissions from 'expo-permissions';
@@ -78,14 +78,10 @@ class UserRoles extends React.Component {
       <Container style={styles.container}>
 
         <Form>
-          <View style={styles.titleContainer}>
-            {this.TitlePicker()}
-          </View>
-
           <View style={styles.imageContainer}>
             <Image
-              style={{ width: 310, height: 310 }}
-              source={require('../assets/RTTIconTransparent.png')}
+				style={{ flex: 1, width: Dimensions.get('window').width }}
+              source={require('../assets/mainTitleWithLogo.png')}
             />
           </View>
 
