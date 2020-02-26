@@ -28,40 +28,20 @@ class UserRoles extends React.Component {
     }
   }
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      allowLocation: false,
-    }
-
-    this._getPermissionAsync();
-
-  }
-
-  _getPermissionAsync = async () => {
+  _getPermissionAsync = async (pageToNavigateTo) => {
     try {
         let { status } = await Permissions.askAsync(Permissions.LOCATION);
 
         if (status !== 'granted') {
-            this.setState({ allowLocation: false });
+            Alert.alert("Please enable location access",
+            "We need your location to use the map. Please go into your phone's settings menu to enable location services for Rodeo Town Taxi.");
         }
         else {
-          this.setState({ allowLocation: true });
+          this.props.navigation.navigate(pageToNavigateTo);
         }
     }
-
     catch (e) {
         console.log('_getPermissionAsyncError: ' + e)
-    }
-  }
-
-  checkIfPermissionGranted(pageToNavigateTo){
-    if(this.state.allowLocation == true){
-      this.props.navigation.navigate(pageToNavigateTo);
-    }
-    else {
-      Alert.alert("Please enable location access",
-        "We need your location to use the map. Please go into your phone's settings menu to enable location services for Rodeo Town Taxi.");
     }
   }
 
@@ -82,7 +62,7 @@ class UserRoles extends React.Component {
               full
               rounded
               light
-              onPress={() => this.checkIfPermissionGranted('CLogin')}
+              onPress={() => this._getPermissionAsync('CLogin')}
             >
               <Text adjustsFontSizeToFit
                 numberOfLines={1} style={styles.buttonText}>Customer</Text>
@@ -92,7 +72,7 @@ class UserRoles extends React.Component {
               full
               rounded
               light
-              onPress={() => this.checkIfPermissionGranted('DLogin')}
+              onPress={() => this._getPermissionAsync('DLogin')}
             >
               <Text adjustsFontSizeToFit
                 numberOfLines={1} style={styles.buttonText}>Driver</Text>
