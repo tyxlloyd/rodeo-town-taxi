@@ -70,9 +70,6 @@ class UserRoles extends React.Component {
     }
   }
 
-
-
-
   render() {
     return (
       <Container style={styles.container}>
@@ -90,7 +87,7 @@ class UserRoles extends React.Component {
               full
               rounded
               light
-              onPress={() => this.props.navigation.navigate('CLogin')}
+              onPress={() => this.checkIfPermissionGranted('CLogin')}
             >
               <Text adjustsFontSizeToFit
                 numberOfLines={1} style={styles.buttonText}>Customer</Text>
@@ -100,7 +97,7 @@ class UserRoles extends React.Component {
               full
               rounded
               light
-              onPress={() => this.props.navigation.navigate('DLogin')}
+              onPress={() => this.checkIfPermissionGranted('DLogin')}
             >
               <Text adjustsFontSizeToFit
                 numberOfLines={1} style={styles.buttonText}>Driver</Text>
