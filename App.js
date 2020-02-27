@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import AdminLogin from './screens/AdminLogin';
 import AdminMain from './screens/AdminMain';
-import RemoveAdmin from './screens/RemoveAdmin';
-import AddAdmin from './screens/AddAdmin';
 import About from './screens/About';
 import CustomerLogin from './screens/CustomerLogin';
 import CustomerMain from './screens/CustomerMain';
@@ -46,8 +44,6 @@ const AppSwitchNavigator = createSwitchNavigator({
   DModify: ModifyDriver,
   ALogin: AdminLogin,
   AMain: AdminMain,
-  AddAdmin: AddAdmin,
-  RemoveAdmin: RemoveAdmin,
   AddDriver: AddDriver,
   RemoveDriver: RemoveDriver,
   ForgotPassword: ForgotPassword,
