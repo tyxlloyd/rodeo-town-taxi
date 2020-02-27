@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Alert, StatusBar } from 'react-native';
+import { StyleSheet, Text, View, Alert } from 'react-native';
 import { Container, Content, Header, Form, Input, Item, Button, Label } from 'native-base';
 import * as firebase from 'firebase';
 import * as WebBrowser from 'expo-web-browser';
@@ -21,68 +21,135 @@ class AdminMain extends React.Component {
 
   signOut = () => {
     firebase.auth().signOut();
-    this.props.navigation.navigate('DLogin')
+    this.props.navigation.navigate('URoles')
   }
 
   viewDriverInfo = async () => {
+    const dbh = firebase.firestore();
+
+    dbh.collection("driver-info").get().then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        // doc.data() is never undefined for query doc snapshots
+        console.log(doc.id, " => ", doc.data());
+      });
+    });
+
+    dbh.collection("admin-info").get().then(function (querySnapshot) {
+      querySnapshot.forEach(function (doc) {
+        // doc.data() is never undefined for query doc snapshots
+        console.log(doc.id, " => ", doc.data());
+
+      });
+    });
     WebBrowser.openBrowserAsync('https://console.firebase.google.com/project/rodeo-town-taxi/database/firestore/data~2Fdriver-info');
+  }
+
+  TitlePicker() {
+    //the reason we need this is becasue adjustfontsize only works with ios
+    if (Platform.OS == 'android') {
+      return (
+
+        <Text style={styles.titleLabel}>Welcome Admin</Text>
+
+
+      );
+
+    } else if (Platform.OS == 'ios') {
+
+      return (
+
+        <Text adjustsFontSizeToFit
+          numberOfLines={1} style={styles.titleLabel}>Welcome Admin</Text>
+
+
+      );
+
+    }
   }
 
   render() {
     return (
       <Container style={styles.container}>
-        <StatusBar barStyle="dark-content" />
 
         <Form>
-          <Label style={styles.titleLabel}>Welcome Admin</Label>
+          <View style={styles.titleContainer}>
+            {this.TitlePicker()}
+
+          </View>
 
 
           <Button style={styles.button}
             full
             rounded
-           
+
             onPress={() => this.props.navigation.navigate('AddDriver')}
           >
-            <Text style={styles.buttonText}>Add Driver</Text>
+            <Text adjustsFontSizeToFit
+              numberOfLines={1} style={styles.buttonText}>Add Driver</Text>
           </Button>
 
           <Button style={styles.button}
             full
             rounded
-           
+
             onPress={() => this.props.navigation.navigate('DInfo')}
           >
-            <Text style={styles.buttonText}>Modify Driver</Text>
+            <Text adjustsFontSizeToFit
+              numberOfLines={1} style={styles.buttonText}>Modify Driver</Text>
           </Button>
           <Button style={styles.button}
             full
             rounded
-          
+
             onPress={() => this.props.navigation.navigate('RemoveDriver')}
           >
-            <Text style={styles.buttonText}>Remove Driver</Text>
+            <Text adjustsFontSizeToFit
+              numberOfLines={1} style={styles.buttonText}>Remove Driver</Text>
           </Button>
 
           <Button style={styles.button}
             full
             rounded
-            
+
             onPress={() => this.viewDriverInfo()}
+          //onPress={() => this.props.navigation.navigate('Database')}
+          >
+            <Text adjustsFontSizeToFit
+              numberOfLines={1} style={styles.buttonText}>View Database</Text>
+          </Button>
+
+          <Button style={styles.button}
+            full
+            rounded
+
+
+            onPress={() => this.props.navigation.navigate('AddAdmin')}
 
           >
-            <Text style={styles.buttonText}>View Database</Text>
+            <Text adjustsFontSizeToFit
+              numberOfLines={1} style={styles.buttonText}>Add Admin</Text>
           </Button>
 
+          <Button style={styles.button}
+            full
+            rounded
+
+            onPress={() => this.props.navigation.navigate('RemoveAdmin')}
+          >
+            <Text adjustsFontSizeToFit
+              numberOfLines={1} style={styles.buttonText}>Remove Admin</Text>
+          </Button>
 
 
           <Button style={styles.button}
             full
             rounded
-            
+
             //onPress={() => this.props.navigation.navigate('ALogin')}
             onPress={() => this.signOut()}
           >
-            <Text style={styles.buttonText}>Sign Out</Text>
+            <Text adjustsFontSizeToFit
+              numberOfLines={1} style={styles.buttonText}>Sign Out</Text>
           </Button>
 
         </Form>
@@ -100,16 +167,21 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 15
+    padding: 30
   },
   button: {
-    marginTop: 50,
-    backgroundColor:'#fec33a'
+    marginTop: 28,
+    backgroundColor: '#fec33a'
 
+  },
+  titleContainer: {
+    alignItems: "center",
+    marginBottom: 20,
+    width: "100%"
   },
   buttonText: {
     color: 'black',
-    fontSize: 23
+    fontSize: 30
   },
   titleLabel: {
     fontSize: 40,
@@ -117,10 +189,10 @@ const styles = StyleSheet.create({
 
   },
   label: {
-      color: 'black'
+    color: 'black'
   },
   textInput: {
-      fontSize: 20
+    fontSize: 20
 
   }
 });

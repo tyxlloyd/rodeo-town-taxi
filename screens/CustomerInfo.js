@@ -1,6 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View, Alert, StatusBar } from 'react-native';
-import { Container, Content, Header, Form, Input, Item, Button, Label } from 'native-base';
+import { StyleSheet, Text, View, Alert, KeyboardAvoidingView } from 'react-native';
+import { Container, Content, Header, Form, Input, Item, Button, Label, Icon } from 'native-base';
 
 import * as firebase from 'firebase';
 import '@firebase/firestore';
@@ -41,7 +41,7 @@ class AdminLogin extends React.Component {
         //email made lowercase because .exists is case sensitive
         var lEmail = email.toLowerCase();
 
-        
+
 
         const dbh = firebase.firestore();
         var docName = dbh.collection("customer-info").doc(lEmail);
@@ -60,14 +60,14 @@ class AdminLogin extends React.Component {
 
 
 
-        }.bind(this)).catch(error => alert(error));
+        }.bind(this)).catch(error => alert(error)).then(Alert.alert("Success", "Your account has been updated"));
 
         //if currentEmail != updatedEmail delete old document
         if (lEmail != this.state.currentEmail) {
             console.log(lEmail)
             console.log(this.state.currentEmail)
             dbh.collection("customer-info").doc(this.state.currentEmail).delete().then(function () {
-            //alert("Driver deleted from database")
+                //alert("Driver deleted from database")
 
             }.bind(this)).catch(error => alert(error));
         }
@@ -77,6 +77,7 @@ class AdminLogin extends React.Component {
             currentEmail: lEmail,
             currentPhoneNumber: phoneNumber
         })
+
     }
 
 
@@ -84,19 +85,66 @@ class AdminLogin extends React.Component {
         this.props.navigation.navigate('CMain', { name, lEmail, phoneNumber })
     }
 
+    deleteAccount = (email) => {
+        try {
 
+            //email made lowercase because .exists is case sensitive
+            var lEmail = email.toLowerCase();
+
+            const dbh = firebase.firestore();
+            //var docName = dbh.collection("driver-info").doc(lEmail);
+
+
+            dbh.collection("customer-info").doc(lEmail).delete().then(function () {
+
+
+            }.bind(this)).catch(alert(error));
+
+
+        } catch (error) {
+            console.log(error.toString())
+        }
+        Alert.alert("Success", "Your account has been deleted")
+
+        this.props.navigation.navigate('URoles')
+    }
+
+    TitlePicker() {
+        //the reason we need this is becasue adjustfontsize only works with ios
+        if (Platform.OS == 'android') {
+            return (
+
+                <Text style={styles.titleLabel}>Profile</Text>
+
+
+            );
+
+        } else if (Platform.OS == 'ios') {
+
+            return (
+
+                <Text adjustsFontSizeToFit
+                    numberOfLines={1} style={styles.titleLabel}>Profile</Text>
+
+
+            );
+
+        }
+    }
     render() {
         return (
-            <Container style={styles.container}>
-                <StatusBar barStyle="dark-content" />
+            <KeyboardAvoidingView style={styles.container} behavior="padding">
 
                 <Form>
-                    <Label style={styles.titleLabel}> Customer Information</Label>
+                    <View style={styles.titleContainer}>
+                        {this.TitlePicker()}
+                    </View>
 
-                    <Item >
-                        <Label style={styles.label}> Name </Label>
+                    <Item rounded style={styles.inputBox}>
+                        <Icon active name='contact' />
 
                         <Input
+                            placeholder="Name"
                             style={styles.textInput}
                             autoCorrect={true}
                             autoCapitalize="words"
@@ -111,9 +159,10 @@ class AdminLogin extends React.Component {
                         />
                     </Item>
 
-                    <Item >
-                        <Label style={styles.label}> Email </Label>
+                    <Item rounded style={styles.inputBox}>
+                        <Icon active name='mail' />
                         <Input
+                            placeholder="Email"
                             style={styles.textInput}
                             autoCorrect={true}
                             autoCapitalize="none"
@@ -125,9 +174,10 @@ class AdminLogin extends React.Component {
                         />
                     </Item>
 
-                    <Item >
-                        <Label style={styles.label}> Phone Number </Label>
+                    <Item rounded style={styles.inputBox}>
+                        <Icon active name='call' />
                         <Input
+                            placeholder="Phone Number"
                             style={styles.textInput}
                             autoCorrect={false}
                             autoCapitalize="none"
@@ -145,7 +195,8 @@ class AdminLogin extends React.Component {
 
                         onPress={() => this.updateUserInfo(this.state.updatedName, this.state.updatedEmail, this.state.updatedPhoneNumber)}
                     >
-                        <Text style={styles.buttonText}>Save</Text>
+                        <Text adjustsFontSizeToFit
+                            numberOfLines={1} style={styles.regularButtonText}>Save</Text>
                     </Button>
 
                     <Button style={styles.button}
@@ -155,11 +206,24 @@ class AdminLogin extends React.Component {
                         //onPress={() => this.props.navigation.navigate('CMain')}
                         onPress={() => this.navigateBack(this.state.currentName, this.state.currentEmail, this.state.currentPhoneNumber)}
                     >
-                        <Text style={styles.buttonText}>Back</Text>
+                        <Text adjustsFontSizeToFit
+                            numberOfLines={1} style={styles.regularButtonText}>Back</Text>
                     </Button>
 
+                    <Button
+                        full
+                        rounded
+                        transparent
+                        //onPress={() => this.props.navigation.navigate('CMain')}
+                        onPress={() => this.deleteAccount(this.state.currentEmail)}
+                    >
+                        <Text adjustsFontSizeToFit
+                            numberOfLines={1} style={styles.transparentButtonText}>Delete Account</Text>
+                    </Button>
+
+
                 </Form>
-            </Container>
+            </KeyboardAvoidingView>
         );
 
 
@@ -180,20 +244,31 @@ const styles = StyleSheet.create({
         backgroundColor: '#fec33a'
 
     },
-    buttonText: {
+    regularButtonText: {
         color: 'black',
-        fontSize: 23
+        fontSize: 30
+    },
+    transparentButtonText: {
+        color: 'black',
+        fontSize: 15
+    },
+    titleContainer: {
+        alignItems: "center",
+        marginBottom: 25,
+        width: "100%"
     },
     titleLabel: {
         fontSize: 40,
 
     },
-    textInput: {
-        fontSize: 20
-
-    },
     label: {
         color: 'black'
+    },
+    inputBox: {
+        marginTop: 30,
+        borderColor: 'black',
+        //backgroundColor: '#fff',
+
     },
     textInput: {
         fontSize: 20
