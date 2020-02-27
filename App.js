@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import AdminLogin from './screens/AdminLogin';
 import AdminMain from './screens/AdminMain';
+import RemoveAdmin from './screens/RemoveAdmin';
+import AddAdmin from './screens/AddAdmin';
 import About from './screens/About';
 import CustomerLogin from './screens/CustomerLogin';
 import CustomerMain from './screens/CustomerMain';
@@ -42,6 +44,8 @@ const AppSwitchNavigator = createSwitchNavigator({
   DModify: ModifyDriver,
   ALogin: AdminLogin,
   AMain: AdminMain,
+  AddAdmin: AddAdmin,
+  RemoveAdmin: RemoveAdmin,
   AddDriver: AddDriver,
   RemoveDriver: RemoveDriver,
   ForgotPassword: ForgotPassword,
@@ -54,7 +58,7 @@ const AppSwitchNavigator = createSwitchNavigator({
 const AppNavigator = createAppContainer(AppSwitchNavigator);
 
 export default class App extends React.Component {
-  componentDidMount(){
+  componentDidMount() {
     Font.loadAsync({
       'arvo-regular': require('./assets/fonts/Arvo-Regular.ttf'),
       'arvo-bold': require('./assets/fonts/Arvo-Bold.ttf'),
@@ -75,5 +79,5 @@ export default class App extends React.Component {
 
   render() {
     return <AppNavigator />
-  } 
+  }
 }
