@@ -25,6 +25,8 @@ import '@firebase/firestore';
 import * as Font from 'expo-font';
 import DriverMain from './screens/DriverMain';
 import { BackHandler } from 'react-native'; //For disabling the back button.
+import RemoveAdmin from './screens/RemoveAdmin';
+import AddAdmin from './screens/AddAdmin';
 
 // Initialize Firebase
 if (!firebase.apps.length) {
@@ -57,7 +59,7 @@ const AppSwitchNavigator = createSwitchNavigator({
 const AppNavigator = createAppContainer(AppSwitchNavigator);
 
 export default class App extends React.Component {
-  componentDidMount(){
+  componentDidMount() {
     Font.loadAsync({
       'arvo-regular': require('./assets/fonts/Arvo-Regular.ttf'),
       'arvo-bold': require('./assets/fonts/Arvo-Bold.ttf'),
@@ -78,5 +80,5 @@ export default class App extends React.Component {
 
   render() {
     return <AppNavigator />
-  } 
+  }
 }
