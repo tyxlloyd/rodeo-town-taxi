@@ -15,10 +15,11 @@ import DriverInfo from './screens/DriverInfo';
 import ModifyDriver from './screens/ModifyDriver';
 import ForgotPassword from './screens/ForgotPassword';
 import CustomerLoginAsGuest from './screens/CustomerLoginAsGuest';
+import AddAdmin from './screens/AddAdmin';
+import RemoveAdmin from './screens/RemoveAdmin';
 import ApiKeys from './shared/ApiKeys';
 import { GlobalMap } from './shared/globalMap';
 import { createSwitchNavigator, createAppContainer } from 'react-navigation';
-import { createDrawerNavigator } from 'react-navigation-drawer';
 import * as firebase from 'firebase';
 import '@firebase/firestore';
 import * as Font from 'expo-font';
@@ -49,6 +50,8 @@ const AppSwitchNavigator = createSwitchNavigator({
   CustomerChat: CustomerChat,
   About: About,
   GlobalMap: GlobalMap,
+  AddAdmin: AddAdmin,
+  RemoveAdmin: RemoveAdmin,
 });
 
 const AppNavigator = createAppContainer(AppSwitchNavigator);

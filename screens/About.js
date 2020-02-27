@@ -22,7 +22,7 @@ class About extends React.Component {
           leftComponent={
             <Icon name={'arrowleft'}
             size={28}
-              onPress={(() => this.props.navigation.navigate("CustomerMap"))}/>
+              onPress={(() => this.props.navigation.navigate("GlobalMap"))}/>
           }
           rightComponent={
             <Icon name={'logout'}
@@ -44,7 +44,7 @@ class About extends React.Component {
         <Text></Text>
         <Text style={{ textAlign: 'center', fontWeight: 'bold', textDecorationLine: 'underline' }}>SAFETY</Text>
         <Text style={{ textAlign: 'center' }}>Our drivers have passed background checks and fingerprinting.</Text>
-        <Text style={{ textAlign: 'center' }}>They are training is CPR/First aid, driving defense courses, blood borne pathogens and safety seat training.</Text>
+        <Text style={{ textAlign: 'center' }}>They are trained in CPR/First aid, driving defense courses, blood borne pathogens and safety seat training.</Text>
         <Text></Text>
         <Text style={{ textAlign: 'center', fontWeight: 'bold', textDecorationLine: 'underline' }}>HOURS OF OPERATION</Text>
         <Text style={{ textAlign: 'center' }}>We operate 24 hours a day and 7 days a week!</Text>

@@ -44,6 +44,7 @@ export class GlobalMap extends React.Component {
     }
 
     componentDidMount() {
+        this.mounted = true;
         this.watchID = navigator.geolocation.watchPosition((position) => {
             var lat = parseFloat(position.coords.latitude)
             var long = parseFloat(position.coords.longitude)
@@ -105,7 +106,7 @@ export class GlobalMap extends React.Component {
             if(this.state.failedToConnect == false){
                 Alert.alert('Failed to connect to server', 'Please call Rodeo Town Taxi to hail a taxi');
                 this.setState({ failedToConnect: true });
-                this.props.navigation.navigate('URoles');
+                this.props.navigation.navigate('About');
             }
         });
 
@@ -152,7 +153,6 @@ export class GlobalMap extends React.Component {
         this.socket.on('recieve customer location', message => {
             this.setState({locationOfOtherUser: message});
             this.setState({destination: message});
-            this.setState({locationOfOtherUser: message});
         }),
 
         this.socket.on('cancel ride', message => {
@@ -171,7 +171,7 @@ export class GlobalMap extends React.Component {
             if(this.state.failedToConnect == false){
                 Alert.alert('Failed to connect to server', 'Please call Rodeo Town Taxi to hail a taxi');
                 this.setState({ failedToConnect: true });
-                this.props.navigation.navigate('URoles');
+                this.props.navigation.navigate('About');
             }
         });
 
@@ -220,8 +220,8 @@ export class GlobalMap extends React.Component {
         }),
 
         this.socket.on('cancel ride', message => {
+            Alert.alert(message);
             if(this.mounted){
-                Alert.alert(message);
                 this.setState({ destination: this.state.region });
                 this.setState({ markerVisibility: 0.0 });
                 this.setState({ driverID: null });
@@ -341,7 +341,7 @@ export class GlobalMap extends React.Component {
                     style={styles.mapStyle}
                     provider={PROVIDER_GOOGLE}
                     region={this.state.region}
-                    rotateEnabled={false}
+                    rotateEnabled={true}
                     showsUserLocation={true}
                     loadingEnabled={true}
                 >
