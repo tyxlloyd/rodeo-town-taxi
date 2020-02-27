@@ -24,6 +24,8 @@ import '@firebase/firestore';
 import * as Font from 'expo-font';
 import DriverMain from './screens/DriverMain';
 import { BackHandler } from 'react-native'; //For disabling the back button.
+import RemoveAdmin from './screens/RemoveAdmin';
+import AddAdmin from './screens/AddAdmin';
 
 // Initialize Firebase
 if (!firebase.apps.length) {
@@ -49,6 +51,8 @@ const AppSwitchNavigator = createSwitchNavigator({
   CustomerChat: CustomerChat,
   About: About,
   GlobalMap: GlobalMap,
+  AddAdmin: AddAdmin,
+  RemoveAdmin: RemoveAdmin,
 });
 
 const AppNavigator = createAppContainer(AppSwitchNavigator);
