@@ -15,8 +15,6 @@ import DriverInfo from './screens/DriverInfo';
 import ModifyDriver from './screens/ModifyDriver';
 import ForgotPassword from './screens/ForgotPassword';
 import CustomerLoginAsGuest from './screens/CustomerLoginAsGuest';
-import AddAdmin from './screens/AddAdmin';
-import RemoveAdmin from './screens/RemoveAdmin';
 import ApiKeys from './shared/ApiKeys';
 import { GlobalMap } from './shared/globalMap';
 import { createSwitchNavigator, createAppContainer } from 'react-navigation';
