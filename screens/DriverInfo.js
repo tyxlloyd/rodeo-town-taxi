@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Alert, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, Text, View, Alert, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, StatusBar } from 'react-native';
 import { Container, Content, Header, Form, Input, Item, Button, Label, Icon } from 'native-base';
 
 import * as firebase from 'firebase';
@@ -173,71 +173,74 @@ class DriverInfo extends React.Component {
 
   render() {
     return (
-      <KeyboardAvoidingView style={styles.container} behavior="padding">
+      <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
+        <KeyboardAvoidingView style={styles.container} behavior="padding">
+          <StatusBar barStyle="dark-content" />
 
-        <Form>
-          <View style={styles.titleContainer}>
-            {this.TitlePicker()}
-          </View>
+          <Form>
+            <View style={styles.titleContainer}>
+              {this.TitlePicker()}
+            </View>
 
-          <Item rounded error={this.state.nameError ? true : false} style={styles.inputBox}>
-            <Icon active name='contact' />
-            <Input
-              placeholder="Name"
-              style={styles.textInput}
-              autoCorrect={false}
-              autoCapitalize="words"
-              autoCompleteType="name"
-              onChangeText={(name) => this.setState({ name })}
-            />
-          </Item>
+            <Item rounded error={this.state.nameError ? true : false} style={styles.inputBox}>
+              <Icon active name='contact' />
+              <Input
+                placeholder="Name"
+                style={styles.textInput}
+                autoCorrect={false}
+                autoCapitalize="words"
+                autoCompleteType="name"
+                onChangeText={(name) => this.setState({ name })}
+              />
+            </Item>
 
-          <Item rounded error={this.state.emailError ? true : false} style={styles.inputBox}>
-            <Icon active name='mail' />
-            <Input
-              placeholder="Email"
-              style={styles.textInput}
-              autoCorrect={false}
-              autoCapitalize="none"
-              autoCompleteType="email"
-              onChangeText={(email) => this.setState({ email })}
-            />
-          </Item>
+            <Item rounded error={this.state.emailError ? true : false} style={styles.inputBox}>
+              <Icon active name='mail' />
+              <Input
+                placeholder="Email"
+                style={styles.textInput}
+                autoCorrect={false}
+                autoCapitalize="none"
+                autoCompleteType="email"
+                onChangeText={(email) => this.setState({ email })}
+              />
+            </Item>
 
-          <Item rounded error={this.state.phoneNumberError ? true : false} style={styles.inputBox}>
-            <Icon active name='call' />
-            <Input
-              placeholder="Phone Number"
-              style={styles.textInput}
-              autoCorrect={false}
-              autoCapitalize="none"
-              autoCompleteType="tel"
-              onChangeText={(phoneNumber) => this.setState({ phoneNumber })}
-            />
-          </Item>
+            <Item rounded error={this.state.phoneNumberError ? true : false} style={styles.inputBox}>
+              <Icon active name='call' />
+              <Input
+                placeholder="Phone Number"
+                style={styles.textInput}
+                autoCorrect={false}
+                autoCapitalize="none"
+                autoCompleteType="tel"
+                onChangeText={(phoneNumber) => this.setState({ phoneNumber })}
+              />
+            </Item>
 
-          <Button style={styles.button}
-            full
-            rounded
+            <Button style={styles.button}
+              full
+              rounded
 
-            onPress={() => this.navigateToProfile(this.state.name, this.state.email, this.state.phoneNumber)}
-          >
-            <Text adjustsFontSizeToFit
-              numberOfLines={1} style={styles.regularButtonText}>Continue</Text>
-          </Button>
+              onPress={() => this.navigateToProfile(this.state.name, this.state.email, this.state.phoneNumber)}
+            >
+              <Text adjustsFontSizeToFit
+                numberOfLines={1} style={styles.regularButtonText}>Continue</Text>
+            </Button>
 
-          <Button style={styles.button}
-            full
-            rounded
+            <Button style={styles.button}
+              full
+              rounded
 
-            onPress={() => this.props.navigation.navigate('AMain')}
-          >
-            <Text adjustsFontSizeToFit
-              numberOfLines={1} style={styles.regularButtonText}>Back</Text>
-          </Button>
+              onPress={() => this.props.navigation.navigate('AMain')}
+            >
+              <Text adjustsFontSizeToFit
+                numberOfLines={1} style={styles.regularButtonText}>Back</Text>
+            </Button>
 
-        </Form>
-      </KeyboardAvoidingView>
+          </Form>
+        </KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
     );
 
 

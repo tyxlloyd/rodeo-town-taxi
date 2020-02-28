@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Alert, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, Text, View, Alert, TouchableOpacity, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, StatusBar } from 'react-native';
 import { Container, Content, Header, Form, Input, Item, Button, Label, Icon } from 'native-base';
 
 import * as firebase from 'firebase';
@@ -238,80 +238,83 @@ class AddAdmin extends React.Component {
 
     render() {
         return (
-            <KeyboardAvoidingView style={styles.container} behavior="padding">
+            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
+                <KeyboardAvoidingView style={styles.container} behavior="padding">
+                    <StatusBar barStyle="dark-content" />
 
-                <Form>
-                    <View style={styles.titleContainer}>
-                        {this.TitlePicker()}
-                    </View>
+                    <Form>
+                        <View style={styles.titleContainer}>
+                            {this.TitlePicker()}
+                        </View>
 
-                    <Item rounded error={this.state.nameError ? true : false} style={styles.inputBox}>
-                        <Icon active name='contact' />
+                        <Item rounded error={this.state.nameError ? true : false} style={styles.inputBox}>
+                            <Icon active name='contact' />
 
-                        <Input
-                            placeholder="Name"
-                            style={styles.textInput}
-                            autoCorrect={true}
-                            autoCapitalize="words"
-                            onChangeText={(name) => this.setState({ name })}
-                        />
-                    </Item>
+                            <Input
+                                placeholder="Name"
+                                style={styles.textInput}
+                                autoCorrect={true}
+                                autoCapitalize="words"
+                                onChangeText={(name) => this.setState({ name })}
+                            />
+                        </Item>
 
-                    <Item rounded error={this.state.emailError ? true : false} style={styles.inputBox}>
-                        <Icon active name='mail' />
-                        <Input
-                            placeholder="Email"
-                            style={styles.textInput}
-                            autoCorrect={false}
-                            autoCapitalize="none"
-                            onChangeText={(email) => this.setState({ email })}
-                        />
-                    </Item>
-
-
-                    <Item rounded error={this.state.passwordError ? true : false} style={styles.inputBox}>
-                        <Icon active name='lock' />
-                        <Input
-                            placeholder="Password"
-                            style={styles.textInput}
-                            secureTextEntry={this.state.showPass}
-                            autoCorrect={false}
-                            autoCapitalize="none"
-                            autoCompleteType="password"
-                            onChangeText={(password) => this.setState({ password })}
-                        />
-
-                        <TouchableOpacity
-                            onPress={() => this.showPass()}>
-                            <Icon active name={this.state.press == false ? 'eye' : 'eye-off'} />
-                        </TouchableOpacity>
-
-                    </Item>
-
-                    <Button style={styles.button}
-                        full
-                        rounded
+                        <Item rounded error={this.state.emailError ? true : false} style={styles.inputBox}>
+                            <Icon active name='mail' />
+                            <Input
+                                placeholder="Email"
+                                style={styles.textInput}
+                                autoCorrect={false}
+                                autoCapitalize="none"
+                                onChangeText={(email) => this.setState({ email })}
+                            />
+                        </Item>
 
 
-                        onPress={() => this.signUpUser(this.state.name, this.state.email, this.state.password)}
-                    >
-                        <Text adjustsFontSizeToFit
-                            numberOfLines={1} style={styles.regularButtonText}>Add</Text>
-                    </Button>
+                        <Item rounded error={this.state.passwordError ? true : false} style={styles.inputBox}>
+                            <Icon active name='lock' />
+                            <Input
+                                placeholder="Password"
+                                style={styles.textInput}
+                                secureTextEntry={this.state.showPass}
+                                autoCorrect={false}
+                                autoCapitalize="none"
+                                autoCompleteType="password"
+                                onChangeText={(password) => this.setState({ password })}
+                            />
 
-                    <Button style={styles.button}
-                        full
-                        rounded
-                        transparent
+                            <TouchableOpacity
+                                onPress={() => this.showPass()}>
+                                <Icon active name={this.state.press == false ? 'eye' : 'eye-off'} />
+                            </TouchableOpacity>
 
-                        onPress={() => this.props.navigation.navigate('AMain')}
-                    >
-                        <Text adjustsFontSizeToFit
-                            numberOfLines={1} style={styles.regularButtonText}>Done</Text>
-                    </Button>
+                        </Item>
 
-                </Form>
-            </KeyboardAvoidingView >
+                        <Button style={styles.button}
+                            full
+                            rounded
+
+
+                            onPress={() => this.signUpUser(this.state.name, this.state.email, this.state.password)}
+                        >
+                            <Text adjustsFontSizeToFit
+                                numberOfLines={1} style={styles.regularButtonText}>Add</Text>
+                        </Button>
+
+                        <Button style={styles.button}
+                            full
+                            rounded
+                            transparent
+
+                            onPress={() => this.props.navigation.navigate('AMain')}
+                        >
+                            <Text adjustsFontSizeToFit
+                                numberOfLines={1} style={styles.regularButtonText}>Done</Text>
+                        </Button>
+
+                    </Form>
+                </KeyboardAvoidingView >
+            </TouchableWithoutFeedback>
         );
 
 

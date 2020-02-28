@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Linking, Platform, View, Dimensions, ScrollView} from 'react-native';
+import { StyleSheet, Linking, Platform, View, Dimensions, ScrollView, StatusBar } from 'react-native';
 import { Header, Button, Text, Image } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/AntDesign';
 
@@ -18,6 +18,7 @@ class About extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+        <StatusBar barStyle="dark-content" />
         <Header
           leftComponent={
             <Icon name={'arrowleft'}

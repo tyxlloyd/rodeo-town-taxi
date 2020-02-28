@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Alert, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, Text, View, Alert, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, StatusBar } from 'react-native';
 import { Container, Content, Header, Form, Input, Item, Button, Label, Icon } from 'native-base';
 
 import * as firebase from 'firebase';
@@ -101,71 +101,74 @@ class ModifyDriver extends React.Component {
 
     render() {
         return (
-            <KeyboardAvoidingView style={styles.container} behavior="padding">
+            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
+                <KeyboardAvoidingView style={styles.container} behavior="padding">
+                    <StatusBar barStyle="dark-content" />
 
-                <Form>
-                    <View style={styles.titleContainer}>
-                        {this.TitlePicker()}
-                    </View>
+                    <Form>
+                        <View style={styles.titleContainer}>
+                            {this.TitlePicker()}
+                        </View>
 
-                    <Item rounded style={styles.inputBox}>
-                        <Icon active name='contact' />
+                        <Item rounded style={styles.inputBox}>
+                            <Icon active name='contact' />
 
-                        <Input
-                            placeholder="Name"
-                            style={styles.textInput}
-                            autoCorrect={true}
-                            autoCapitalize="words"
-                            autoCompleteType="name"
-                            //placeholder={this.state.name}
-                            //placeholderTextColor="black"
-                            defaultValue={this.state.currentName}
-                            //onChangeText={(name) => this.setState({ name })}
-                            onChangeText={(updatedName) => this.setState({ updatedName })}
-
-
-                        />
-                    </Item>
+                            <Input
+                                placeholder="Name"
+                                style={styles.textInput}
+                                autoCorrect={true}
+                                autoCapitalize="words"
+                                autoCompleteType="name"
+                                //placeholder={this.state.name}
+                                //placeholderTextColor="black"
+                                defaultValue={this.state.currentName}
+                                //onChangeText={(name) => this.setState({ name })}
+                                onChangeText={(updatedName) => this.setState({ updatedName })}
 
 
-                    <Item rounded style={styles.inputBox}>
-                        <Icon active name='call' />
-                        <Input
-                            placeholder="Phone Number"
-                            style={styles.textInput}
-                            autoCorrect={false}
-                            autoCapitalize="none"
-                            autoCompleteType="tel"
-                            defaultValue={this.state.currentPhoneNumber}
-                            //onChangeText={(phoneNumber) => this.setState({ phoneNumber })}
-                            onChangeText={(updatedPhoneNumber) => this.setState({ updatedPhoneNumber })}
+                            />
+                        </Item>
 
-                        />
-                    </Item>
 
-                    <Button style={styles.button}
-                        full
-                        rounded
+                        <Item rounded style={styles.inputBox}>
+                            <Icon active name='call' />
+                            <Input
+                                placeholder="Phone Number"
+                                style={styles.textInput}
+                                autoCorrect={false}
+                                autoCapitalize="none"
+                                autoCompleteType="tel"
+                                defaultValue={this.state.currentPhoneNumber}
+                                //onChangeText={(phoneNumber) => this.setState({ phoneNumber })}
+                                onChangeText={(updatedPhoneNumber) => this.setState({ updatedPhoneNumber })}
 
-                        onPress={() => this.updateUserInfo(this.state.updatedName, this.state.currentEmail, this.state.updatedPhoneNumber)}
-                    >
-                        <Text adjustsFontSizeToFit
-                            numberOfLines={1} style={styles.regularButtonText}>Update</Text>
-                    </Button>
+                            />
+                        </Item>
 
-                    <Button style={styles.button}
-                        full
-                        rounded
+                        <Button style={styles.button}
+                            full
+                            rounded
 
-                        onPress={() => this.props.navigation.navigate('AMain')}
-                    //onPress={() => this.navigateBack(this.state.currentName, this.state.currentEmail, this.state.currentPhoneNumber)}
-                    >
-                        <Text adjustsFontSizeToFit
-                            numberOfLines={1} style={styles.regularButtonText}>Done</Text>
-                    </Button>
+                            onPress={() => this.updateUserInfo(this.state.updatedName, this.state.currentEmail, this.state.updatedPhoneNumber)}
+                        >
+                            <Text adjustsFontSizeToFit
+                                numberOfLines={1} style={styles.regularButtonText}>Update</Text>
+                        </Button>
 
-                </Form>
-            </KeyboardAvoidingView>
+                        <Button style={styles.button}
+                            full
+                            rounded
+
+                            onPress={() => this.props.navigation.navigate('AMain')}
+                        //onPress={() => this.navigateBack(this.state.currentName, this.state.currentEmail, this.state.currentPhoneNumber)}
+                        >
+                            <Text adjustsFontSizeToFit
+                                numberOfLines={1} style={styles.regularButtonText}>Done</Text>
+                        </Button>
+
+                    </Form>
+                </KeyboardAvoidingView>
+            </TouchableWithoutFeedback>
         );
 
 

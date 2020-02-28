@@ -22,12 +22,18 @@ export class GlobalMap extends React.Component {
             role: this.props.navigation.getParam('role'),
             destination: null,
             region: {
-                latitude: 0,
-                longitude: 0,
-                latitudeDelta: 0,
-                longitudeDelta: 0
+                latitude: 47.0085,
+                longitude: -120.5291,
+                latitudeDelta: 0.045,
+                longitudeDelta: 0.045,
             },
             locationOfOtherUser: {
+                latitude: 47.0085,
+                longitude: -120.5291,
+                latitudeDelta: 0.045,
+                longitudeDelta: 0.045,
+            },
+            mapArea: {
                 latitude: 47.0085,
                 longitude: -120.5291,
                 latitudeDelta: 0.045,
@@ -40,6 +46,7 @@ export class GlobalMap extends React.Component {
             requestSent: false,
             buttonTitle: " ",
             failedToConnect: false,
+            queueSize: 0,
         }
     }
 
@@ -59,12 +66,13 @@ export class GlobalMap extends React.Component {
             this.setState({region: lastRegion});
 
             if(this.state.role == 'driver'){
+                this.setState({ mapArea: lastRegion })
                 if(this.state.customerID != null){
                     var response = {
                         customerID: this.state.customerID,
                         driverLocation: this.state.region,
                     }
-                    this.socket.emit('recieve driver location', response);
+                    this.socket.emit('receive driver location', response);
                 }
             }
             else{
@@ -73,7 +81,10 @@ export class GlobalMap extends React.Component {
                         driverID: this.state.driverID,
                         customerLocation: this.state.region,
                     }
-                    this.socket.emit('recieve customer location', response);
+                    this.socket.emit('receive customer location', response);
+                }
+                else{
+                    this.setState({mapArea: lastRegion});
                 }
             }
         }, (error) => { Alert.alert(error.message) },
@@ -104,7 +115,7 @@ export class GlobalMap extends React.Component {
     driverSocketListener(){
         this.socket.on('connect_error', () => {
             if(this.state.failedToConnect == false){
-                Alert.alert('Failed to connect to server', 'Please call Rodeo Town Taxi to hail a taxi');
+                Alert.alert('Failed to connect to server', 'Please call Rodeo Town Taxi to hail a cab');
                 this.setState({ failedToConnect: true });
                 this.props.navigation.navigate('About');
             }
@@ -129,39 +140,29 @@ export class GlobalMap extends React.Component {
             this.setState({markerVisibility: 1.0});
         }),
 
-        
+        this.socket.on('queue size', message => {
+            this.setState({ queueSize: message });
+            if(this.state.customerID == null && this.mounted){
+                this.setState({ buttonTitle: "Request A Customer\nCustomers In Line: " + this.state.queueSize })
+            }
+        }),
+
         this.socket.on('empty queue', message => {
             Alert.alert("Error", message);
         }),
 
-        this.socket.on('request driver location', message => {
-            var response = {
-                customerID: message,
-                driverLocation: this.state.region,
-            }
-            this.socket.emit('recieve driver location', response);
-        }),
-
-        this.socket.on('request customer location', message => {
-            var response = {
-                driverID: message.driverID,
-                customerLocation: this.state.region,
-            }
-            this.socket.emit('recieve customer location', response);
-        }),
-
-        this.socket.on('recieve customer location', message => {
+        this.socket.on('receive customer location', message => {
             this.setState({locationOfOtherUser: message});
             this.setState({destination: message});
         }),
 
         this.socket.on('cancel ride', message => {
-            Alert.alert(message);
+            Alert.alert(message, "Your customer has cancelled their ride request.");
             if(this.mounted){
-                this.setState({ destination: this.state.region });
+                this.setState({ destination: null });
                 this.setState({ markerVisibility: 0.0 });
                 this.setState({ customerID: null });
-                this.setState({ buttonTitle: "Request A Customer" });
+                this.setState({ buttonTitle: "Request A Customer\nCustomers In Line: " + this.state.queueSize });
             }
         })
     }
@@ -169,7 +170,7 @@ export class GlobalMap extends React.Component {
     customerSocketListener(){
         this.socket.on('connect_error', () => {
             if(this.state.failedToConnect == false){
-                Alert.alert('Failed to connect to server', 'Please call Rodeo Town Taxi to hail a taxi');
+                Alert.alert('Failed to connect to server', 'Please call Rodeo Town Taxi to hail a cab');
                 this.setState({ failedToConnect: true });
                 this.props.navigation.navigate('About');
             }
@@ -195,37 +196,31 @@ export class GlobalMap extends React.Component {
         }),
 
         this.socket.on('queue size', message => {
-            customers = message;
-            Alert.alert("Customers in queue: " + customers);
-        }),
-
-        this.socket.on('request driver location', message => {
-            var response = {
-                customerID: message,
-                driverLocation: this.state.region,
+            this.setState({ queueSize: message });
+            if(this.state.driverID == null && this.mounted){
+                if(this.state.requestSent){
+                    this.setState({ buttonTitle: "Finding A Driver...\nCustomers In Line: " + this.state.queueSize })
+                }
+                else{
+                    this.setState({ buttonTitle: "Hail A Cab\nCustomers In Line: " + this.state.queueSize });
+                }  
             }
-            this.socket.emit('recieve driver location', response);
         }),
 
-        this.socket.on('request customer location', message => {
-            var response = {
-                driverID: message.driverID,
-                customerLocation: this.state.region,
-            }
-            this.socket.emit('recieve customer location', response);
-        }),
-
-        this.socket.on('recieve driver location', message => {
+        this.socket.on('receive driver location', message => {
             this.setState({ locationOfOtherUser: message });
+            //this.setState({ destination: message });
+            this.setState({ mapArea: message });
         }),
 
         this.socket.on('cancel ride', message => {
-            Alert.alert(message);
+            Alert.alert(message, "Your driver has cancelled your ride request.");
             if(this.mounted){
-                this.setState({ destination: this.state.region });
+                //this.setState({ destination: null });
                 this.setState({ markerVisibility: 0.0 });
                 this.setState({ driverID: null });
-                this.setState({ buttonTitle: "Hail A Cab" });
+                this.setState({ mapArea: this.state.region });
+                this.setState({ buttonTitle: "Hail A Cab\nCustomers In Line: " + this.state.queueSize});
                 this.setState({ requestSent: false });
             }
         })
@@ -278,15 +273,16 @@ export class GlobalMap extends React.Component {
         this.socket.emit('ride request', request);
         Alert.alert("Your request has been sent!",
             "Please do not turn off your phone or close the app or you will lose your spot in line." );
-        this.setState({ buttonTitle: "Finding a driver..." });
+        //this.setState({ buttonTitle: "Finding a driver..." });
         this.setState({ requestSent: true });
     }
 
     cancelCustomerRequest(){
         this.socket.emit('cancel ride request', this.state.customerID);
         this.setState({ customerID: null });
-        this.setState({ destination: this.state.region });
-        this.setState({ buttonTitle: "Request A Customer" });
+        //this.setState({ destination: null });
+        this.setState({ mapArea: this.state.region })
+        this.setState({ buttonTitle: "Request A Customer\nCustomers In Line: " + this.state.queueSize });
         this.setState({ markerVisibility: 0.0 });
         Alert.alert("You have cancelled your ride request");
     }
@@ -294,14 +290,14 @@ export class GlobalMap extends React.Component {
     cancelRideRequest(){
         if(this.state.driverID == null){
             Alert.alert("Please be patient", 
-                "Your request will be processed in the order it was recieved. Please do not turn off your phone or close the app. You will lose your spot in line if you do.");
+                "Your request will be processed in the order it was received. Please do not turn off your phone or close the app. You will lose your spot in line if you do.");
         }
         else{
             this.socket.emit('cancel ride request', this.state.driverID);
             this.setState({ driverID: null });
             this.setState({ markerVisibility: 0.0 });
             this.setState({ driverAcceptedRequest: false });
-            this.setState({ buttonTitle: "Hail A Cab" });
+            this.setState({ buttonTitle: "Hail A Cab\nCustomers In Line: " + this.state.queueSize });
             this.setState({ requestSent: false });
             Alert.alert("You have cancelled your ride request!");
         }
@@ -340,7 +336,7 @@ export class GlobalMap extends React.Component {
                 <MapView
                     style={styles.mapStyle}
                     provider={PROVIDER_GOOGLE}
-                    region={this.state.region}
+                    region={this.state.mapArea}
                     rotateEnabled={true}
                     showsUserLocation={true}
                     loadingEnabled={true}

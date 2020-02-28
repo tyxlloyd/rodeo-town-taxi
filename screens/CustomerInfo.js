@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Alert, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, Text, View, Alert, KeyboardAvoidingView, StatusBar } from 'react-native';
 import { Container, Content, Header, Form, Input, Item, Button, Label, Icon } from 'native-base';
 
 import * as firebase from 'firebase';
@@ -134,6 +134,7 @@ class AdminLogin extends React.Component {
     render() {
         return (
             <KeyboardAvoidingView style={styles.container} behavior="padding">
+                <StatusBar barStyle="dark-content" />
 
                 <Form>
                     <View style={styles.titleContainer}>

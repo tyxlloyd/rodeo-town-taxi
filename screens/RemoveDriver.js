@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Alert, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, Text, View, Alert, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, StatusBar } from 'react-native';
 import { Container, Content, Header, Form, Input, Item, Button, Label, Icon } from 'native-base';
 import * as WebBrowser from 'expo-web-browser';
 import Constants from 'expo-constants';
@@ -172,56 +172,59 @@ class RemoveDriver extends React.Component {
 
     render() {
         return (
-            <KeyboardAvoidingView style={styles.container} behavior="padding">
+            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
+                <KeyboardAvoidingView style={styles.container} behavior="padding">
+                    <StatusBar barStyle="dark-content" />
 
-                <Form>
-                    <View style={styles.titleContainer}>
-                        {this.TitlePicker()}
-                    </View>
+                    <Form>
+                        <View style={styles.titleContainer}>
+                            {this.TitlePicker()}
+                        </View>
 
-                    <Item rounded error={this.state.nameError ? true : false} style={styles.inputBox}>
-                        <Icon active name='contact' />
-                        <Input
-                            placeholder="Name"
-                            style={styles.textInput}
-                            autoCorrect={true}
-                            autoCapitalize="words"
-                            onChangeText={(name) => this.setState({ name })}
-                        />
-                    </Item>
+                        <Item rounded error={this.state.nameError ? true : false} style={styles.inputBox}>
+                            <Icon active name='contact' />
+                            <Input
+                                placeholder="Name"
+                                style={styles.textInput}
+                                autoCorrect={true}
+                                autoCapitalize="words"
+                                onChangeText={(name) => this.setState({ name })}
+                            />
+                        </Item>
 
-                    <Item rounded error={this.state.emailError ? true : false} style={styles.inputBox}>
-                        <Icon active name='mail' />
-                        <Input
-                            placeholder="Email"
-                            style={styles.textInput}
-                            autoCorrect={false}
-                            autoCapitalize="none"
-                            onChangeText={(email) => this.setState({ email })}
-                        />
-                    </Item>
+                        <Item rounded error={this.state.emailError ? true : false} style={styles.inputBox}>
+                            <Icon active name='mail' />
+                            <Input
+                                placeholder="Email"
+                                style={styles.textInput}
+                                autoCorrect={false}
+                                autoCapitalize="none"
+                                onChangeText={(email) => this.setState({ email })}
+                            />
+                        </Item>
 
-                    <Button style={styles.button}
-                        full
-                        rounded
-                        onPress={() => this.removeDriver(this.state.name, this.state.email)}
-                    >
-                        <Text adjustsFontSizeToFit
-                            numberOfLines={1} style={styles.regularButtonText}>Remove</Text>
-                    </Button>
+                        <Button style={styles.button}
+                            full
+                            rounded
+                            onPress={() => this.removeDriver(this.state.name, this.state.email)}
+                        >
+                            <Text adjustsFontSizeToFit
+                                numberOfLines={1} style={styles.regularButtonText}>Remove</Text>
+                        </Button>
 
-                    <Button style={styles.button}
-                        full
-                        rounded
+                        <Button style={styles.button}
+                            full
+                            rounded
 
-                        onPress={() => this.props.navigation.navigate('AMain')}
-                    >
-                        <Text adjustsFontSizeToFit
-                            numberOfLines={1} style={styles.regularButtonText}>Done</Text>
-                    </Button>
+                            onPress={() => this.props.navigation.navigate('AMain')}
+                        >
+                            <Text adjustsFontSizeToFit
+                                numberOfLines={1} style={styles.regularButtonText}>Done</Text>
+                        </Button>
 
-                </Form>
-            </KeyboardAvoidingView>
+                    </Form>
+                </KeyboardAvoidingView>
+            </TouchableWithoutFeedback>
         );
 
 

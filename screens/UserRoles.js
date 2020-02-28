@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Alert, Image } from 'react-native';
+import { StyleSheet, Text, View, Alert, Image, StatusBar } from 'react-native';
 import { Container, Content, Header, Form, Input, Item, Button, Label } from 'native-base';
 import * as firebase from 'firebase';
 import * as Permissions from 'expo-permissions';
@@ -48,7 +48,7 @@ class UserRoles extends React.Component {
   render() {
     return (
       <Container style={styles.container}>
-
+        <StatusBar barStyle="dark-content" />
         <Form>
           <View style={styles.imageContainer}>
             <Image

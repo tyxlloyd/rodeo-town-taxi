@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Alert, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, Text, View, Alert, TouchableOpacity, KeyboardAvoidingView, StatusBar, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { Container, Content, Header, Form, Input, Item, Button, Label, Icon } from 'native-base';
 import Spinner from 'react-native-loading-spinner-overlay';
 import * as firebase from 'firebase';
@@ -214,7 +214,7 @@ class DriverLogin extends React.Component {
       return (
 
         <Text adjustsFontSizeToFit
-          numberOfLines={1} style={styles.titleLabel}>Driver Driver</Text>
+          numberOfLines={1} style={styles.titleLabel}>Driver Login</Text>
 
 
       );
@@ -224,98 +224,101 @@ class DriverLogin extends React.Component {
 
   render() {
     return (
-      <KeyboardAvoidingView style={styles.container} behavior="padding">
+      <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
+        <KeyboardAvoidingView style={styles.container} behavior="padding">
+          <StatusBar barStyle="dark-content" />
 
-        <Form>
-          <Spinner
-            //visibility of Overlay Loading Spinner
-            visible={this.state.loading}
-            //Text with the Spinner
-            //textContent={'Loading...'}
-            //Text style of the Spinner Text
-            textStyle={styles.spinnerTextStyle}
-          />
-          <View style={styles.titleContainer}>
-            {this.TitlePicker()}
-          </View>
-
-          <Item rounded error={this.state.emailError ? true : false} style={styles.inputBox}>
-            <Icon active name='mail' />
-
-            <Input
-              placeholder="Email"
-              style={styles.textInput}
-              autoCorrect={false}
-              autoCapitalize="none"
-              autoCompleteType="email"
-              onChangeText={(email) => this.setState({ email })}
+          <Form>
+            <Spinner
+              //visibility of Overlay Loading Spinner
+              visible={this.state.loading}
+              //Text with the Spinner
+              //textContent={'Loading...'}
+              //Text style of the Spinner Text
+              textStyle={styles.spinnerTextStyle}
             />
-          </Item>
+            <View style={styles.titleContainer}>
+              {this.TitlePicker()}
+            </View>
 
-          <Item rounded error={this.state.taxiNumberError ? true : false} style={styles.inputBox}>
-            <Icon active name='car' />
-            <Input
-              placeholder="Taxi Number"
-              style={styles.textInput}
-              autoCorrect={false}
-              autoCapitalize="none"
+            <Item rounded error={this.state.emailError ? true : false} style={styles.inputBox}>
+              <Icon active name='mail' />
 
-              onChangeText={(taxiNumber) => this.setState({ taxiNumber })}
-            />
-          </Item>
+              <Input
+                placeholder="Email"
+                style={styles.textInput}
+                autoCorrect={false}
+                autoCapitalize="none"
+                autoCompleteType="email"
+                onChangeText={(email) => this.setState({ email })}
+              />
+            </Item>
 
-          <Item rounded error={this.state.passwordError ? true : false} style={styles.inputBox}>
-            <Icon active name='lock' />
+            <Item rounded error={this.state.taxiNumberError ? true : false} style={styles.inputBox}>
+              <Icon active name='car' />
+              <Input
+                placeholder="Taxi Number"
+                style={styles.textInput}
+                autoCorrect={false}
+                autoCapitalize="none"
 
-            <Input
-              placeholder="Password"
-              style={styles.textInput}
-              secureTextEntry={this.state.showPass}
-              autoCorrect={false}
-              autoCapitalize="none"
-              autoCompleteType="password"
-              onChangeText={(password) => this.setState({ password })}
-            />
-            <TouchableOpacity
-              onPress={() => this.showPass()}>
-              <Icon active name={this.state.press == false ? 'eye' : 'eye-off'} />
-            </TouchableOpacity>
-          </Item>
+                onChangeText={(taxiNumber) => this.setState({ taxiNumber })}
+              />
+            </Item>
 
-          <Button style={styles.button}
-            full
-            rounded
+            <Item rounded error={this.state.passwordError ? true : false} style={styles.inputBox}>
+              <Icon active name='lock' />
 
-            onPress={() => this.loginUser(this.state.email, this.state.taxiNumber, this.state.password)}
-          >
-            <Text adjustsFontSizeToFit
-              numberOfLines={1} style={styles.regularButtonText}>Log in</Text>
-          </Button>
+              <Input
+                placeholder="Password"
+                style={styles.textInput}
+                secureTextEntry={this.state.showPass}
+                autoCorrect={false}
+                autoCapitalize="none"
+                autoCompleteType="password"
+                onChangeText={(password) => this.setState({ password })}
+              />
+              <TouchableOpacity
+                onPress={() => this.showPass()}>
+                <Icon active name={this.state.press == false ? 'eye' : 'eye-off'} />
+              </TouchableOpacity>
+            </Item>
 
-          <Button
-            full
-            transparent
-            rounded
+            <Button style={styles.button}
+              full
+              rounded
 
-            onPress={() => this.props.navigation.navigate('ForgotPassword')}
-          >
-            <Text adjustsFontSizeToFit
-              numberOfLines={1} style={styles.transparentButtonText}>Reset Password</Text>
-          </Button>
+              onPress={() => this.loginUser(this.state.email, this.state.taxiNumber, this.state.password)}
+            >
+              <Text adjustsFontSizeToFit
+                numberOfLines={1} style={styles.regularButtonText}>Log in</Text>
+            </Button>
 
-          <Button
-            full
-            rounded
-            transparent
+            <Button
+              full
+              transparent
+              rounded
 
-            onPress={() => this.props.navigation.navigate('URoles')}
-          >
-            <Text adjustsFontSizeToFit
-              numberOfLines={1} style={styles.transparentButtonText}>Home</Text>
-          </Button>
+              onPress={() => this.props.navigation.navigate('ForgotPassword')}
+            >
+              <Text adjustsFontSizeToFit
+                numberOfLines={1} style={styles.transparentButtonText}>Reset Password</Text>
+            </Button>
 
-        </Form>
-      </KeyboardAvoidingView>
+            <Button
+              full
+              rounded
+              transparent
+
+              onPress={() => this.props.navigation.navigate('URoles')}
+            >
+              <Text adjustsFontSizeToFit
+                numberOfLines={1} style={styles.transparentButtonText}>Home</Text>
+            </Button>
+
+          </Form>
+        </KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
     );
 
 

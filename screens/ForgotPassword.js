@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Alert } from 'react-native';
+import { StyleSheet, Text, View, Alert, TouchableWithoutFeedback, Keyboard, StatusBar } from 'react-native';
 import { Container, Content, Header, Form, Input, Item, Button, Label, Icon } from 'native-base';
 
 
@@ -99,49 +99,52 @@ class ForgotPassword extends React.Component {
 
     render() {
         return (
-            <Container style={styles.container}>
+            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
+                <Container style={styles.container}>
+                    <StatusBar barStyle="dark-content" />
 
-                <Form>
-                    <View style={styles.titleContainer}>
-                        {this.TitlePicker()}
-                    </View>
+                    <Form>
+                        <View style={styles.titleContainer}>
+                            {this.TitlePicker()}
+                        </View>
 
-                    <Item rounded error={this.state.emailError ? true : false} style={styles.inputBox}>
-                        <Icon active name='mail' />
-                        <Input
-                            placeholder="Email"
-                            style={styles.textInput}
-                            autoCorrect={false}
-                            autoCapitalize="none"
-                            autoCompleteType="email"
-                            onChangeText={(email) => this.setState({ email })}
-                        />
-                    </Item>
+                        <Item rounded error={this.state.emailError ? true : false} style={styles.inputBox}>
+                            <Icon active name='mail' />
+                            <Input
+                                placeholder="Email"
+                                style={styles.textInput}
+                                autoCorrect={false}
+                                autoCapitalize="none"
+                                autoCompleteType="email"
+                                onChangeText={(email) => this.setState({ email })}
+                            />
+                        </Item>
 
 
-                    <Button style={styles.button}
-                        full
-                        rounded
+                        <Button style={styles.button}
+                            full
+                            rounded
 
-                        onPress={() => this.resetPassword(this.state.email)}
-                    >
-                        <Text adjustsFontSizeToFit
-                            numberOfLines={1} style={styles.regularButtonText}>Reset Password</Text>
-                    </Button>
+                            onPress={() => this.resetPassword(this.state.email)}
+                        >
+                            <Text adjustsFontSizeToFit
+                                numberOfLines={1} style={styles.regularButtonText}>Reset Password</Text>
+                        </Button>
 
-                    <Button
-                        full
-                        transparent
-                        rounded
+                        <Button
+                            full
+                            transparent
+                            rounded
 
-                        onPress={() => this.props.navigation.navigate('URoles')}
-                    >
-                        <Text adjustsFontSizeToFit
-                            numberOfLines={1} style={styles.transparentButtonText}>Back</Text>
-                    </Button>
+                            onPress={() => this.props.navigation.navigate('URoles')}
+                        >
+                            <Text adjustsFontSizeToFit
+                                numberOfLines={1} style={styles.transparentButtonText}>Back</Text>
+                        </Button>
 
-                </Form>
-            </Container>
+                    </Form>
+                </Container>
+            </TouchableWithoutFeedback>
         );
 
 

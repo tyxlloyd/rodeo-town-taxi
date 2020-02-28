@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Alert } from 'react-native';
+import { StyleSheet, Text, View, Alert, StatusBar, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { Container, Content, Header, Form, Input, Item, Button, Label, Icon } from 'native-base';
 import Spinner from 'react-native-loading-spinner-overlay';
 
@@ -117,57 +117,60 @@ class CustomerLogin extends React.Component {
 
     render() {
         return (
-            <Container style={styles.container}>
+            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
+                <Container style={styles.container}>
+                    <StatusBar barStyle="dark-content" />
 
-                <Form>
-                    <Spinner
-                        //visibility of Overlay Loading Spinner
-                        visible={this.state.loading}
-                        //Text with the Spinner
-                        //textContent={'Loading...'}
-                        //Text style of the Spinner Text
-                        textStyle={styles.spinnerTextStyle}
-                    />
-                    <View style={styles.titleContainer}>
-                        {this.TitlePicker()}
-                    </View>
-
-                    <Item rounded error={this.state.nameError ? true : false} style={styles.inputBox}>
-                        <Icon active name='contact' />
-                        <Input
-                            placeholder="Name"
-                            style={styles.textInput}
-                            autoCorrect={false}
-                            autoCapitalize="words"
-                            autoCompleteType="name"
-                            onChangeText={(name) => this.setState({ name })}
+                    <Form>
+                        <Spinner
+                            //visibility of Overlay Loading Spinner
+                            visible={this.state.loading}
+                            //Text with the Spinner
+                            //textContent={'Loading...'}
+                            //Text style of the Spinner Text
+                            textStyle={styles.spinnerTextStyle}
                         />
-                    </Item>
+                        <View style={styles.titleContainer}>
+                            {this.TitlePicker()}
+                        </View>
+
+                        <Item rounded error={this.state.nameError ? true : false} style={styles.inputBox}>
+                            <Icon active name='contact' />
+                            <Input
+                                placeholder="Name"
+                                style={styles.textInput}
+                                autoCorrect={false}
+                                autoCapitalize="words"
+                                autoCompleteType="name"
+                                onChangeText={(name) => this.setState({ name })}
+                            />
+                        </Item>
 
 
-                    <Button style={styles.button}
-                        full
-                        rounded
+                        <Button style={styles.button}
+                            full
+                            rounded
 
-                        onPress={() => this.loginUser(this.state.name)}
-                    >
-                        <Text adjustsFontSizeToFit
-                            numberOfLines={1} style={styles.regularButtonText}>Log in</Text>
-                    </Button>
+                            onPress={() => this.loginUser(this.state.name)}
+                        >
+                            <Text adjustsFontSizeToFit
+                                numberOfLines={1} style={styles.regularButtonText}>Log in</Text>
+                        </Button>
 
 
-                    <Button
-                        full
-                        rounded
-                        transparent
-                        onPress={() => this.props.navigation.navigate('CLogin')}
-                    >
-                        <Text adjustsFontSizeToFit
-                            numberOfLines={1} style={styles.transparentButtonText}>Back</Text>
-                    </Button>
+                        <Button
+                            full
+                            rounded
+                            transparent
+                            onPress={() => this.props.navigation.navigate('URoles')}
+                        >
+                            <Text adjustsFontSizeToFit
+                                numberOfLines={1} style={styles.transparentButtonText}>Back</Text>
+                        </Button>
 
-                </Form>
-            </Container>
+                    </Form>
+                </Container>
+            </TouchableWithoutFeedback>
         );
 
 
