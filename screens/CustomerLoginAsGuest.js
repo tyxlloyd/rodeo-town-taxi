@@ -70,7 +70,9 @@ class CustomerLogin extends React.Component {
         this.mounted = true;
         this.ifNotEmptyToggle(name);
 
-        this.props.navigation.navigate('CMain', { name })
+        var taxiNumber = 0;
+        var role = "customer";
+        this.props.navigation.navigate("GlobalMap", { name, taxiNumber, role })
 
     }
 
@@ -93,7 +95,7 @@ class CustomerLogin extends React.Component {
         if (Platform.OS == 'android') {
             return (
 
-                <Text style={styles.titleLabel}>Login as Guest</Text>
+                <Text style={styles.titleLabel}>Login as Customer</Text>
 
 
             );
@@ -104,7 +106,7 @@ class CustomerLogin extends React.Component {
 
 
                 <Text adjustsFontSizeToFit
-                    numberOfLines={1} style={styles.titleLabel}>Login as Guest</Text>
+                    numberOfLines={1} style={styles.titleLabel}>Login as Customer</Text>
 
 
             );

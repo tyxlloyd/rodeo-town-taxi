@@ -62,7 +62,7 @@ class UserRoles extends React.Component {
               full
               rounded
               light
-              onPress={() => this._getPermissionAsync('CLogin')}
+              onPress={() => this._getPermissionAsync('CGuest')}
             >
               <Text adjustsFontSizeToFit
                 numberOfLines={1} style={styles.buttonText}>Customer</Text>

@@ -117,7 +117,11 @@ class DriverLogin extends React.Component {
       if (doc.exists) {
         firebase.auth()
           .signInWithEmailAndPassword(email, password)
-          .then(() => this.props.navigation.navigate('DMain', { email, taxiNumber }))
+          .then(() => {
+            var name = " ";
+            var role = "driver";
+            this.props.navigation.navigate("GlobalMap", { name, taxiNumber, role })
+          })
           .catch(function (error) {
             //alert(error)
             Alert.alert("Something went wrong", "Password incorrect.")
