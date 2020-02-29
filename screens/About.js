@@ -21,11 +21,6 @@ class About extends React.Component {
         <StatusBar barStyle="dark-content" />
         <Header
           leftComponent={
-            <Icon name={'arrowleft'}
-            size={28}
-              onPress={(() => this.props.navigation.navigate("GlobalMap"))}/>
-          }
-          rightComponent={
             <Icon name={'logout'}
             size={28}
               onPress={(() => this.props.navigation.navigate("URoles"))}/>
@@ -33,7 +28,6 @@ class About extends React.Component {
           centerComponent={{ text: 'About', style: { color: '#000', fontSize: 24, fontWeight: 'bold' } }}
           containerStyle={{ backgroundColor: '#fec33a' }}
         />
-        <ScrollView>
         <Image
           style={{ width: '100%', height: 200 }}
           source={require('../assets/images/taxi.jpg')} />
@@ -56,7 +50,6 @@ class About extends React.Component {
           onPress={dial}
           buttonStyle={styles.callButton}
         />
-      </ScrollView>
       </View>
     );
   }

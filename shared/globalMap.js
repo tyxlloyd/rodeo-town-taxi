@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Dimensions, Alert, View, StatusBar } from 'react-native';
+import { StyleSheet, Dimensions, Alert, View, StatusBar, Linking } from 'react-native';
 import { Header, Button, Image } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/AntDesign';
 import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
@@ -20,6 +20,8 @@ export class GlobalMap extends React.Component {
             name: this.props.navigation.getParam('name'),
             taxiNumber: this.props.navigation.getParam('taxiNumber'),
             role: this.props.navigation.getParam('role'),
+            phoneNumber: this.props.navigation.getParam('phoneNumber'),
+            phoneNumberOfOtherUser: null,
             destination: null,
             region: {
                 latitude: 47.0085,
@@ -107,6 +109,17 @@ export class GlobalMap extends React.Component {
         }
     }
 
+    callOtherUser(number) {
+        var phoneNumber = '';
+        if (Platform.OS == 'android') {
+            phoneNumber = 'tel:${' + number + '}';
+        }
+        else {
+            phoneNumber = 'telprompt:${' + number + '}';
+        }
+        Linking.openURL(phoneNumber);
+    }
+
     componentWillUnmount() {
         this.mounted = false;
         navigator.geolocation.clearWatch(this.watchID);
@@ -138,6 +151,7 @@ export class GlobalMap extends React.Component {
             this.setState({destination: destination});
             this.setState({locationOfOtherUser: destination});
             this.setState({markerVisibility: 1.0});
+            this.setState({ phoneNumberOfOtherUser: request.phoneNumber });
         }),
 
         this.socket.on('queue size', message => {
@@ -162,6 +176,7 @@ export class GlobalMap extends React.Component {
                 this.setState({ destination: null });
                 this.setState({ markerVisibility: 0.0 });
                 this.setState({ customerID: null });
+                this.setState({ phoneNumberOfOtherUser: null });
                 this.setState({ buttonTitle: "Request A Customer\nCustomers In Line: " + this.state.queueSize });
             }
         })
@@ -176,16 +191,6 @@ export class GlobalMap extends React.Component {
             }
         });
 
-        this.socket.on('ride request', request => {
-            Alert.alert('You have a new ride request: latitude: ' + request.lat + '\nlongitude: ' + request.long + '\nid: ' + request.id);
-
-            let destination = {
-                latitude: request.lat,
-                longitude: request.long,
-            }
-            this.setState({ destination: destination });
-        }),
-
         this.socket.on('confirmation', message => {
             Alert.alert("Your taxi is on the way!", "Cab #" + message.taxiNumber + " is on its way to pick you up!");
             this.showDriverLocation(message.driverID);
@@ -193,6 +198,8 @@ export class GlobalMap extends React.Component {
             this.setState({ driverID: message.driverID });
             this.setState({ driverAcceptedRequest: true });
             this.setState({ buttonTitle: "Cancel Request" });
+            this.setState({ phoneNumberOfOtherUser: message.phoneNumber });
+            console.log(this.state.phoneNumberOfOtherUser);
         }),
 
         this.socket.on('queue size', message => {
@@ -222,8 +229,49 @@ export class GlobalMap extends React.Component {
                 this.setState({ mapArea: this.state.region });
                 this.setState({ buttonTitle: "Hail A Cab\nCustomers In Line: " + this.state.queueSize});
                 this.setState({ requestSent: false });
+                this.setState({ phoneNumberOfOtherUser: null });
             }
         })
+    }
+
+    pressHandlerNumber() {
+        if (this.state.role == 'driver') {
+            if (this.state.customerID != null) {
+                Alert.alert(
+                    'Call Customer',
+                    'Are you sure you would like to call the customer? This will end navigation.',
+                    [
+                        { text: 'Yes, call the customer', onPress: () => this.callOtherUser(this.state.phoneNumberOfOtherUser) },
+                        {
+                            text: 'No, do not call the customer',
+                        },
+                    ],
+                    { cancelable: false },
+                );
+            }
+            else {
+                Alert.alert('You do not have a customer to call');
+            }
+        } else if (this.state.role == 'customer') {
+            if (this.state.driverID != null) {
+                Alert.alert(
+                    'Call Driver',
+                    'Are you sure you would like to call the driver?',
+                    [
+                        { text: 'Yes, call the driver', onPress: () => this.callOtherUser(this.state.phoneNumberOfOtherUser) },
+                        {
+                            text: 'No, do not call the driver',
+                        },
+                    ],
+                    { cancelable: false },
+                );
+            }
+            else {
+                Alert.alert(
+                    'You do not have a driver to call'
+                );
+            }
+        }
     }
 
     pressHandler(){
@@ -259,6 +307,7 @@ export class GlobalMap extends React.Component {
         var request= {
             taxiNumber: this.state.taxiNumber,
             id: this.socket.id,
+            phoneNumber: this.state.phoneNumber,
         }
         this.socket.emit('customer request', request);
     }
@@ -269,6 +318,7 @@ export class GlobalMap extends React.Component {
             long: this.state.region.longitude,
             lat: this.state.region.latitude,
             id: this.socket.id,
+            phoneNumber: this.state.phoneNumber,
         }
         this.socket.emit('ride request', request);
         Alert.alert("Your request has been sent!",
@@ -326,9 +376,9 @@ export class GlobalMap extends React.Component {
                           onPress={(() => this.props.navigation.navigate("URoles"))}/>
                     }
                     rightComponent={
-                        <Icon name={'mail'}
-                        size={28}
-                        onPress={(() => this.navigateToChat(this.state.name, this.state.taxiNumber, this.state.role))} /> //split into driverChat/customerchat
+                        <Icon name={'phone'}
+                            size={28}
+                            onPress={(() => this.pressHandlerNumber())} />
                     }
                     centerComponent={{ text: 'Rodeo Town Taxi', style: { color: '#000', fontFamily: 'arvo-regular', fontSize: 24 } }}
                     containerStyle={{backgroundColor: '#fec33a'}}
@@ -372,7 +422,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#000'
     },
     mapStyle: {
-        width: Dimensions.get('window').width,
+        //width: Dimensions.get('window').width,
         flex: 1
     },
     enabled: {

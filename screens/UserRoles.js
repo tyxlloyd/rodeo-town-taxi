@@ -87,6 +87,16 @@ class UserRoles extends React.Component {
               <Text adjustsFontSizeToFit
                 numberOfLines={1} style={styles.buttonText}>Admin</Text>
             </Button>
+
+            <Button style={styles.button}
+              full
+              rounded
+              light
+              onPress={() => this.props.navigation.navigate('About')}
+            >
+              <Text adjustsFontSizeToFit
+                numberOfLines={1} style={styles.buttonText}>About</Text>
+            </Button>
           </View>
 
 

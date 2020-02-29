@@ -13,8 +13,10 @@ class CustomerLogin extends React.Component {
 
         this.state = ({
             name: '',
+            phoneNumber: '',
             loading: false,
             nameError: false,
+            phoneNumberError: false,
 
 
         })
@@ -33,30 +35,42 @@ class CustomerLogin extends React.Component {
 
 
     }
-    ifEmptyToggle = (name) => {
+    ifEmptyToggle = (name, phoneNumber) => {
         if (name == '') {
 
             this.toggleNameError('true');
 
         }
+
+        if (phoneNumber == '') {
+
+            this.togglePhoneNumberError('true');
+
+        }
+
     }
 
-    ifNotEmptyToggle = (name) => {
-
+    ifNotEmptyToggle = (name, phoneNumber) => {
         if (name != '') {
 
             this.toggleNameError('false');
 
         }
 
+        if (phoneNumber != '') {
+
+            this.togglePhoneNumberError('false');
+
+        }
+
     }
-    loginUser = (name) => {
+    loginUser = (name, phoneNumber) => {
         //As guest no user information is added to database 
         //if the user wishes to add their information this can be done 
         //in the profile page
-        if (name == '') {
-            this.ifEmptyToggle(name);
-            this.ifNotEmptyToggle(name);
+        if (name == '' || phoneNumber == '') {
+            this.ifEmptyToggle(name, phoneNumber);
+            this.ifNotEmptyToggle(name, phoneNumber);
             Alert.alert(
                 'Empty Fields',
                 'Make sure all fields are filled out',
@@ -68,11 +82,11 @@ class CustomerLogin extends React.Component {
             return;
         }
         this.mounted = true;
-        this.ifNotEmptyToggle(name);
-
+        this.ifNotEmptyToggle(name, phoneNumber);
         var taxiNumber = 0;
         var role = "customer";
-        this.props.navigation.navigate("GlobalMap", { name, taxiNumber, role })
+        console.log("Customer: " + phoneNumber);
+        this.props.navigation.navigate("GlobalMap", { name, taxiNumber, role, phoneNumber })
 
     }
 
@@ -90,12 +104,26 @@ class CustomerLogin extends React.Component {
 
     }
 
+    togglePhoneNumberError = (bool) => {
+        if (bool == 'true') {
+            this.setState({
+                phoneNumberError: true,
+            });
+        } else {
+            this.setState({
+
+                phoneNumberError: false,
+            });
+        }
+
+    }
+
     TitlePicker() {
         //the reason we need this is becasue adjustfontsize only works with ios
         if (Platform.OS == 'android') {
             return (
 
-                <Text style={styles.titleLabel}>Login as Customer</Text>
+                <Text style={styles.titleLabel}>Customer Login</Text>
 
 
             );
@@ -117,7 +145,7 @@ class CustomerLogin extends React.Component {
 
     render() {
         return (
-            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
+            <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss() }}>
                 <Container style={styles.container}>
                     <StatusBar barStyle="dark-content" />
 
@@ -146,26 +174,36 @@ class CustomerLogin extends React.Component {
                             />
                         </Item>
 
+                        <Item rounded error={this.state.phoneNumberError ? true : false} style={styles.inputBox}>
+                            <Icon active name='call' />
+                            <Input
+                                placeholder="Phone Number"
+                                style={styles.textInput}
+                                autoCorrect={false}
+                                autoCapitalize="none"
+                                autoCompleteType="tel"
+                                onChangeText={(phoneNumber) => this.setState({ phoneNumber })}
+                            />
+                        </Item>
 
                         <Button style={styles.button}
                             full
                             rounded
 
-                            onPress={() => this.loginUser(this.state.name)}
+                            onPress={() => this.loginUser(this.state.name, this.state.phoneNumber)}
                         >
                             <Text adjustsFontSizeToFit
                                 numberOfLines={1} style={styles.regularButtonText}>Log in</Text>
                         </Button>
 
 
-                        <Button
+                        <Button style={styles.button}
                             full
                             rounded
-                            transparent
                             onPress={() => this.props.navigation.navigate('URoles')}
                         >
                             <Text adjustsFontSizeToFit
-                                numberOfLines={1} style={styles.transparentButtonText}>Back</Text>
+                                numberOfLines={1} style={styles.regularButtonText}>Back</Text>
                         </Button>
 
                     </Form>
@@ -197,7 +235,7 @@ const styles = StyleSheet.create({
     },
     transparentButtonText: {
         color: 'black',
-        fontSize: 15
+        fontSize: 20
     },
     titleContainer: {
         alignItems: "center",
@@ -212,7 +250,7 @@ const styles = StyleSheet.create({
         color: 'black'
     },
     inputBox: {
-        //marginTop: 30,
+        marginTop: 30,
         borderColor: 'black',
         //backgroundColor: '#fff',
 

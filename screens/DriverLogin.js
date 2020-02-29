@@ -120,7 +120,10 @@ class DriverLogin extends React.Component {
           .then(() => {
             var name = " ";
             var role = "driver";
-            this.props.navigation.navigate("GlobalMap", { name, taxiNumber, role })
+            var data = doc.data();
+            var phoneNumber = data.PhoneNumber;
+            console.log(phoneNumber);
+            this.props.navigation.navigate("GlobalMap", { name, taxiNumber, role, phoneNumber });
           })
           .catch(function (error) {
             //alert(error)
@@ -345,7 +348,7 @@ const styles = StyleSheet.create({
   },
   transparentButtonText: {
     color: 'black',
-    fontSize: 15
+    fontSize: 20
   },
   titleContainer: {
     alignItems: "center",
