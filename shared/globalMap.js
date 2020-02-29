@@ -317,19 +317,48 @@ export class GlobalMap extends React.Component {
     }
 
     sendRideRequest() {
-        var request = {
-            name: this.state.name,
-            long: this.state.region.longitude,
-            lat: this.state.region.latitude,
-            id: this.socket.id,
-            phoneNumber: this.state.phoneNumber,
+        if ( this.isNotInRangeFunction() )
+        {
+            Alert.alert("You are not in range of service!", "Try calling to see if we can pick you up!");
+            this.props.navigation.navigate('About');
         }
-        this.socket.emit('ride request', request);
-        Alert.alert("Your request has been sent!",
-            "Please do not turn off your phone or close the app or you will lose your spot in line." );
-        //this.setState({ buttonTitle: "Finding a driver..." });
-        this.setState({ requestSent: true });
+        else{
+            var request = {
+                name: this.state.name,
+                long: this.state.region.longitude,
+                lat: this.state.region.latitude,
+                id: this.socket.id,
+                phoneNumber: this.state.phoneNumber,
+            }
+            this.socket.emit('ride request', request);
+            Alert.alert("Your request has been sent!",
+                "Please do not turn off your phone or close the app or you will lose your spot in line." );
+            //this.setState({ buttonTitle: "Finding a driver..." });
+            this.setState({ requestSent: true });
+        }
     }
+
+    //Checks if the GPS location is within range of service.
+    //Check if this.state.region is null first.
+    isNotInRangeFunction = () => {
+        const MAX_NORTHING = 47.141943;
+        const MIN_NORTHING = 46.48;
+        const MAX_EASTING = -120.331190;
+        const MIN_EASTING = -120.756988;
+        
+        if ( (this.state.region.latitude > MAX_NORTHING)
+            || (this.state.region.latitude < MIN_NORTHING))
+        {
+            return true;
+        }
+        if ( (this.state.region.longitude > MAX_EASTING) 
+                || (this.state.region.longitude < MIN_EASTING) )
+        {
+            return true;
+        }
+        
+            return false;
+        }
 
     cancelCustomerRequest(){
         this.socket.emit('cancel ride request', this.state.customerID);
