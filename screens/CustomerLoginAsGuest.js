@@ -134,7 +134,7 @@ class CustomerLogin extends React.Component {
 
 
                 <Text adjustsFontSizeToFit
-                    numberOfLines={1} style={styles.titleLabel}>Login as Customer</Text>
+                    numberOfLines={1} style={styles.titleLabel}>Customer Login</Text>
 
 
             );
