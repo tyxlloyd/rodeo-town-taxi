@@ -95,7 +95,7 @@ class CustomerLogin extends React.Component {
         if (Platform.OS == 'android') {
             return (
 
-                <Text style={styles.titleLabel}>Login as Customer</Text>
+                <Text style={styles.titleLabel}>Customer Login</Text>
 
 
             );
@@ -106,7 +106,7 @@ class CustomerLogin extends React.Component {
 
 
                 <Text adjustsFontSizeToFit
-                    numberOfLines={1} style={styles.titleLabel}>Login as Customer</Text>
+                    numberOfLines={1} style={styles.titleLabel}>Customer Login</Text>
 
 
             );
@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
     },
     transparentButtonText: {
         color: 'black',
-        fontSize: 15
+        fontSize: 20
     },
     titleContainer: {
         alignItems: "center",
