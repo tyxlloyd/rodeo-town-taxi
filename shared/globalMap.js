@@ -333,7 +333,6 @@ export class GlobalMap extends React.Component {
             this.socket.emit('ride request', request);
             Alert.alert("Your request has been sent!",
                 "Please do not turn off your phone or close the app or you will lose your spot in line." );
-            //this.setState({ buttonTitle: "Finding a driver..." });
             this.setState({ requestSent: true });
         }
     }
