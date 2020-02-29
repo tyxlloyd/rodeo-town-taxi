@@ -152,6 +152,11 @@ export class GlobalMap extends React.Component {
             this.setState({locationOfOtherUser: destination});
             this.setState({markerVisibility: 1.0});
             this.setState({ phoneNumberOfOtherUser: request.phoneNumber });
+            var response = {
+                customerID: this.state.customerID,
+                driverLocation: this.state.region,
+            }
+            this.socket.emit('receive driver location', response);
         }),
 
         this.socket.on('queue size', message => {
@@ -199,7 +204,6 @@ export class GlobalMap extends React.Component {
             this.setState({ driverAcceptedRequest: true });
             this.setState({ buttonTitle: "Cancel Request" });
             this.setState({ phoneNumberOfOtherUser: message.phoneNumber });
-            console.log(this.state.phoneNumberOfOtherUser);
         }),
 
         this.socket.on('queue size', message => {
@@ -331,9 +335,10 @@ export class GlobalMap extends React.Component {
         this.socket.emit('cancel ride request', this.state.customerID);
         this.setState({ customerID: null });
         //this.setState({ destination: null });
-        this.setState({ mapArea: this.state.region })
+        this.setState({ mapArea: this.state.region });
         this.setState({ buttonTitle: "Request A Customer\nCustomers In Line: " + this.state.queueSize });
         this.setState({ markerVisibility: 0.0 });
+        this.setState({ destination: null });
         Alert.alert("You have cancelled your ride request");
     }
 
@@ -346,6 +351,7 @@ export class GlobalMap extends React.Component {
             this.socket.emit('cancel ride request', this.state.driverID);
             this.setState({ driverID: null });
             this.setState({ markerVisibility: 0.0 });
+            this.setState({ mapArea: this.state.region });
             this.setState({ driverAcceptedRequest: false });
             this.setState({ buttonTitle: "Hail A Cab\nCustomers In Line: " + this.state.queueSize });
             this.setState({ requestSent: false });
