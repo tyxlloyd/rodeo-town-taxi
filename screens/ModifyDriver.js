@@ -101,7 +101,7 @@ class ModifyDriver extends React.Component {
 
     render() {
         return (
-            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
+            <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss() }}>
                 <KeyboardAvoidingView style={styles.container} behavior="padding">
                     <StatusBar barStyle="dark-content" />
 
@@ -138,6 +138,7 @@ class ModifyDriver extends React.Component {
                                 autoCorrect={false}
                                 autoCapitalize="none"
                                 autoCompleteType="tel"
+                                keyboardType="numeric"
                                 defaultValue={this.state.currentPhoneNumber}
                                 //onChangeText={(phoneNumber) => this.setState({ phoneNumber })}
                                 onChangeText={(updatedPhoneNumber) => this.setState({ updatedPhoneNumber })}
@@ -185,7 +186,7 @@ const styles = StyleSheet.create({
         padding: 30
     },
     button: {
-        marginTop: 50,
+        marginTop: 40,
         backgroundColor: '#fec33a'
 
     },

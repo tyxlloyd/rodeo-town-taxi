@@ -214,6 +214,7 @@ class DriverInfo extends React.Component {
                 autoCorrect={false}
                 autoCapitalize="none"
                 autoCompleteType="tel"
+                keyboardType="numeric"
                 onChangeText={(phoneNumber) => this.setState({ phoneNumber })}
               />
             </Item>
@@ -257,7 +258,7 @@ const styles = StyleSheet.create({
     padding: 30
   },
   button: {
-    marginTop: 50,
+    marginTop: 40,
     backgroundColor: '#fec33a'
 
   },

@@ -172,8 +172,9 @@ const styles = StyleSheet.create({
         fontSize: 30
     },
     transparentButtonText: {
+        marginTop:20,
         color: 'black',
-        fontSize: 20
+        fontSize: 22
     },
     titleContainer: {
         alignItems: "center",

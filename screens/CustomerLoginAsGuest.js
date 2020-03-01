@@ -182,6 +182,7 @@ class CustomerLogin extends React.Component {
                                 autoCorrect={false}
                                 autoCapitalize="none"
                                 autoCompleteType="tel"
+                                keyboardType="numeric"
                                 onChangeText={(phoneNumber) => this.setState({ phoneNumber })}
                             />
                         </Item>
@@ -200,10 +201,11 @@ class CustomerLogin extends React.Component {
                         <Button style={styles.button}
                             full
                             rounded
+                            transparent
                             onPress={() => this.props.navigation.navigate('URoles')}
                         >
                             <Text adjustsFontSizeToFit
-                                numberOfLines={1} style={styles.regularButtonText}>Back</Text>
+                                numberOfLines={1} style={styles.regularButtonText}>Home</Text>
                         </Button>
 
                     </Form>
@@ -225,7 +227,7 @@ const styles = StyleSheet.create({
         padding: 30
     },
     button: {
-        marginTop: 50,
+        marginTop: 45,
         backgroundColor: '#fec33a'
 
     },
@@ -234,8 +236,9 @@ const styles = StyleSheet.create({
         fontSize: 30
     },
     transparentButtonText: {
+        marginTop: 20,
         color: 'black',
-        fontSize: 20
+        fontSize: 22
     },
     titleContainer: {
         alignItems: "center",

@@ -311,6 +311,7 @@ class AddDriver extends React.Component {
                                 style={styles.textInput}
                                 autoCorrect={false}
                                 autoCapitalize="none"
+                                keyboardType="numeric"
                                 onChangeText={(phoneNumber) => this.setState({ phoneNumber })}
                             />
                         </Item>
@@ -375,7 +376,7 @@ const styles = StyleSheet.create({
         padding: 30
     },
     button: {
-        marginTop: 50,
+        marginTop: 40,
         backgroundColor: '#fec33a'
 
     },

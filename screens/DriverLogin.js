@@ -227,7 +227,7 @@ class DriverLogin extends React.Component {
 
   render() {
     return (
-      <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
+      <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss() }}>
         <KeyboardAvoidingView style={styles.container} behavior="padding">
           <StatusBar barStyle="dark-content" />
 
@@ -264,7 +264,7 @@ class DriverLogin extends React.Component {
                 style={styles.textInput}
                 autoCorrect={false}
                 autoCapitalize="none"
-
+                keyboardType="numeric"
                 onChangeText={(taxiNumber) => this.setState({ taxiNumber })}
               />
             </Item>
@@ -297,7 +297,7 @@ class DriverLogin extends React.Component {
                 numberOfLines={1} style={styles.regularButtonText}>Log in</Text>
             </Button>
 
-            <Button
+            <Button style={styles.button}
               full
               transparent
               rounded
@@ -305,10 +305,10 @@ class DriverLogin extends React.Component {
               onPress={() => this.props.navigation.navigate('ForgotPassword')}
             >
               <Text adjustsFontSizeToFit
-                numberOfLines={1} style={styles.transparentButtonText}>Reset Password</Text>
+                numberOfLines={1} style={styles.regularButtonText}>Reset Password</Text>
             </Button>
 
-            <Button
+            <Button style={styles.button}
               full
               rounded
               transparent
@@ -316,7 +316,7 @@ class DriverLogin extends React.Component {
               onPress={() => this.props.navigation.navigate('URoles')}
             >
               <Text adjustsFontSizeToFit
-                numberOfLines={1} style={styles.transparentButtonText}>Home</Text>
+                numberOfLines={1} style={styles.regularButtonText}>Home</Text>
             </Button>
 
           </Form>
@@ -338,7 +338,7 @@ const styles = StyleSheet.create({
     padding: 30
   },
   button: {
-    marginTop: 50,
+    marginTop: 30,
     backgroundColor: '#fec33a'
 
   },
@@ -347,8 +347,9 @@ const styles = StyleSheet.create({
     fontSize: 30
   },
   transparentButtonText: {
+    marginTop: 20,
     color: 'black',
-    fontSize: 20
+    fontSize: 22
   },
   titleContainer: {
     alignItems: "center",

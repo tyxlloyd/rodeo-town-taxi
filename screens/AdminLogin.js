@@ -194,7 +194,7 @@ class AdminLogin extends React.Component {
 
   render() {
     return (
-      <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
+      <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss() }}>
         <KeyboardAvoidingView style={styles.container} behavior="padding">
           <StatusBar barStyle="dark-content" />
 
@@ -255,7 +255,7 @@ class AdminLogin extends React.Component {
                 numberOfLines={1} style={styles.regularButtonText}>Log in</Text>
             </Button>
 
-            <Button
+            <Button style={styles.button}
               full
               transparent
               rounded
@@ -263,10 +263,10 @@ class AdminLogin extends React.Component {
 
             >
               <Text adjustsFontSizeToFit
-                numberOfLines={1} style={styles.transparentButtonText}>Reset Password</Text>
+                numberOfLines={1} style={styles.regularButtonText}>Reset Password</Text>
             </Button>
 
-            <Button
+            <Button style={styles.button}
               full
               rounded
               transparent
@@ -274,7 +274,7 @@ class AdminLogin extends React.Component {
               onPress={() => this.props.navigation.navigate('URoles')}
             >
               <Text adjustsFontSizeToFit
-                numberOfLines={1} style={styles.transparentButtonText}>Home</Text>
+                numberOfLines={1} style={styles.regularButtonText}>Home</Text>
             </Button>
 
 
@@ -298,7 +298,7 @@ const styles = StyleSheet.create({
     padding: 30
   },
   button: {
-    marginTop: 50,
+    marginTop: 30,
     backgroundColor: '#fec33a',
 
 
@@ -308,8 +308,9 @@ const styles = StyleSheet.create({
     fontSize: 30
   },
   transparentButtonText: {
+    marginTop: 20,
     color: 'black',
-    fontSize: 20
+    fontSize: 22
   },
   titleContainer: {
     alignItems: "center",
