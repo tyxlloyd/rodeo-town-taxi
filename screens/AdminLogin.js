@@ -112,19 +112,19 @@ class AdminLogin extends React.Component {
           .signInWithEmailAndPassword(email, password)
           .then(() => this.props.navigation.navigate('AMain'))
           .catch(function (error) {
-            //alert(error)
-            Alert.alert("Error", "Password is incorrect")
+
+            Alert.alert("Password is Incorrect", "Enter the correct password and try again")
           }).then(() => this.changeStateOfLoading());
 
 
       } else {
 
         this.changeStateOfLoading();
-        Alert.alert("Something went wrong", "You may not have an admin account");
+        Alert.alert("You do not have an Admin account", "Have an admin set up an account for you and try again");
 
       }
     }.bind(this)).catch(function (error) {
-      Alert.alert("Something Went Wrong", "Ensure the information you entered is accurate.");
+      Alert.alert("Something Went Wrong", "Ensure the information you entered is accurate");
       this.props.navigation.navigate('URoles')
     });
 
@@ -257,7 +257,7 @@ class AdminLogin extends React.Component {
 
             <Button style={styles.button}
               full
-              transparent
+            
               rounded
               onPress={() => this.props.navigation.navigate('ForgotPassword')}
 
@@ -269,7 +269,6 @@ class AdminLogin extends React.Component {
             <Button style={styles.button}
               full
               rounded
-              transparent
 
               onPress={() => this.props.navigation.navigate('URoles')}
             >

@@ -54,9 +54,9 @@ class ForgotPassword extends React.Component {
         this.ifNotEmptyToggle(email);
         firebase.auth().sendPasswordResetEmail(email)
             .then(() => {
-                Alert.alert("Success", "Password reset email has been sent.");
+                Alert.alert("Process Complete", "Email to reset password has been sent");
             }, (error) => {
-                Alert.alert("Alert", error.message);
+                alert(error);
             });
     }
 
@@ -99,7 +99,7 @@ class ForgotPassword extends React.Component {
 
     render() {
         return (
-            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
+            <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss() }}>
                 <Container style={styles.container}>
                     <StatusBar barStyle="dark-content" />
 
@@ -131,15 +131,15 @@ class ForgotPassword extends React.Component {
                                 numberOfLines={1} style={styles.regularButtonText}>Reset Password</Text>
                         </Button>
 
-                        <Button
+                        <Button style={styles.button}
                             full
-                            transparent
+
                             rounded
 
                             onPress={() => this.props.navigation.navigate('URoles')}
                         >
                             <Text adjustsFontSizeToFit
-                                numberOfLines={1} style={styles.transparentButtonText}>Back</Text>
+                                numberOfLines={1} style={styles.regularButtonText}>Home</Text>
                         </Button>
 
                     </Form>
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
         padding: 30
     },
     button: {
-        marginTop: 50,
+        marginTop: 45,
         backgroundColor: '#fec33a'
 
     },
@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
         fontSize: 30
     },
     transparentButtonText: {
-        marginTop:20,
+        marginTop: 20,
         color: 'black',
         fontSize: 22
     },

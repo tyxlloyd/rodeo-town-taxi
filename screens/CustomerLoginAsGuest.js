@@ -201,7 +201,7 @@ class CustomerLogin extends React.Component {
                         <Button style={styles.button}
                             full
                             rounded
-                            transparent
+                         
                             onPress={() => this.props.navigation.navigate('URoles')}
                         >
                             <Text adjustsFontSizeToFit

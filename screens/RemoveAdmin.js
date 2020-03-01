@@ -86,31 +86,28 @@ class RemoveAdmin extends React.Component {
                     WebBrowser.openBrowserAsync('https://console.firebase.google.com/project/rodeo-town-taxi/authentication/users');
 
                     dbh.collection("admin-info").doc(lEmail).delete().then(function () {
-                        //alert("Driver deleted from database")
+
 
                     }).catch(function (error) {
                         alert(error)
-                        //Alert.alert("Something went wrong", "Check information you entered");
+
 
                     });
 
                 } else {
-                    Alert.alert("Error", "This admin does not exist check info entered.")
-                    //return;
+                    Alert.alert("Admin Does Not Exist", "This admin does not exist check email entered and try again")
+
                 }
 
             }).catch(function (error) {
-                Alert.alert("Something went wrong", "Try again");
+                Alert.alert("Something Went Wrong", "Try again");
                 process.exit(1)
 
             })
         } catch (error) {
             alert(error)
-            
-        }
 
-        //requires google chrome on android
-        //WebBrowser.openBrowserAsync('https://console.firebase.google.com/project/rodeo-town-taxi/authentication/users');
+        }
 
 
     }
@@ -169,7 +166,7 @@ class RemoveAdmin extends React.Component {
 
     render() {
         return (
-            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
+            <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss() }}>
                 <KeyboardAvoidingView style={styles.container} behavior="padding">
                     <StatusBar barStyle="dark-content" />
 

@@ -30,18 +30,18 @@ class UserRoles extends React.Component {
 
   _getPermissionAsync = async (pageToNavigateTo) => {
     try {
-        let { status } = await Permissions.askAsync(Permissions.LOCATION);
+      let { status } = await Permissions.askAsync(Permissions.LOCATION);
 
-        if (status !== 'granted') {
-            Alert.alert("Please enable location access",
-            "We need your location to use the map. Please go into your phone's settings menu to enable location services for Rodeo Town Taxi.");
-        }
-        else {
-          this.props.navigation.navigate(pageToNavigateTo);
-        }
+      if (status !== 'granted') {
+        Alert.alert("Please Enable Location Access",
+          "We need your location to use the map. Please go into your phone's settings menu to enable location services for Rodeo Town Taxi.");
+      }
+      else {
+        this.props.navigation.navigate(pageToNavigateTo);
+      }
     }
     catch (e) {
-        console.log('_getPermissionAsyncError: ' + e)
+      console.log('_getPermissionAsyncError: ' + e)
     }
   }
 

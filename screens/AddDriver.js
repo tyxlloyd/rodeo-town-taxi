@@ -32,12 +32,11 @@ class AddDriver extends React.Component {
         let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/;
         if (reg.test(email) == false) {
             //console.log("Email address is formated incorrectly");
-            Alert.alert("Error", "Email address is formated incorrectly")
+            Alert.alert("Incorrect Format", "Email address is formated incorrectly")
             return false;
         }
         else {
 
-            console.log("Email is Correct");
             return true;
         }
     }
@@ -96,7 +95,7 @@ class AddDriver extends React.Component {
     checkPassword = (password) => {
         if (this.state.password.length < 6) {
             Alert.alert(
-                'Password is too short',
+                'Password is too Short',
                 'Make sure password is at least 6 characters long',
                 [
                     { text: 'OK', onPress: () => console.log('OK Pressed') },
@@ -150,7 +149,7 @@ class AddDriver extends React.Component {
             //check if user exists to avoid adding them twice
             docName.get().then(function (doc) {
                 if (doc.exists) {
-                    Alert.alert("Error", "Driver already exists ")
+                    Alert.alert("Driver Already Exists", "Another driver is already using this email")
 
                 } else {
                     dbh.collection("driver-info").doc(lEmail).set({
@@ -167,17 +166,17 @@ class AddDriver extends React.Component {
                         });
 
                     })
-                    Alert.alert("Success", "Driver was added ")
+                    Alert.alert("Driver was Added", "This account now has access to the driver functions of this app")
                 }
             }.bind(this)).catch(function (error) {
-                Alert.alert("Something went wrong", "Password incorrect.")
+                Alert.alert("Something Went Wrong", "Try again")
 
             });
 
 
 
         } catch (error) {
-            Alert.alert("Error", "Try again ");
+            Alert.alert("Something Went Wrong", "Try again ");
             this.props.navigation.navigate('AMain')
         }
     }
@@ -272,7 +271,7 @@ class AddDriver extends React.Component {
 
     render() {
         return (
-            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
+            <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss() }}>
                 <KeyboardAvoidingView style={styles.container} behavior="padding">
                     <StatusBar barStyle="dark-content" />
 

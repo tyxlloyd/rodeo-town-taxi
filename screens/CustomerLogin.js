@@ -113,7 +113,7 @@ class CustomerLogin extends React.Component {
       //check if user exists to avoid adding them twice
       docName.get().then(function (doc) {
         if (doc.exists) {
-          Alert.alert("Hello", "Welcome back " + name)
+
           this.props.navigation.navigate('CMain', { name, lEmail, phoneNumber })
 
         } else {
@@ -124,16 +124,16 @@ class CustomerLogin extends React.Component {
             Type: "Customer"
           });
 
-          Alert.alert("Hello", "Welcome to the Rodeo Town Taxi App " + name)
+
           this.props.navigation.navigate('CMain', { name, lEmail, phoneNumber })
         }
       }.bind(this)).catch(function (error) {
-        Alert.alert("Something went wrong", "Try again");
+        Alert.alert("Something Went Wrong", "Try again");
 
       }).then(() => this.changeStateOfLoading());
 
     } catch (error) {
-      Alert.alert("Something went wrong", "Try again later");
+      Alert.alert("Something Went Wrong", "Try again later");
       this.props.navigation.navigate('URoles')
     }
 

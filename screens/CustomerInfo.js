@@ -58,16 +58,14 @@ class AdminLogin extends React.Component {
                 Type: "Customer"
             })
 
-
-
-        }.bind(this)).catch(error => alert(error)).then(Alert.alert("Success", "Your account has been updated"));
+        }.bind(this)).catch(error => alert(error)).then(Alert.alert("Process Complete", "Your account has been updated"));
 
         //if currentEmail != updatedEmail delete old document
         if (lEmail != this.state.currentEmail) {
             console.log(lEmail)
             console.log(this.state.currentEmail)
             dbh.collection("customer-info").doc(this.state.currentEmail).delete().then(function () {
-                //alert("Driver deleted from database")
+
 
             }.bind(this)).catch(error => alert(error));
         }
@@ -104,7 +102,7 @@ class AdminLogin extends React.Component {
         } catch (error) {
             console.log(error.toString())
         }
-        Alert.alert("Success", "Your account has been deleted")
+        Alert.alert("Process Complete", "Your account has been deleted")
 
         this.props.navigation.navigate('URoles')
     }

@@ -126,8 +126,8 @@ class DriverLogin extends React.Component {
             this.props.navigation.navigate("GlobalMap", { name, taxiNumber, role, phoneNumber });
           })
           .catch(function (error) {
-            //alert(error)
-            Alert.alert("Something went wrong", "Password incorrect.")
+
+            Alert.alert("Password is Incorrect", "Re-enter password and try again")
 
           }).then(() => this.changeStateOfLoading());
 
@@ -136,16 +136,16 @@ class DriverLogin extends React.Component {
           TaxiNumber: taxiNumber
         }).catch(function (error) {
 
-          Alert.alert("Something went wrong updating taxi number", "Ensure information you entered is correct.")
+          Alert.alert("Something Went Wrong Updating Taxi Number", "Ensure information you entered is correct")
           this.props.navigation.navigate('URoles')
         });
 
       } else {
         this.changeStateOfLoading();
-        Alert.alert("Not so Fast", "You do not have a driver account")
+        Alert.alert("You do not have a Driver account", "Have an Admin make an account for you and try again")
       }
     }.bind(this)).catch(function (error) {
-      Alert.alert("Something Went Wrong", "Ensure the information you entered is accurate.")
+      Alert.alert("Something Went Wrong", "Ensure the information you entered is accurate")
       //failsafe needed to stop loop
       this.props.navigation.navigate('URoles')
     });
@@ -299,7 +299,7 @@ class DriverLogin extends React.Component {
 
             <Button style={styles.button}
               full
-              transparent
+
               rounded
 
               onPress={() => this.props.navigation.navigate('ForgotPassword')}
@@ -311,7 +311,7 @@ class DriverLogin extends React.Component {
             <Button style={styles.button}
               full
               rounded
-              transparent
+
 
               onPress={() => this.props.navigation.navigate('URoles')}
             >

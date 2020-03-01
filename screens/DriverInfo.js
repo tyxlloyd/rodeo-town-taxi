@@ -97,7 +97,7 @@ class DriverInfo extends React.Component {
 
       } else {
 
-        alert("This driver does not exist")
+        Alert.alert("This Driver Does Not Exist", "Re-enter the email and try again")
 
       }
     }.bind(this)).catch(error => alert(error));

@@ -22,7 +22,7 @@ class CustomerMain extends React.Component {
     if (email == null || phoneNumber == null) {
 
       Alert.alert(
-        'You are logged in as a guest',
+        'You are Logged in as a Guest',
         'Would you like to create account?',
         [
           //{ text: 'Ask me later', onPress: () => console.log('Ask me later pressed') },

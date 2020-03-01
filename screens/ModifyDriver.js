@@ -71,7 +71,7 @@ class ModifyDriver extends React.Component {
             currentName: name,
             currentPhoneNumber: phoneNumber
         })
-        Alert.alert("Success", "Driver Info was Modified")
+        Alert.alert("Process Complete", "Driver information was updated")
 
     }
 

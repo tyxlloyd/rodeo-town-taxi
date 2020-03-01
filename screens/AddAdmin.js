@@ -29,12 +29,11 @@ class AddAdmin extends React.Component {
         let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         if (reg.test(email) == false) {
             //console.log("Email address is formated incorrectly");
-            Alert.alert("Error", "Email address is formated incorrectly")
+            Alert.alert("Incorrect Format", "Email address is formated incorrectly")
             return false;
         }
         else {
 
-            console.log("Email is Correct");
             return true;
         }
     }
@@ -83,7 +82,7 @@ class AddAdmin extends React.Component {
     checkPassword = (password) => {
         if (this.state.password.length < 6) {
             Alert.alert(
-                'Password is too short',
+                'Password is too Short',
                 'Make sure password is at least 6 characters long',
                 [
                     { text: 'OK', onPress: () => console.log('OK Pressed') },
@@ -133,7 +132,7 @@ class AddAdmin extends React.Component {
             //check if user exists to avoid adding them twice
             docName.get().then(function (doc) {
                 if (doc.exists) {
-                    Alert.alert("Error", "Admin already exists ")
+                    Alert.alert("Admin Already Exists", "This email is already being used by another admin")
 
                 } else {
                     dbh.collection("admin-info").doc(lEmail).set({
@@ -147,17 +146,17 @@ class AddAdmin extends React.Component {
                             alert(error)
                         });
                     })
-                    Alert.alert("Success", "Admin was added ")
+                    Alert.alert("Admin was Added", "This account now has access to the admin functions of this app")
                 }
             }.bind(this)).catch(function (error) {
-                Alert.alert("Something went wrong", "Try again.")
+                Alert.alert("Something Went Wrong", "Try again")
 
             });
 
 
 
         } catch (error) {
-            Alert.alert("Error", "Try again ");
+            Alert.alert("Something Went Wrong", "Try again ");
             this.props.navigation.navigate('AMain')
         }
     }
@@ -238,7 +237,7 @@ class AddAdmin extends React.Component {
 
     render() {
         return (
-            <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
+            <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss() }}>
                 <KeyboardAvoidingView style={styles.container} behavior="padding">
                     <StatusBar barStyle="dark-content" />
 
