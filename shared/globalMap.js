@@ -341,7 +341,7 @@ export class GlobalMap extends React.Component {
     //Check if this.state.region is null first.
     isNotInRangeFunction = () => {
         const MAX_NORTHING = 47.141943;
-        const MIN_NORTHING = 46.48;
+        const MIN_NORTHING = 46.80;
         const MAX_EASTING = -120.331190;
         const MIN_EASTING = -120.756988;
         
