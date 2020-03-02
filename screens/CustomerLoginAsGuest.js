@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, Alert, StatusBar, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { Container, Content, Header, Form, Input, Item, Button, Label, Icon } from 'native-base';
-import Spinner from 'react-native-loading-spinner-overlay';
 
 import * as firebase from 'firebase';
 import '@firebase/firestore';
@@ -24,16 +23,6 @@ class CustomerLogin extends React.Component {
 
     componentWillUnmount() {
         this.mounted = false;
-    }
-    changeStateOfLoading = () => {
-        if (this.mounted) {
-            this.setState({
-
-                loading: !this.state.loading,
-            });
-        }
-
-
     }
     ifEmptyToggle = (name, phoneNumber) => {
         if (name == '') {
@@ -150,14 +139,6 @@ class CustomerLogin extends React.Component {
                     <StatusBar barStyle="dark-content" />
 
                     <Form>
-                        <Spinner
-                            //visibility of Overlay Loading Spinner
-                            visible={this.state.loading}
-                            //Text with the Spinner
-                            //textContent={'Loading...'}
-                            //Text style of the Spinner Text
-                            textStyle={styles.spinnerTextStyle}
-                        />
                         <View style={styles.titleContainer}>
                             {this.TitlePicker()}
                         </View>
@@ -201,7 +182,7 @@ class CustomerLogin extends React.Component {
                         <Button style={styles.button}
                             full
                             rounded
-                         
+
                             onPress={() => this.props.navigation.navigate('URoles')}
                         >
                             <Text adjustsFontSizeToFit

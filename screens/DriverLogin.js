@@ -148,7 +148,7 @@ class DriverLogin extends React.Component {
       Alert.alert("Something Went Wrong", "Ensure the information you entered is accurate")
       //failsafe needed to stop loop
       this.props.navigation.navigate('URoles')
-    });
+    }.bind(this));
 
   }
 

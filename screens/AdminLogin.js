@@ -68,6 +68,7 @@ class AdminLogin extends React.Component {
 
     }
   }
+
   loginUser = (email, password) => {
     this.mounted = true;
 
@@ -125,8 +126,8 @@ class AdminLogin extends React.Component {
       }
     }.bind(this)).catch(function (error) {
       Alert.alert("Something Went Wrong", "Ensure the information you entered is accurate");
-      this.props.navigation.navigate('URoles')
-    });
+      this.props.navigation.navigate('URoles');
+    }.bind(this));
 
 
   }
@@ -257,7 +258,7 @@ class AdminLogin extends React.Component {
 
             <Button style={styles.button}
               full
-            
+
               rounded
               onPress={() => this.props.navigation.navigate('ForgotPassword')}
 
