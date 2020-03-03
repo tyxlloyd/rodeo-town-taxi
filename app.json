@@ -29,6 +29,9 @@
       "buildNumber": "1.0.0",
       "config": {
         "googleMapsApiKey": "AIzaSyD8dx8ZaMrgRLPmjTWOCcOkdwFAxLHmYPY"
+      },
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "This app will use your location to show your taxi driver or customer where you are on the map."
       }
     },
     "android": {

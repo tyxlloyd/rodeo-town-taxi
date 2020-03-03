@@ -34,7 +34,7 @@ class UserRoles extends React.Component {
 
       if (status !== 'granted') {
         Alert.alert("Please Enable Location Access",
-          "We need your location to use the map. Please go into your phone's settings menu to enable location services for Rodeo Town Taxi.");
+          "We need your location to show your driver or customer where you are on the map. Please go into your device's settings menu to enable location services for Rodeo Town Taxi.");
       }
       else {
         this.props.navigation.navigate(pageToNavigateTo);
