@@ -17,7 +17,7 @@ const dial = () => {
 class About extends React.Component {
   render() {
     return (
-      <ScrollView>
+      <View>
         <StatusBar barStyle="dark-content" />
         <Header
           leftComponent={
@@ -28,12 +28,14 @@ class About extends React.Component {
           centerComponent={{ text: 'About', style: { color: '#000', fontSize: 24, fontWeight: 'bold', fontFamily:'arvo-regular' } }}
           containerStyle={{ backgroundColor: '#fec33a' }}
         />
+        <ScrollView>
         <Image
           style={{ width: '100%', height: 200 }}
           source={require('../assets/images/taxi.jpg')} />
           <View stlye={styles.secondContainer}>
         <Button
           title="Call Rodeo Town"
+          titleStyle={styles.buttonText}
           onPress={dial}
           buttonStyle={styles.callButton}
         />
@@ -47,8 +49,8 @@ class About extends React.Component {
         </View>
         <View style={styles.secondContainer}>
         <Text style={{ textAlign: 'center', fontWeight: 'bold'}}>SAFETY</Text>
-        <Text style={{ textAlign: 'center' }}>Our drivers have passed background checks and fingerprinting.</Text>
-        <Text style={{ textAlign: 'center' }}>They are trained in CPR/First aid, driving defense courses, blood borne pathogens and safety seat training.</Text>
+        <Text style={{ textAlign: 'center' }}>Our drivers have passed background checks and fingerprinting.
+          They are trained in CPR/First aid, driving defense courses, blood borne pathogens and safety seat training.</Text>
         </View>
         <View style={styles.secondContainer}>
         <Text style={{ textAlign: 'center', fontWeight: 'bold'}}>HOURS OF OPERATION</Text>
@@ -60,9 +62,14 @@ class About extends React.Component {
         <Text style={{ textAlign: 'center', fontWeight: 'bold' }}>Central Washington University</Text>
         <Text style={{ textAlign: 'center' }}>Tyler Lloyd, Junyu Lu, Austin Richardson, Jose Rodriguez, and Stephen Stengel</Text>
         </View>
+        <View style={styles.secondContainer}>
+        <Text style={{ textAlign: 'center', fontWeight: 'bold', color: '#0000EE' }} onPress={() => Linking.openURL('mailto:rodeotownapp@gmail.com')}>App support: rodeotownapp@gmail.com</Text>
+        <Text style={{ textAlign: 'center', fontWeight: 'bold', color: '#0000EE' }} onPress={() => Linking.openURL('https://github.com/tyxlloyd/rodeo-town-taxi/blob/master/documents/privacy_policy.md')}>Privacy Policy</Text>
+        </View>
         </View>
         </View>
       </ScrollView>
+      </View>
     );
   }
 }
@@ -90,7 +97,10 @@ const styles = StyleSheet.create({
     padding: 15,
     marginTop: 20,
     marginBottom: 40
-  }
+  },
+  buttonText: {
+    fontFamily: 'arvo-regular'
+  },
 });
 
 export default About;

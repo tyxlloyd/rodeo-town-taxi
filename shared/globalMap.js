@@ -227,7 +227,6 @@ export class GlobalMap extends React.Component {
         // If a driver accepts their ride request
         this.socket.on('confirmation', message => {
             Alert.alert("Your taxi is on the way!", "Cab #" + message.taxiNumber + " is on its way to pick you up!");
-            //this.showDriverLocation(message.driverID);
             this.setState({ markerVisibility: 1.0 });// Show driver location on the map
             this.setState({ driverID: message.driverID }); // Save driver's socket id
             this.setState({ driverAcceptedRequest: true }); // Used if the customer wants to cancel the request
@@ -426,14 +425,6 @@ export class GlobalMap extends React.Component {
         }
     }
 
-    showDriverLocation(driverID) {
-        var request = {
-            customerID: this.socket.id,
-            driverID: driverID,
-        }
-        this.socket.emit('get driver location', request);
-    }
-
     render() {
         return (
             <View style={styles.container}>
@@ -491,7 +482,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#000'
     },
     mapStyle: {
-        //width: Dimensions.get('window').width,
         flex: 1
     },
     enabled: {
