@@ -7,50 +7,62 @@ import Icon from 'react-native-vector-icons/AntDesign';
 
 const dial = () => {
   if (Platform.OS === 'android') {
-    phoneNumber = Linking.openURL('tel:${5099294222}');
+    Linking.openURL('tel:${5099294222}');
   }
   else {
-    phoneNumber = Linking.openURL('telprompt:${5099294222}');
+    Linking.openURL('telprompt:${5099294222}');
   }
 }
 
 class About extends React.Component {
   render() {
     return (
-      <View style={styles.container}>
+      <ScrollView>
         <StatusBar barStyle="dark-content" />
         <Header
           leftComponent={
             <Icon name={'logout'}
-            size={28}
-              onPress={(() => this.props.navigation.navigate("URoles"))}/>
+              size={28}
+              onPress={(() => this.props.navigation.navigate("URoles"))} />
           }
-          centerComponent={{ text: 'About', style: { color: '#000', fontSize: 24, fontWeight: 'bold' } }}
+          centerComponent={{ text: 'About', style: { color: '#000', fontSize: 24, fontWeight: 'bold', fontFamily:'arvo-regular' } }}
           containerStyle={{ backgroundColor: '#fec33a' }}
         />
         <Image
           style={{ width: '100%', height: 200 }}
           source={require('../assets/images/taxi.jpg')} />
-        <Text></Text>
-        <Text h4 style={{ textAlign: 'center', fontWeight: 'bold' }}>FAMILY OPERATED BUSINESS FOR 13 YEARS! </Text>
-        <Text></Text>
-        <Text style={{ textAlign: 'center', fontWeight: 'bold', textDecorationLine: 'underline' }}>SERVICES</Text>
-        <Text style={{ textAlign: 'center' }}>We provide 24/7 service, along with courier, deliveries, lockouts and jump starts. </Text>
-        <Text></Text>
-        <Text style={{ textAlign: 'center', fontWeight: 'bold', textDecorationLine: 'underline' }}>SAFETY</Text>
-        <Text style={{ textAlign: 'center' }}>Our drivers have passed background checks and fingerprinting.</Text>
-        <Text style={{ textAlign: 'center' }}>They are trained in CPR/First aid, driving defense courses, blood borne pathogens and safety seat training.</Text>
-        <Text></Text>
-        <Text style={{ textAlign: 'center', fontWeight: 'bold', textDecorationLine: 'underline' }}>HOURS OF OPERATION</Text>
-        <Text style={{ textAlign: 'center' }}>We operate 24 hours a day and 7 days a week!</Text>
-        <Text></Text>
-        {/* <Text style={{ fontWeight: 'bold' }}> This app is developed by Rodeo Speedwagon (Tyler Lloyd, Junyu Lu, Austin Richardson, Jose Rodriguez, and Stephen Stengel)</Text> */}
+          <View stlye={styles.secondContainer}>
         <Button
           title="Call Rodeo Town"
           onPress={dial}
           buttonStyle={styles.callButton}
         />
-      </View>
+        <View styles={{justifyContent: 'space-around', alignItems: 'center'}}>
+        <View styles={styles.secondContainer}>
+        <Text h4 style={{ textAlign: 'center', fontWeight: 'bold', marginLeft: 5, marginRight: 5}}>FAMILY OPERATED BUSINESS FOR 13 YEARS! </Text>
+        </View>
+        <View style={styles.secondContainer}>
+        <Text style={{ textAlign: 'center', fontWeight: 'bold'}}>SERVICES</Text>
+        <Text style={{ textAlign: 'center' }}>We provide 24/7 service, along with courier, deliveries, lockouts and jump starts. </Text>
+        </View>
+        <View style={styles.secondContainer}>
+        <Text style={{ textAlign: 'center', fontWeight: 'bold'}}>SAFETY</Text>
+        <Text style={{ textAlign: 'center' }}>Our drivers have passed background checks and fingerprinting.</Text>
+        <Text style={{ textAlign: 'center' }}>They are trained in CPR/First aid, driving defense courses, blood borne pathogens and safety seat training.</Text>
+        </View>
+        <View style={styles.secondContainer}>
+        <Text style={{ textAlign: 'center', fontWeight: 'bold'}}>HOURS OF OPERATION</Text>
+        <Text style={{ textAlign: 'center' }}>We operate 24 hours a day and 7 days a week!</Text>
+        </View>
+        <View style={styles.secondContainer}>
+        <Text style={{ textAlign: 'center', fontWeight: 'bold' }}>DEVELOPED BY</Text>
+        <Text style={{ textAlign: 'center', fontWeight: 'bold' }}>Rodeo Speedwagon</Text>
+        <Text style={{ textAlign: 'center', fontWeight: 'bold' }}>Central Washington University</Text>
+        <Text style={{ textAlign: 'center' }}>Tyler Lloyd, Junyu Lu, Austin Richardson, Jose Rodriguez, and Stephen Stengel</Text>
+        </View>
+        </View>
+        </View>
+      </ScrollView>
     );
   }
 }
@@ -62,6 +74,11 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width,
     backgroundColor: '#fff'
   },
+  secondContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 10
+  },
   button: {
     backgroundColor: '#484848'
   },
@@ -69,7 +86,10 @@ const styles = StyleSheet.create({
     width: '80%',
     backgroundColor: '#484848',
     justifyContent: 'center',
-    alignSelf: 'center'
+    alignSelf: 'center',
+    padding: 15,
+    marginTop: 20,
+    marginBottom: 40
   }
 });
 

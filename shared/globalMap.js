@@ -8,8 +8,8 @@ import io from 'socket.io-client';
 
 const config = require('./config').default
 
-var KEY = config.mapKey;
-var SERVER = config.server;
+var KEY = config.mapKey; // The Google Maps API key
+var SERVER = config.server; // The URL of the App Engine running the server code
 
 export class GlobalMap extends React.Component {
     mounted = false;
@@ -17,13 +17,13 @@ export class GlobalMap extends React.Component {
         super(props);
 
         this.state = {
-            name: this.props.navigation.getParam('name'),
-            taxiNumber: this.props.navigation.getParam('taxiNumber'),
-            role: this.props.navigation.getParam('role'),
+            name: this.props.navigation.getParam('name'), // Customer name
+            taxiNumber: this.props.navigation.getParam('taxiNumber'), // Driver's cab number
+            role: this.props.navigation.getParam('role'), // 'customer' or 'driver'
             phoneNumber: this.props.navigation.getParam('phoneNumber'),
-            phoneNumberOfOtherUser: null,
-            destination: null,
-            region: {
+            phoneNumberOfOtherUser: null, // Gets set when a ride request is accepted
+            destination: null, // The destination for react-native-maps-directions
+            region: { // A starting point for the map. This is initially set to Ellensburg
                 latitude: 47.0085,
                 longitude: -120.5291,
                 latitudeDelta: 0.045,
@@ -35,25 +35,27 @@ export class GlobalMap extends React.Component {
                 latitudeDelta: 0.045,
                 longitudeDelta: 0.045,
             },
-            mapArea: {
+            mapArea: { // When this changes, the map will automatically scroll
                 latitude: 47.0085,
                 longitude: -120.5291,
                 latitudeDelta: 0.045,
                 longitudeDelta: 0.045,
             },
-            markerVisibility: 0.0,
+            markerVisibility: 0.0, // For showing where the other user is
             driverAcceptedRequest: false,
-            driverID: null,
-            customerID: null,
-            requestSent: false,
-            buttonTitle: " ",
-            failedToConnect: false,
-            queueSize: 0,
+            driverID: null, // The socket id of the driver
+            customerID: null, // The socket id of the customer
+            requestSent: false, // If the customer has a request in the queue already
+            buttonTitle: " ", // The text for the grey button at the bottom
+            failedToConnect: false, // If a connection to the server cannot be established
+            queueSize: 0, // How many customers are waiting in the queue
         }
     }
 
     componentDidMount() {
         this.mounted = true;
+
+        // This function gets the location of the user
         this.watchID = navigator.geolocation.watchPosition((position) => {
             var lat = parseFloat(position.coords.latitude)
             var long = parseFloat(position.coords.longitude)
@@ -65,10 +67,14 @@ export class GlobalMap extends React.Component {
                 latitudeDelta: 0.045
             }
 
+            // Set the current location of the user
             this.setState({region: lastRegion});
 
+            // If they are a driver, the map will focus on their location
             if(this.state.role == 'driver'){
                 this.setState({ mapArea: lastRegion })
+
+                // If they have a customer assigned to them, send the customer their location
                 if(this.state.customerID != null){
                     var response = {
                         customerID: this.state.customerID,
@@ -78,6 +84,8 @@ export class GlobalMap extends React.Component {
                 }
             }
             else{
+                // If they are a customer and they have a driver assigned to them,
+                // send the driver their location
                 if(this.state.driverID != null){
                     var response = {
                         driverID: this.state.driverID,
@@ -85,6 +93,8 @@ export class GlobalMap extends React.Component {
                     }
                     this.socket.emit('receive customer location', response);
                 }
+                // If they are a customer and they do not have a driver assigned to them,
+                // focus the map on their location
                 else{
                     this.setState({mapArea: lastRegion});
                 }
@@ -93,6 +103,7 @@ export class GlobalMap extends React.Component {
             { enableHighAccuracy: true, timeout: 20000, maximumAge: 10000, }
         );
 
+        // Sets the default text of the grey button depending on user role
         if(this.state.role == 'driver'){
             this.setState({ buttonTitle: "Request A Customer" });
         }
@@ -100,6 +111,7 @@ export class GlobalMap extends React.Component {
             this.setState({ buttonTitle: "Hail A Cab" });
         }
 
+        // Connect to the server
         this.socket = io(SERVER);
         if(this.state.role == 'driver'){
             this.driverSocketListener();
@@ -109,6 +121,7 @@ export class GlobalMap extends React.Component {
         }
     }
 
+    // Dial the other user's phone number
     callOtherUser(number) {
         var phoneNumber = '';
         if (Platform.OS == 'android') {
@@ -125,7 +138,10 @@ export class GlobalMap extends React.Component {
         navigator.geolocation.clearWatch(this.watchID);
     }
 
+    // All of the events that a driver would need to listen for
     driverSocketListener(){
+
+        // If a connection to the server cannot be established
         this.socket.on('connect_error', () => {
             if(this.state.failedToConnect == false){
                 Alert.alert('Failed to connect to server', 'Please call Rodeo Town Taxi to hail a cab');
@@ -134,7 +150,9 @@ export class GlobalMap extends React.Component {
             }
         });
 
+        // If the driver is assigned a customer after pressing the grey button
         this.socket.on('ride request', request => {
+            // Convert coordinates to a readable address
             fetch('https://maps.googleapis.com/maps/api/geocode/json?address=' + request.lat + ',' + request.long + '&key=' + KEY)
             .then((response) => response.json())
             .then((responseJson) => {
@@ -142,23 +160,27 @@ export class GlobalMap extends React.Component {
                 this.setState({ buttonTitle: responseJson.results[0].formatted_address });
             });
             
+            // destination = customer's location
             let destination = {
                 latitude: request.lat,
                 longitude: request.long,
             }
 
-            this.setState({customerID: request.id});
-            this.setState({destination: destination});
-            this.setState({locationOfOtherUser: destination});
-            this.setState({markerVisibility: 1.0});
-            this.setState({ phoneNumberOfOtherUser: request.phoneNumber });
+            this.setState({customerID: request.id}); // Socket id of customer
+            this.setState({destination: destination}); // destination = customer's location, used for react-native-maps-directions
+            this.setState({locationOfOtherUser: destination}); // locationOfOtherUser = customer's location
+            this.setState({markerVisibility: 1.0}); // Show the destination marker on the map
+            this.setState({ phoneNumberOfOtherUser: request.phoneNumber }); // Save the customer's phone number
+
+            // Driver's current location
             var response = {
                 customerID: this.state.customerID,
                 driverLocation: this.state.region,
             }
-            this.socket.emit('receive driver location', response);
+            this.socket.emit('receive driver location', response); // Send driver location to customer
         }),
 
+        // Shows how many customers are waiting in line
         this.socket.on('queue size', message => {
             this.setState({ queueSize: message });
             if(this.state.customerID == null && this.mounted){
@@ -166,15 +188,18 @@ export class GlobalMap extends React.Component {
             }
         }),
 
+        // If the driver requests a customer while the queue is empty
         this.socket.on('empty queue', message => {
             Alert.alert("Error", message);
         }),
 
+        // Update the map to the customer's location
         this.socket.on('receive customer location', message => {
             this.setState({locationOfOtherUser: message});
             this.setState({destination: message});
         }),
 
+        // If the customer cancels their ride request, reset all variables to their default state
         this.socket.on('cancel ride', message => {
             Alert.alert(message, "Your customer has cancelled their ride request.");
             if(this.mounted){
@@ -187,7 +212,10 @@ export class GlobalMap extends React.Component {
         })
     }
 
+    // All of the events that a customer would need to listen for
     customerSocketListener(){
+
+        // If a connection to the server cannot be established
         this.socket.on('connect_error', () => {
             if(this.state.failedToConnect == false){
                 Alert.alert('Failed to connect to server', 'Please call Rodeo Town Taxi to hail a cab');
@@ -196,16 +224,18 @@ export class GlobalMap extends React.Component {
             }
         });
 
+        // If a driver accepts their ride request
         this.socket.on('confirmation', message => {
             Alert.alert("Your taxi is on the way!", "Cab #" + message.taxiNumber + " is on its way to pick you up!");
-            this.showDriverLocation(message.driverID);
-            this.setState({ markerVisibility: 1.0 });
-            this.setState({ driverID: message.driverID });
-            this.setState({ driverAcceptedRequest: true });
+            //this.showDriverLocation(message.driverID);
+            this.setState({ markerVisibility: 1.0 });// Show driver location on the map
+            this.setState({ driverID: message.driverID }); // Save driver's socket id
+            this.setState({ driverAcceptedRequest: true }); // Used if the customer wants to cancel the request
             this.setState({ buttonTitle: "Cancel Request" });
-            this.setState({ phoneNumberOfOtherUser: message.phoneNumber });
+            this.setState({ phoneNumberOfOtherUser: message.phoneNumber }); // Save the driver's phone number
         }),
 
+        // Show how many customers are waiting in line
         this.socket.on('queue size', message => {
             this.setState({ queueSize: message });
             if(this.state.driverID == null && this.mounted){
@@ -218,16 +248,16 @@ export class GlobalMap extends React.Component {
             }
         }),
 
+        // Update the map based on the driver's current location
         this.socket.on('receive driver location', message => {
             this.setState({ locationOfOtherUser: message });
-            //this.setState({ destination: message });
             this.setState({ mapArea: message });
         }),
 
+        // If the driver cancels the request, reset the map to its default state
         this.socket.on('cancel ride', message => {
             Alert.alert(message, "Your driver has cancelled your ride request.");
             if(this.mounted){
-                //this.setState({ destination: null });
                 this.setState({ markerVisibility: 0.0 });
                 this.setState({ driverID: null });
                 this.setState({ mapArea: this.state.region });
@@ -238,6 +268,7 @@ export class GlobalMap extends React.Component {
         })
     }
 
+    // If the user presses the phone icon
     pressHandlerNumber() {
         if (this.state.role == 'driver') {
             if (this.state.customerID != null) {
@@ -278,8 +309,10 @@ export class GlobalMap extends React.Component {
         }
     }
 
+    // Change functionality depending on role and whether or not they have a pending ride request
     pressHandler(){
         if(this.state.role == 'driver'){
+            // If the driver has accepted a request
             if(this.state.customerID != null){
                 Alert.alert(
                     'End ride request',
@@ -293,11 +326,13 @@ export class GlobalMap extends React.Component {
                     {cancelable: false},
                   );
             }
+            // If the driver has not accepted a request
             else{
                 this.sendCustomerRequest();
             }
         }
         else{
+            // If the customer has not sent a request
             if(this.state.requestSent == false){
                 this.sendRideRequest();
             }
@@ -307,7 +342,9 @@ export class GlobalMap extends React.Component {
         }
     }
 
+    // Lets the driver accept a ride request
     sendCustomerRequest(){
+        // request will be sent to the customer that requested the ride
         var request= {
             taxiNumber: this.state.taxiNumber,
             id: this.socket.id,
@@ -316,13 +353,15 @@ export class GlobalMap extends React.Component {
         this.socket.emit('customer request', request);
     }
 
+    // Lets the customer hail a cab
     sendRideRequest() {
-        if ( this.isNotInRangeFunction() )
+        if ( this.isNotInRangeFunction() ) // Check if the customer is in the Rodeo Town service area
         {
             Alert.alert("You are not in range of service!", "Try calling to see if we can pick you up!");
             this.props.navigation.navigate('About');
         }
         else{
+            // Send this information to the queue, which will be sent to the driver who accepts it
             var request = {
                 name: this.state.name,
                 long: this.state.region.longitude,
@@ -338,7 +377,6 @@ export class GlobalMap extends React.Component {
     }
 
     //Checks if the GPS location is within range of service.
-    //Check if this.state.region is null first.
     isNotInRangeFunction = () => {
         const MAX_NORTHING = 47.141943;
         const MIN_NORTHING = 46.80;
@@ -357,12 +395,12 @@ export class GlobalMap extends React.Component {
         }
         
             return false;
-        }
+    }
 
+    // Lets the driver cancel the ride request
     cancelCustomerRequest(){
         this.socket.emit('cancel ride request', this.state.customerID);
         this.setState({ customerID: null });
-        //this.setState({ destination: null });
         this.setState({ mapArea: this.state.region });
         this.setState({ buttonTitle: "Request A Customer\nCustomers In Line: " + this.state.queueSize });
         this.setState({ markerVisibility: 0.0 });
@@ -370,6 +408,7 @@ export class GlobalMap extends React.Component {
         Alert.alert("You have cancelled your ride request");
     }
 
+    // Lets the customer cancel the ride request
     cancelRideRequest(){
         if(this.state.driverID == null){
             Alert.alert("Please be patient", 
@@ -393,10 +432,6 @@ export class GlobalMap extends React.Component {
             driverID: driverID,
         }
         this.socket.emit('get driver location', request);
-    }
-
-    navigateToChat(name, taxiNumber, role){
-        this.props.navigation.navigate("DriverChat", { name, taxiNumber, role });
     }
 
     render() {
