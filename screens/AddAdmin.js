@@ -135,6 +135,7 @@ class AddAdmin extends React.Component {
                     Alert.alert("Admin Already Exists", "This email is already being used by another admin")
 
                 } else {
+                    Alert.alert("Admin was Added", "This account now has access to the admin functions of this app")
                     dbh.collection("admin-info").doc(lEmail).set({
                         Name: name,
                         Email: lEmail,
@@ -146,7 +147,6 @@ class AddAdmin extends React.Component {
                             alert(error)
                         });
                     })
-                    Alert.alert("Admin was Added", "This account now has access to the admin functions of this app")
                 }
             }.bind(this)).catch(function (error) {
                 Alert.alert("Something Went Wrong", "Try again")

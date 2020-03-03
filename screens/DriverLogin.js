@@ -77,6 +77,18 @@ class DriverLogin extends React.Component {
     }
 
   }
+  numbersOnly = (numbers) => {
+    let reg = /^[0-9]+$/;
+    if (reg.test(numbers) == false) {
+      //console.log("Email address is formated incorrectly");
+      Alert.alert("Incorrect Format", "Taxi numbers should only contain digits without spaces or special characters")
+      return false;
+    }
+    else {
+
+      return true;
+    }
+  }
 
 
   loginUser = (email, taxiNumber, password) => {
@@ -99,6 +111,9 @@ class DriverLogin extends React.Component {
 
     //turn off error if user inputs data
     this.ifNotEmptyToggle(email, taxiNumber, password);
+    if (this.numbersOnly(taxiNumber) == false) {
+      return;
+    }
     this.changeStateOfLoading();
 
     //in addition to logging in with a password you will retrieve

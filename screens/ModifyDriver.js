@@ -27,6 +27,19 @@ class ModifyDriver extends React.Component {
         this.props.navigation.navigate('AMain')
     }
 
+    numbersOnly = (numbers) => {
+        let reg = /^[0-9]+$/;
+        if (reg.test(numbers) == false) {
+            //console.log("Email address is formated incorrectly");
+            Alert.alert("Incorrect Format", "Phone numbers should only contain digits without spaces or special characters")
+            return false;
+        }
+        else {
+
+            return true;
+        }
+    }
+
     updateUserInfo = (name, email, phoneNumber) => {
 
 
@@ -49,7 +62,11 @@ class ModifyDriver extends React.Component {
         const dbh = firebase.firestore();
         var docName = dbh.collection("driver-info").doc(lEmail);
 
+        if (this.numbersOnly(phoneNumber) == false) {
+            return;
+        }
 
+        Alert.alert("Process Complete", "Driver information was updated")
 
         docName.get().then(function (doc) {
             //If the document does not exist, it will be created. 
@@ -63,7 +80,6 @@ class ModifyDriver extends React.Component {
             })
 
 
-
         }.bind(this)).catch(error => alert(error));
 
 
@@ -71,7 +87,7 @@ class ModifyDriver extends React.Component {
             currentName: name,
             currentPhoneNumber: phoneNumber
         })
-        Alert.alert("Process Complete", "Driver information was updated")
+
 
     }
 

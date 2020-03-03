@@ -61,6 +61,18 @@ class DriverInfo extends React.Component {
     }
 
   }
+  numbersOnly = (numbers) => {
+    let reg = /^[0-9]+$/;
+    if (reg.test(numbers) == false) {
+      //console.log("Email address is formated incorrectly");
+      Alert.alert("Incorrect Format", "Phone numbers should only contain digits without spaces or special characters")
+      return false;
+    }
+    else {
+
+      return true;
+    }
+  }
   navigateToProfile = (name, email, phoneNumber) => {
 
     if (email == '' || name == '' || phoneNumber == '') {
@@ -79,7 +91,9 @@ class DriverInfo extends React.Component {
     }
 
     this.ifNotEmptyToggle(email, name, phoneNumber);
-
+    if (this.numbersOnly(phoneNumber) == false) {
+      return;
+    }
 
     //email made lowercase because .exists is case sensitive
     var lEmail = email.toLowerCase();
@@ -173,7 +187,7 @@ class DriverInfo extends React.Component {
 
   render() {
     return (
-      <TouchableWithoutFeedback onPress={() => {Keyboard.dismiss()}}>
+      <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss() }}>
         <KeyboardAvoidingView style={styles.container} behavior="padding">
           <StatusBar barStyle="dark-content" />
 
