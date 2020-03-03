@@ -149,7 +149,7 @@ class AddAdmin extends React.Component {
                     })
                 }
             }.bind(this)).catch(function (error) {
-                Alert.alert("Something Went Wrong", "Try again")
+                alert(error)
 
             });
 

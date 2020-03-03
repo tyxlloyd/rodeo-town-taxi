@@ -91,7 +91,6 @@ class RemoveAdmin extends React.Component {
                     }).catch(function (error) {
                         alert(error)
 
-
                     });
 
                 } else {
@@ -100,12 +99,11 @@ class RemoveAdmin extends React.Component {
                 }
 
             }).catch(function (error) {
-                Alert.alert("Something Went Wrong", "Try again");
-                process.exit(1)
+                alert(error)
 
             })
         } catch (error) {
-            alert(error)
+            Alert.alert("Something Went Wrong", "Try again")
 
         }
 
