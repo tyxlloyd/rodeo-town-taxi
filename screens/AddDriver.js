@@ -107,6 +107,19 @@ class AddDriver extends React.Component {
             return true;
         }
     }
+
+    numbersOnly = (numbers) => {
+        let reg = /^[0-9]+$/;
+        if (reg.test(numbers) == false) {
+            //console.log("Email address is formated incorrectly");
+            Alert.alert("Incorrect Format", "Phone numbers should only contain digits without spaces or special characters")
+            return false;
+        }
+        else {
+
+            return true;
+        }
+    }
     signUpUser = (name, email, password, phoneNumber) => {
 
         try {
@@ -127,6 +140,10 @@ class AddDriver extends React.Component {
             }
 
             this.ifNotEmptyToggle(email, name, phoneNumber, password);
+
+            if (this.numbersOnly(phoneNumber) == false) {
+                return;
+            }
 
             //check that password is at least 6 characters
             if (this.checkPassword(password) == false) {
@@ -152,6 +169,7 @@ class AddDriver extends React.Component {
                     Alert.alert("Driver Already Exists", "Another driver is already using this email")
 
                 } else {
+                    Alert.alert("Driver was Added", "This account now has access to the driver functions of this app")
                     dbh.collection("driver-info").doc(lEmail).set({
                         Name: name,
                         Email: lEmail,
@@ -166,7 +184,7 @@ class AddDriver extends React.Component {
                         });
 
                     })
-                    Alert.alert("Driver was Added", "This account now has access to the driver functions of this app")
+
                 }
             }.bind(this)).catch(function (error) {
                 Alert.alert("Something Went Wrong", "Try again")

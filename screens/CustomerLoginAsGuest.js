@@ -53,6 +53,20 @@ class CustomerLogin extends React.Component {
         }
 
     }
+
+    numbersOnly = (numbers) => {
+        let reg = /^[0-9]+$/;
+        if (reg.test(numbers) == false) {
+            //console.log("Email address is formated incorrectly");
+            Alert.alert("Incorrect Format", "Phone numbers should only contain digits without spaces or special characters")
+            return false;
+        }
+        else {
+
+            return true;
+        }
+    }
+
     loginUser = (name, phoneNumber) => {
         //As guest no user information is added to database 
         //if the user wishes to add their information this can be done 
@@ -70,8 +84,11 @@ class CustomerLogin extends React.Component {
             );
             return;
         }
-        this.mounted = true;
         this.ifNotEmptyToggle(name, phoneNumber);
+        if (this.numbersOnly(phoneNumber) == false) {
+            return;
+        }
+
         var taxiNumber = 0;
         var role = "customer";
         console.log("Customer: " + phoneNumber);
