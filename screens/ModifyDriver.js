@@ -29,7 +29,7 @@ class ModifyDriver extends React.Component {
 
     numbersOnly = (numbers) => {
         let reg = /^[0-9]+$/;
-        if (reg.test(numbers) == false) {
+        if (reg.test(numbers) == false || numbers.length != 10) {
             //console.log("Email address is formated incorrectly");
             Alert.alert("Incorrect Format", "Phone numbers should only contain digits without spaces or special characters")
             return false;
