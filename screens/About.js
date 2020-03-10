@@ -1,18 +1,9 @@
 import React from 'react';
 import { StyleSheet, Linking, Platform, View, Dimensions, ScrollView, StatusBar } from 'react-native';
+import { dialFunction } from '../shared/dialFunction';
 import { Header, Button, Text, Image } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/AntDesign';
 
-
-
-const dial = () => {
-  if (Platform.OS === 'android') {
-    Linking.openURL('tel:${5099294222}');
-  }
-  else {
-    Linking.openURL('telprompt:${5099294222}');
-  }
-}
 
 class About extends React.Component {
   render() {
@@ -36,7 +27,7 @@ class About extends React.Component {
         <Button
           title="Call Rodeo Town"
           titleStyle={styles.buttonText}
-          onPress={dial}
+          onPress={dialFunction}
           buttonStyle={styles.callButton}
         />
         <View styles={{justifyContent: 'space-around', alignItems: 'center'}}>
