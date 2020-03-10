@@ -26,7 +26,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.rodeotowntaxi.rodeotown",
-      "buildNumber": "1.0.3",
+      "buildNumber": "1.0.4",
       "config": {
         "googleMapsApiKey": "AIzaSyD8dx8ZaMrgRLPmjTWOCcOkdwFAxLHmYPY"
       },
