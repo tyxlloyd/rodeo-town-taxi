@@ -1,9 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, View, Alert, StatusBar, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { dialFunction } from '../shared/dialFunction';
 import { Container, Content, Header, Form, Input, Item, Button, Label, Icon } from 'native-base';
 
 import * as firebase from 'firebase';
 import '@firebase/firestore';
+
 
 class CustomerLogin extends React.Component {
     mounted = false;
@@ -205,6 +207,25 @@ class CustomerLogin extends React.Component {
                             <Text adjustsFontSizeToFit
                                 numberOfLines={1} style={styles.regularButtonText}>Home</Text>
                         </Button>
+                        
+
+
+                        <View
+                            style={styles.horizontalRule}
+                        />
+                        <Text style={styles.regularText}>
+                            Or call our telephone dispatcher the good old fashioned way:
+                        </Text>
+                        
+                        <Button style={styles.lastButton}
+                            full
+                            rounded
+
+                            onPress={ dialFunction }
+                        >
+                            <Text adjustsFontSizeToFit
+                                numberOfLines={1} style={styles.regularButtonText}>Call our telephone</Text>
+                        </Button>
 
                     </Form>
                 </Container>
@@ -227,7 +248,10 @@ const styles = StyleSheet.create({
     button: {
         marginTop: 45,
         backgroundColor: '#fec33a'
-
+    },
+    lastButton: {
+        marginTop: 20,
+        backgroundColor: '#fec33a'
     },
     regularButtonText: {
         color: 'black',
@@ -245,7 +269,6 @@ const styles = StyleSheet.create({
     },
     titleLabel: {
         fontSize: 40,
-
     },
     label: {
         color: 'black'
@@ -254,11 +277,18 @@ const styles = StyleSheet.create({
         marginTop: 30,
         borderColor: 'black',
         //backgroundColor: '#fff',
-
     },
     textInput: {
         fontSize: 20
-
+    },
+    horizontalRule: {
+        borderBottomColor: 'black',
+        borderBottomWidth: 1,
+        marginTop: 20,
+    },
+    regularText: {
+        color: 'black',
+        textAlign: 'center',
     }
 });
 
