@@ -41,11 +41,11 @@ class About extends React.Component {
         />
         <View styles={{justifyContent: 'space-around', alignItems: 'center'}}>
         <View styles={styles.secondContainer}>
-        <Text h4 style={{ textAlign: 'center', fontWeight: 'bold', marginLeft: 5, marginRight: 5}}>FAMILY OPERATED BUSINESS FOR 13 YEARS! </Text>
+        <Text h4 style={{ textAlign: 'center', fontWeight: 'bold', marginLeft: 5, marginRight: 5}}>FAMILY OPERATED BUSINESS SINCE 2004!</Text>
         </View>
         <View style={styles.secondContainer}>
         <Text style={{ textAlign: 'center', fontWeight: 'bold'}}>SERVICES</Text>
-        <Text style={{ textAlign: 'center' }}>We provide 24/7 service, along with courier, deliveries, lockouts and jump starts. </Text>
+        <Text style={{ textAlign: 'center' }}>We provide 24/7 service, along with courier, deliveries, lockouts and jump starts.</Text>
         </View>
         <View style={styles.secondContainer}>
         <Text style={{ textAlign: 'center', fontWeight: 'bold'}}>SAFETY</Text>

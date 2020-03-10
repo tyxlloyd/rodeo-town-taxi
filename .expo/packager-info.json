@@ -2,8 +2,8 @@
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 2914,
-  "expoServerNgrokUrl": "https://zk-vga.damptowelman.rodeo-town-taxi.exp.direct",
-  "packagerNgrokUrl": "https://packager.zk-vga.damptowelman.rodeo-town-taxi.exp.direct",
-  "ngrokPid": 2939
+  "packagerPid": 11914,
+  "expoServerNgrokUrl": "https://k6-p2z.damptowelman.rodeo-town-taxi.exp.direct",
+  "packagerNgrokUrl": "https://packager.k6-p2z.damptowelman.rodeo-town-taxi.exp.direct",
+  "ngrokPid": 11942
 }
