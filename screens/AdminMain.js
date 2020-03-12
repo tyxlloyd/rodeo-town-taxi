@@ -1,10 +1,11 @@
+//imports for UI - react native attributes, and for firebase functionality
 import React from 'react';
 import { StyleSheet, Text, View, Alert, StatusBar } from 'react-native';
 import { Container, Content, Header, Form, Input, Item, Button, Label } from 'native-base';
 import * as firebase from 'firebase';
 import * as WebBrowser from 'expo-web-browser';
 
-
+//class AdminMain
 class AdminMain extends React.Component {
 
   constructor(props) {
@@ -18,12 +19,15 @@ class AdminMain extends React.Component {
     })
   }
 
-
+  //signOut function logs out the admin and navigates
+  //to the main page of the app
   signOut = () => {
     firebase.auth().signOut();
     this.props.navigation.navigate('URoles')
   }
 
+  //viewDriverInfo displays current driver accounts 
+  //within the database 
   viewDriverInfo = async () => {
     const dbh = firebase.firestore();
 
@@ -44,6 +48,9 @@ class AdminMain extends React.Component {
     WebBrowser.openBrowserAsync('https://console.firebase.google.com/project/rodeo-town-taxi/database/firestore/data~2Fdriver-info');
   }
 
+  //TitlePicker function to display title correctly 
+  //based on the operating system of the user, driver, 
+  //or administrators device
   TitlePicker() {
     //the reason we need this is becasue adjustfontsize only works with ios
     if (Platform.OS == 'android') {
@@ -67,6 +74,10 @@ class AdminMain extends React.Component {
     }
   }
 
+  //render method which defines the user interface and  
+  //shows the administrator their functionalities including adding a driver,
+  //modifying a driver, removing a driver, viewing a list of current drivers,
+  //adding additional administrators, removing administrators, or signing out
   render() {
     return (
       <Container style={styles.container}>
@@ -162,6 +173,7 @@ class AdminMain extends React.Component {
 
 }
 
+//style sheet for the AdminMain.js page and its components
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -198,4 +210,5 @@ const styles = StyleSheet.create({
   }
 });
 
+//export AdminMain.js
 export default AdminMain

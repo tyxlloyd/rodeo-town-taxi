@@ -1,13 +1,13 @@
+//imports for UI - react native attributes, and for firebase functionality
 import React from 'react';
 import { StyleSheet, Text, View, Alert, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, StatusBar } from 'react-native';
 import { Container, Content, Header, Form, Input, Item, Button, Label, Icon } from 'native-base';
 import * as WebBrowser from 'expo-web-browser';
 import Constants from 'expo-constants';
-
 import * as firebase from 'firebase';
 import '@firebase/firestore';
 
-
+//class RemoveDriver
 class RemoveDriver extends React.Component {
 
     constructor(props) {
@@ -25,6 +25,8 @@ class RemoveDriver extends React.Component {
         })
     }
 
+    //removeDriver function takes name and email as input and removes the respective
+    //driver if it is able to verify the information with firebase
     removeDriver = async (name, email) => {
 
 
@@ -112,6 +114,8 @@ class RemoveDriver extends React.Component {
 
 
     }
+
+    //toggleEmailError sets flag for email errors 
     toggleEmailError = (bool) => {
 
         if (bool == 'true') {
@@ -128,6 +132,7 @@ class RemoveDriver extends React.Component {
 
     }
 
+    //toggleNameError sets flag for name errors
     toggleNameError = (bool) => {
         if (bool == 'true') {
             this.setState({
@@ -141,6 +146,10 @@ class RemoveDriver extends React.Component {
         }
 
     }
+
+    //TitlePicker function to display title correctly 
+    //based on the operating system of the user, driver, 
+    //or administrators device
     TitlePicker() {
         //the reason we need this is becasue adjustfontsize only works with ios
         if (Platform.OS == 'android') {
@@ -164,7 +173,9 @@ class RemoveDriver extends React.Component {
         }
     }
 
-
+    //render method which defines the user interface and askes for 
+    //the name and email of the existing driver to delete
+    //from the database
     render() {
         return (
             <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss() }}>
@@ -227,6 +238,7 @@ class RemoveDriver extends React.Component {
 
 }
 
+//style sheet for the RemoveDriver.js page and its components
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -276,4 +288,5 @@ const styles = StyleSheet.create({
     }
 });
 
+//export RemoveDriver.js
 export default RemoveDriver

@@ -1,11 +1,11 @@
+//imports for UI - react native attributes, and for firebase functionality
 import React from 'react';
 import { StyleSheet, Text, View, Alert, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, StatusBar } from 'react-native';
 import { Container, Content, Header, Form, Input, Item, Button, Label, Icon } from 'native-base';
-
 import * as firebase from 'firebase';
 import '@firebase/firestore';
 
-
+//class DriverInfo
 class DriverInfo extends React.Component {
 
   constructor(props) {
@@ -21,7 +21,8 @@ class DriverInfo extends React.Component {
 
     })
   }
-
+//ifEmptyToggle function to check if email, name, and phoneNumber input is blank
+    //as this is not allowed
   ifEmptyToggle = (email, name, phoneNumber) => {
     if (email == '') {
 
@@ -41,6 +42,8 @@ class DriverInfo extends React.Component {
     }
   }
 
+  //ifNotEmptyToggle to check if email, name, and phoneNumber input
+    //is filled as it should be completely filled in
   ifNotEmptyToggle = (email, name, phoneNumber) => {
     if (email != '') {
 
@@ -61,6 +64,9 @@ class DriverInfo extends React.Component {
     }
 
   }
+
+  //numbersOnly function checks to ensure that only numbers are entered for the phone number
+    //and that the max length of the variable is 10 for a valid phone number 
   numbersOnly = (numbers) => {
     let reg = /^[0-9]+$/;
     if (reg.test(numbers) == false || numbers.length != 10) {
@@ -73,6 +79,9 @@ class DriverInfo extends React.Component {
       return true;
     }
   }
+
+  //navigateToProfile function to go to ModifyDriver.js once specific driver is
+  //selected and verified
   navigateToProfile = (name, email, phoneNumber) => {
 
     if (email == '' || name == '' || phoneNumber == '') {
@@ -118,6 +127,7 @@ class DriverInfo extends React.Component {
 
   }
 
+  //toggleEmailError sets flag for email errors
   toggleEmailError = (bool) => {
 
     if (bool == 'true') {
@@ -134,6 +144,7 @@ class DriverInfo extends React.Component {
 
   }
 
+  //toggleNameError sets flas for name errors
   toggleNameError = (bool) => {
     if (bool == 'true') {
       this.setState({
@@ -148,6 +159,7 @@ class DriverInfo extends React.Component {
 
   }
 
+  //togglePhoneNumberError sets flag for phone number errors 
   togglePhoneNumberError = (bool) => {
     if (bool == 'true') {
       this.setState({
@@ -161,6 +173,10 @@ class DriverInfo extends React.Component {
     }
 
   }
+
+  //TitlePicker function to display title correctly 
+  //based on the operating system of the user, driver, 
+  //or administrators device
   TitlePicker() {
     //the reason we need this is becasue adjustfontsize only works with ios
     if (Platform.OS == 'android') {
@@ -184,7 +200,8 @@ class DriverInfo extends React.Component {
     }
   }
 
-
+  //render method which defines the user interface and allows the administrator to 
+  //make changes to specific drivers information
   render() {
     return (
       <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss() }}>
@@ -263,6 +280,7 @@ class DriverInfo extends React.Component {
 
 }
 
+//style sheet for the DriverInfo.js page and its components
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -308,4 +326,5 @@ const styles = StyleSheet.create({
   }
 });
 
+//export DriverInfo.js
 export default DriverInfo

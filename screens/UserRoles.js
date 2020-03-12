@@ -1,10 +1,16 @@
+//imports for UI - react native attributes, and for firebase functionality
 import React from 'react';
 import { StyleSheet, Text, View, Alert, Image, StatusBar } from 'react-native';
 import { Container, Content, Header, Form, Input, Item, Button, Label } from 'native-base';
 import * as firebase from 'firebase';
 import * as Permissions from 'expo-permissions';
 
+//clas UserRoles
 class UserRoles extends React.Component {
+
+  //TitlePicker function to display title correctly 
+  //based on the operating system of the user, driver, 
+  //or administrators device
   TitlePicker() {
     //the reason we need this is becasue adjustfontsize only works with ios
     if (Platform.OS == 'android') {
@@ -28,6 +34,9 @@ class UserRoles extends React.Component {
     }
   }
 
+  //funtion _getPermissionAsync to ask for location permissions
+  //to be able to show drivers-customers their locations for proper
+  //directions and navigation purposes
   _getPermissionAsync = async (pageToNavigateTo) => {
     try {
       let { status } = await Permissions.askAsync(Permissions.LOCATION);
@@ -45,6 +54,9 @@ class UserRoles extends React.Component {
     }
   }
 
+  //render method which defines the user interface for the main page
+  //of the application and asks the user if they would like to navigate
+  //to the correct page: driver, customer, administrator, or about page
   render() {
     return (
       <Container style={styles.container}>
@@ -109,6 +121,7 @@ class UserRoles extends React.Component {
 
 }
 
+//style sheet for the UserRoles.js page and its components
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -163,4 +176,5 @@ const styles = StyleSheet.create({
   }
 });
 
+//export UserRoles.js
 export default UserRoles

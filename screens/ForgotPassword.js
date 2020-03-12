@@ -1,12 +1,11 @@
+//imports for UI - react native attributes, and for firebase functionality
 import React from 'react';
 import { StyleSheet, Text, View, Alert, TouchableWithoutFeedback, Keyboard, StatusBar } from 'react-native';
 import { Container, Content, Header, Form, Input, Item, Button, Label, Icon } from 'native-base';
-
-
 import * as firebase from 'firebase';
 import '@firebase/firestore';
 
-
+//class ForgotPassword
 class ForgotPassword extends React.Component {
 
     constructor(props) {
@@ -20,6 +19,8 @@ class ForgotPassword extends React.Component {
         })
     }
 
+    //ifNotEmptyToggle to check if the email input
+    //is filled as it should be completely filled in
     ifNotEmptyToggle = (email) => {
         if (email != '') {
 
@@ -28,6 +29,8 @@ class ForgotPassword extends React.Component {
         }
     }
 
+    //ifEmptyToggle function to check if the email input is blank
+    //as this is not allowed
     ifEmptyToggle = (email) => {
         if (email == '') {
 
@@ -36,6 +39,9 @@ class ForgotPassword extends React.Component {
         }
 
     }
+
+    //resetPassword function allows for the admin to be able
+    //to change their password in firebase via a password reset email
     resetPassword = (email) => {
         if (email == '') {
             this.ifEmptyToggle(email);
@@ -60,6 +66,7 @@ class ForgotPassword extends React.Component {
             });
     }
 
+    //toggleEmailError function sets flag for email errors
     toggleEmailError = (bool) => {
 
         if (bool == 'true') {
@@ -73,7 +80,9 @@ class ForgotPassword extends React.Component {
             });
         }
     }
-
+    //TitlePicker function to display title correctly 
+    //based on the operating system of the user, driver, 
+    //or administrators device
     TitlePicker() {
         //the reason we need this is becasue adjustfontsize only works with ios
         if (Platform.OS == 'android') {
@@ -97,6 +106,9 @@ class ForgotPassword extends React.Component {
         }
     }
 
+    //render method which defines the user interface
+    //and asks for the email of the administrator to send
+    //them a password reset email to change their password
     render() {
         return (
             <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss() }}>
@@ -153,7 +165,7 @@ class ForgotPassword extends React.Component {
 }
 
 
-
+//style sheet for the ForgotPassword.js page and its components
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -201,4 +213,5 @@ const styles = StyleSheet.create({
     }
 });
 
+//export ForgotPassword.js
 export default ForgotPassword

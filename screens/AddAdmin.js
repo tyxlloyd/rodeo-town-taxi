@@ -1,11 +1,11 @@
+//imports for UI - react native attributes, and for firebase functionality
 import React from 'react';
 import { StyleSheet, Text, View, Alert, TouchableOpacity, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, StatusBar } from 'react-native';
 import { Container, Content, Header, Form, Input, Item, Button, Label, Icon } from 'native-base';
-
 import * as firebase from 'firebase';
 import '@firebase/firestore';
 
-
+//class AddAdmin
 class AddAdmin extends React.Component {
 
     constructor(props) {
@@ -24,6 +24,7 @@ class AddAdmin extends React.Component {
         })
     }
 
+    //verifyEmail function to ensure the correct format is entered for email
     verifyEmail = (email) => {
         //let reg = /^([\w -\.] +)@((?: [\w] +\.) +) ([a - zA - Z]{ 2, 4 })$/;
         let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
@@ -37,6 +38,9 @@ class AddAdmin extends React.Component {
             return true;
         }
     }
+
+    //ifEmptyToggle function to check if email, name, and password input is blank
+    //as this is not allowed
     ifEmptyToggle = (email, name, password) => {
         if (email == '') {
 
@@ -57,6 +61,8 @@ class AddAdmin extends React.Component {
         }
     }
 
+    //ifNotEmptyToggle to check if email, name, and password input
+    //is filled as it should be completely filled in
     ifNotEmptyToggle = (email, name, password) => {
         if (email != '') {
 
@@ -79,6 +85,7 @@ class AddAdmin extends React.Component {
 
     }
 
+    //checkPassword function to ensure that the password input is longer than 6 characters
     checkPassword = (password) => {
         if (this.state.password.length < 6) {
             Alert.alert(
@@ -94,6 +101,9 @@ class AddAdmin extends React.Component {
             return true;
         }
     }
+
+    //signUpUser function takes name, email, and password input and
+    //adds the administrator to the database and redirects to the correct page
     signUpUser = (name, email, password) => {
 
         try {
@@ -161,6 +171,7 @@ class AddAdmin extends React.Component {
         }
     }
 
+    //toggleEmailError sets flag for email errors
     toggleEmailError = (bool) => {
 
         if (bool == 'true') {
@@ -177,6 +188,7 @@ class AddAdmin extends React.Component {
 
     }
 
+    //toggleNameError sets flag for name errors
     toggleNameError = (bool) => {
         if (bool == 'true') {
             this.setState({
@@ -191,6 +203,7 @@ class AddAdmin extends React.Component {
 
     }
 
+    //togglePasswordError sets flag for password errors
     togglePasswordError = (bool) => {
         if (bool == 'true') {
             this.setState({
@@ -204,6 +217,9 @@ class AddAdmin extends React.Component {
         }
 
     }
+
+    //showPass hides or unhides when entering the default password to login
+    //if the icon within that input box is selected or unselected 
     showPass = () => {
         if (this.state.press == false) {
             this.setState({ showPass: false, press: true })
@@ -212,6 +228,9 @@ class AddAdmin extends React.Component {
         }
     }
 
+    //TitlePicker function to display title correctly 
+    //based on the operating system of the user, driver, 
+    //or administrators device
     TitlePicker() {
         //the reason we need this is becasue adjustfontsize only works with ios
         if (Platform.OS == 'android') {
@@ -235,6 +254,9 @@ class AddAdmin extends React.Component {
         }
     }
 
+    //render method which defines the user interface and askes for 
+    //the name, email, and password of the new addministrator being added
+    //to the database to create their account 
     render() {
         return (
             <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss() }}>
@@ -321,6 +343,7 @@ class AddAdmin extends React.Component {
 
 }
 
+//style sheet for the AddAdmin.js page and its components
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -366,4 +389,5 @@ const styles = StyleSheet.create({
     }
 });
 
+//export AddAdmin.js
 export default AddAdmin

@@ -1,10 +1,11 @@
+//imports for UI - react native attributes, and for firebase functionality
 import React from 'react';
 import { StyleSheet, Text, View, Alert, Image } from 'react-native';
 import { Container, Content, Header, Form, Input, Item, Button, Label } from 'native-base';
 import * as firebase from 'firebase';
 import { TextInput } from 'react-native-gesture-handler';
 
-
+//class Database
 class Database extends React.Component {
 
     constructor(props) {
@@ -15,6 +16,9 @@ class Database extends React.Component {
             driverInfo: ''
         })
     }
+    //TitlePicker function to display title correctly 
+    //based on the operating system of the user, driver, 
+    //or administrators device
     TitlePicker() {
         //the reason we need this is becasue adjustfontsize only works with ios
         if (Platform.OS == 'android') {
@@ -38,6 +42,7 @@ class Database extends React.Component {
         }
     }
 
+    //viewDatabaseInfo shows all drivers currently in the database
     viewDatabaseInfo = () => {
         const dbh = firebase.firestore();
 
@@ -61,6 +66,9 @@ class Database extends React.Component {
         }).catch(error => alert(error));
         //WebBrowser.openBrowserAsync('https://console.firebase.google.com/project/rodeo-town-taxi/database/firestore/data~2Fdriver-info');
     }
+
+    //render method which defines the user interface and shows all of the
+    //current drivers that are able to login to use the app as a driver
     render() {
         return (
             <Container style={styles.container}>
@@ -101,6 +109,7 @@ class Database extends React.Component {
 
 }
 
+//style sheet for the Database.js page and its components
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -154,5 +163,5 @@ const styles = StyleSheet.create({
 
     }
 });
-
+//export Database.js
 export default Database

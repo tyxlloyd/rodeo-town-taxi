@@ -1,11 +1,11 @@
+//imports for UI - react native attributes, and for firebase functionality
 import React from 'react';
 import { StyleSheet, Text, View, Alert, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, StatusBar } from 'react-native';
 import { Container, Content, Header, Form, Input, Item, Button, Label, Icon } from 'native-base';
-
 import * as firebase from 'firebase';
 import '@firebase/firestore';
 
-
+//class ModifyDriver
 class ModifyDriver extends React.Component {
 
     constructor(props) {
@@ -23,10 +23,13 @@ class ModifyDriver extends React.Component {
         })
     }
 
+    //navigate function to go back to AdminMain.js
     navigate = () => {
         this.props.navigation.navigate('AMain')
     }
 
+    //numbersOnly function checks to ensure that only numbers are entered for the phone number
+    //and that the max length of the variable is 10 for a valid phone number 
     numbersOnly = (numbers) => {
         let reg = /^[0-9]+$/;
         if (reg.test(numbers) == false || numbers.length != 10) {
@@ -40,6 +43,8 @@ class ModifyDriver extends React.Component {
         }
     }
 
+    //updateUserInfo takes name, email, and phoneNumber as input and will
+    //update the name and phoneNumber of the driver in firebase if no errors are toggled
     updateUserInfo = (name, email, phoneNumber) => {
 
 
@@ -90,7 +95,9 @@ class ModifyDriver extends React.Component {
 
 
     }
-
+    //TitlePicker function to display title correctly 
+    //based on the operating system of the user, driver, 
+    //or administrators device
     TitlePicker() {
         //the reason we need this is becasue adjustfontsize only works with ios
         if (Platform.OS == 'android') {
@@ -115,6 +122,9 @@ class ModifyDriver extends React.Component {
     }
 
 
+    //render method which defines the user interface and askes for 
+    //the updated name or phone number of current driver to update
+    //their account
     render() {
         return (
             <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss() }}>
@@ -193,6 +203,7 @@ class ModifyDriver extends React.Component {
 
 }
 
+//style sheet for the ModifyDriver.js page and its components
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -238,4 +249,5 @@ const styles = StyleSheet.create({
     }
 });
 
+//export ModifyDriver.js
 export default ModifyDriver

@@ -1,9 +1,11 @@
+//imports for UI - react native attributes, and for firebase functionality
 import React from 'react';
 import { StyleSheet, Text, View, Alert, TouchableOpacity, KeyboardAvoidingView, StatusBar, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { Container, Content, Header, Form, Input, Item, Button, Label, Icon } from 'native-base';
 import Spinner from 'react-native-loading-spinner-overlay';
 import * as firebase from 'firebase';
 
+//class DriverLogin
 class DriverLogin extends React.Component {
   mounted = false;
 
@@ -24,9 +26,12 @@ class DriverLogin extends React.Component {
   }
 
 
+  //mounting function 
   componentWillUnmount() {
     this.mounted = false;
   }
+
+  //loading function
   changeStateOfLoading = () => {
     if (this.mounted) {
       this.setState({
@@ -38,6 +43,8 @@ class DriverLogin extends React.Component {
 
   }
 
+  //ifEmptyToggle function to check if email, taxiNumber, and password input is blank
+  //as this is not allowed
   ifEmptyToggle = (email, taxiNumber, password) => {
     if (email == '') {
 
@@ -57,6 +64,9 @@ class DriverLogin extends React.Component {
     }
   }
 
+
+  //ifNotEmptyToggle to check if email, taxiNumber, and password input
+  //is filled as it should be completely filled in
   ifNotEmptyToggle = (email, taxiNumber, password) => {
     if (email != '') {
 
@@ -77,6 +87,9 @@ class DriverLogin extends React.Component {
     }
 
   }
+
+  //numbersOnly function checks to ensure that only numbers are entered for the phone number
+  //and that the max length of the variable is 10 for a valid phone number 
   numbersOnly = (numbers) => {
     let reg = /^[0-9]+$/;
     if (reg.test(numbers) == false) {
@@ -90,7 +103,8 @@ class DriverLogin extends React.Component {
     }
   }
 
-
+  //loginUser function takes email, taxiNumber, and password as input,
+  //logs in the correct driver, and redirects to globalMap page 
   loginUser = (email, taxiNumber, password) => {
     this.mounted = true;
     if (email == '' || password == '' || taxiNumber == '') {
@@ -167,6 +181,8 @@ class DriverLogin extends React.Component {
 
   }
 
+  //showPass hides or unhides when entering the password to login
+  //if the icon within that input box is selected or unselected 
   showPass = () => {
     if (this.state.press == false) {
       this.setState({ showPass: false, press: true })
@@ -175,6 +191,7 @@ class DriverLogin extends React.Component {
     }
   }
 
+  //toggleEmailError sets flag for email errors
   toggleEmailError = (bool) => {
 
     if (bool == 'true') {
@@ -190,6 +207,7 @@ class DriverLogin extends React.Component {
 
   }
 
+  //togglePasswordError sets flag for password errors
   togglePasswordError = (bool) => {
     if (bool == 'true') {
       this.setState({
@@ -203,6 +221,7 @@ class DriverLogin extends React.Component {
     }
   }
 
+  //toggleTaxiNumberError sets flag for taxi number errors 
   toggleTaxiNumberError = (bool) => {
     if (bool == 'true') {
       this.setState({
@@ -217,6 +236,9 @@ class DriverLogin extends React.Component {
 
   }
 
+  //TitlePicker function to display title correctly 
+  //based on the operating system of the user, driver, 
+  //or administrators device
   TitlePicker() {
     //the reason we need this is becasue adjustfontsize only works with ios
     if (Platform.OS == 'android') {
@@ -240,6 +262,9 @@ class DriverLogin extends React.Component {
     }
   }
 
+  //render method which defines the user interface and askes for 
+  //the email, taxi number, and password of the driver who is logging into
+  //their account for their shift
   render() {
     return (
       <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss() }}>
@@ -344,6 +369,7 @@ class DriverLogin extends React.Component {
 
 }
 
+//style sheet for the DriverLogin.js page and its components
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -389,4 +415,5 @@ const styles = StyleSheet.create({
   }
 });
 
+//export DriverLogin.js
 export default DriverLogin
