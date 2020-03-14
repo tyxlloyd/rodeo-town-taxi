@@ -65,6 +65,7 @@ class About extends React.Component {
         <View style={styles.secondContainer}>
         <Text style={{ textAlign: 'center', fontWeight: 'bold', color: '#0000EE' }} onPress={() => Linking.openURL('mailto:rodeotownapp@gmail.com')}>App support: rodeotownapp@gmail.com</Text>
         <Text style={{ textAlign: 'center', fontWeight: 'bold', color: '#0000EE' }} onPress={() => Linking.openURL('https://github.com/tyxlloyd/rodeo-town-taxi/blob/master/documents/privacy_policy.md')}>Privacy Policy</Text>
+        <Text>{"\n"}{"\n"}{"\n"}{"\n"}{"\n"}{"\n"}</Text>
         </View>
         </View>
         </View>
