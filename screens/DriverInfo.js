@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, Alert, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, StatusBar } from 'react-native';
-import { Container, Content, Header, Form, Input, Item, Button, Label, Icon } from 'native-base';
+import { Form, Input, Item, Button, Icon } from 'native-base';
 
 import * as firebase from 'firebase';
 import '@firebase/firestore';
@@ -64,7 +64,6 @@ class DriverInfo extends React.Component {
   numbersOnly = (numbers) => {
     let reg = /^[0-9]+$/;
     if (reg.test(numbers) == false || numbers.length != 10) {
-      //console.log("Email address is formated incorrectly");
       Alert.alert("Incorrect Format", "Phone numbers should only contain 10 digits without spaces or special characters")
       return false;
     }
@@ -79,6 +78,7 @@ class DriverInfo extends React.Component {
 
       this.ifEmptyToggle(email, name, phoneNumber);
       this.ifNotEmptyToggle(email, name, phoneNumber);
+
       Alert.alert(
         'Empty Fields',
         'Make sure all fields are filled out',
@@ -91,6 +91,7 @@ class DriverInfo extends React.Component {
     }
 
     this.ifNotEmptyToggle(email, name, phoneNumber);
+
     if (this.numbersOnly(phoneNumber) == false) {
       return;
     }
@@ -101,8 +102,6 @@ class DriverInfo extends React.Component {
 
     const dbh = firebase.firestore();
     var docName = dbh.collection("driver-info").doc(lEmail);
-
-
 
     //check if user is admin
     docName.get().then(function (doc) {
@@ -161,13 +160,13 @@ class DriverInfo extends React.Component {
     }
 
   }
+
   TitlePicker() {
     //the reason we need this is becasue adjustfontsize only works with ios
     if (Platform.OS == 'android') {
       return (
 
         <Text style={styles.titleLabel}>Current Driver Info</Text>
-
 
       );
 
@@ -177,7 +176,6 @@ class DriverInfo extends React.Component {
 
         <Text adjustsFontSizeToFit
           numberOfLines={1} style={styles.titleLabel}>Current Driver Info</Text>
-
 
       );
 
@@ -279,10 +277,6 @@ const styles = StyleSheet.create({
   regularButtonText: {
     color: 'black',
     fontSize: 30
-  },
-  transparentButtonText: {
-    color: 'black',
-    fontSize: 20
   },
   titleContainer: {
     alignItems: "center",

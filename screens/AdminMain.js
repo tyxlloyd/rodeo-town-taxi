@@ -1,6 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View, Alert, StatusBar } from 'react-native';
-import { Container, Content, Header, Form, Input, Item, Button, Label } from 'native-base';
+import { StyleSheet, Text, View, StatusBar } from 'react-native';
+import { Container, Form, Button } from 'native-base';
 import * as firebase from 'firebase';
 import * as WebBrowser from 'expo-web-browser';
 
@@ -9,15 +9,10 @@ class AdminMain extends React.Component {
 
   constructor(props) {
     super(props)
-
     this.state = ({
-      email: '',
-      password: '',
-      name: '',
-      phoneNumber: ''
+
     })
   }
-
 
   signOut = () => {
     firebase.auth().signOut();
@@ -29,18 +24,16 @@ class AdminMain extends React.Component {
 
     dbh.collection("driver-info").get().then(function (querySnapshot) {
       querySnapshot.forEach(function (doc) {
-        // doc.data() is never undefined for query doc snapshots
         console.log(doc.id, " => ", doc.data());
       });
     });
 
     dbh.collection("admin-info").get().then(function (querySnapshot) {
       querySnapshot.forEach(function (doc) {
-        // doc.data() is never undefined for query doc snapshots
         console.log(doc.id, " => ", doc.data());
-
       });
     });
+
     WebBrowser.openBrowserAsync('https://console.firebase.google.com/project/rodeo-town-taxi/database/firestore/data~2Fdriver-info');
   }
 
@@ -51,7 +44,6 @@ class AdminMain extends React.Component {
 
         <Text style={styles.titleLabel}>Welcome Admin</Text>
 
-
       );
 
     } else if (Platform.OS == 'ios') {
@@ -60,7 +52,6 @@ class AdminMain extends React.Component {
 
         <Text adjustsFontSizeToFit
           numberOfLines={1} style={styles.titleLabel}>Welcome Admin</Text>
-
 
       );
 
@@ -173,7 +164,6 @@ const styles = StyleSheet.create({
   button: {
     marginTop: 28,
     backgroundColor: '#fec33a'
-
   },
   titleContainer: {
     alignItems: "center",
@@ -186,14 +176,6 @@ const styles = StyleSheet.create({
   },
   titleLabel: {
     fontSize: 40,
-
-
-  },
-  label: {
-    color: 'black'
-  },
-  textInput: {
-    fontSize: 20
 
   }
 });

@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, Alert, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, StatusBar } from 'react-native';
-import { Container, Content, Header, Form, Input, Item, Button, Label, Icon } from 'native-base';
+import { Form, Input, Item, Button, Icon } from 'native-base';
 
 import * as firebase from 'firebase';
 import '@firebase/firestore';
@@ -30,7 +30,6 @@ class ModifyDriver extends React.Component {
     numbersOnly = (numbers) => {
         let reg = /^[0-9]+$/;
         if (reg.test(numbers) == false || numbers.length != 10) {
-            //console.log("Email address is formated incorrectly");
             Alert.alert("Incorrect Format", "Phone numbers should only contain digits without spaces or special characters")
             return false;
         }
@@ -53,8 +52,8 @@ class ModifyDriver extends React.Component {
             phoneNumber = this.state.currentPhoneNumber
         }
 
-        //somewhere in here make updated email old email so that the correct values are passed back
-        //to customer main
+        //make updated email old email so that the correct values are passed back
+
 
         //email made lowercase because .exists is case sensitive
         var lEmail = email.toLowerCase();
@@ -141,7 +140,6 @@ class ModifyDriver extends React.Component {
                                 //onChangeText={(name) => this.setState({ name })}
                                 onChangeText={(updatedName) => this.setState({ updatedName })}
 
-
                             />
                         </Item>
 
@@ -210,10 +208,6 @@ const styles = StyleSheet.create({
         color: 'black',
         fontSize: 30
     },
-    transparentButtonText: {
-        color: 'black',
-        fontSize: 20
-    },
     titleContainer: {
         alignItems: "center",
         marginBottom: 25,
@@ -233,9 +227,6 @@ const styles = StyleSheet.create({
         fontSize: 20
 
     },
-    label: {
-        color: 'black',
-    }
 });
 
 export default ModifyDriver

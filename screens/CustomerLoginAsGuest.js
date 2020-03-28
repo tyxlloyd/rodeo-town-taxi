@@ -1,11 +1,10 @@
 import React from 'react';
 import { StyleSheet, Text, View, Alert, StatusBar, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { dialFunction } from '../shared/dialFunction';
-import { Container, Content, Header, Form, Input, Item, Button, Label, Icon } from 'native-base';
+import { Container,Form, Input, Item, Button, Icon } from 'native-base';
 
 import * as firebase from 'firebase';
 import '@firebase/firestore';
-
 
 class CustomerLogin extends React.Component {
     mounted = false;
@@ -15,7 +14,6 @@ class CustomerLogin extends React.Component {
         this.state = ({
             name: '',
             phoneNumber: '',
-            loading: false,
             nameError: false,
             phoneNumberError: false,
 
@@ -59,7 +57,6 @@ class CustomerLogin extends React.Component {
     numbersOnly = (numbers) => {
         let reg = /^[0-9]+$/;
         if (reg.test(numbers) == false || numbers.length != 10) {
-            //console.log("Email address is formated incorrectly");
             Alert.alert("Incorrect Format", "Phone numbers should only contain 10 digits without spaces or special characters")
             return false;
         }
@@ -71,8 +68,6 @@ class CustomerLogin extends React.Component {
 
     loginUser = (name, phoneNumber) => {
         //As guest no user information is added to database 
-        //if the user wishes to add their information this can be done 
-        //in the profile page
         if (name == '' || phoneNumber == '') {
             this.ifEmptyToggle(name, phoneNumber);
             this.ifNotEmptyToggle(name, phoneNumber);
@@ -87,6 +82,7 @@ class CustomerLogin extends React.Component {
             return;
         }
         this.ifNotEmptyToggle(name, phoneNumber);
+
         if (this.numbersOnly(phoneNumber) == false) {
             return;
         }
@@ -257,11 +253,6 @@ const styles = StyleSheet.create({
         color: 'black',
         fontSize: 30
     },
-    transparentButtonText: {
-        marginTop: 20,
-        color: 'black',
-        fontSize: 22
-    },
     titleContainer: {
         alignItems: "center",
         marginBottom: 50,
@@ -269,9 +260,6 @@ const styles = StyleSheet.create({
     },
     titleLabel: {
         fontSize: 40,
-    },
-    label: {
-        color: 'black'
     },
     inputBox: {
         marginTop: 30,

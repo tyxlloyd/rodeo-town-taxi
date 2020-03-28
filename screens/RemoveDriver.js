@@ -1,8 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Alert, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, StatusBar } from 'react-native';
-import { Container, Content, Header, Form, Input, Item, Button, Label, Icon } from 'native-base';
+import { Form, Input, Item, Button, Icon } from 'native-base';
 import * as WebBrowser from 'expo-web-browser';
-import Constants from 'expo-constants';
 
 import * as firebase from 'firebase';
 import '@firebase/firestore';
@@ -16,53 +15,25 @@ class RemoveDriver extends React.Component {
         this.state = ({
             name: '',
             email: '',
-            phoneNumber: '',
-            password: '',
             emailError: false,
             nameError: false
-
-
         })
     }
 
-    removeDriver = async (name, email) => {
+    ifEmptyToggle = (email, name) => {
+        if (email == '') {
 
+            this.toggleEmailError('true');
 
-        //check that user filled out all fields 
-        if (email == '' || name == '') {
-            if (email == '') {
-
-                this.toggleEmailError('true');
-
-            }
-            if (name == '') {
-
-                this.toggleNameError('true');
-
-            }
-
-            if (email != '') {
-
-                this.toggleEmailError('false');
-
-            }
-
-            if (name != '') {
-
-                this.toggleNameError('false');
-
-            }
-            Alert.alert(
-                'Empty Fields',
-                'Make sure all fields are filled out',
-                [
-                    { text: 'OK', onPress: () => console.log('OK Pressed') },
-                ],
-                { cancelable: false },
-            );
-            return;
         }
+        if (name == '') {
 
+            this.toggleNameError('true');
+
+        }
+    }
+
+    ifNotEmptyToggle = (email, name) => {
         if (email != '') {
 
             this.toggleEmailError('false');
@@ -74,6 +45,27 @@ class RemoveDriver extends React.Component {
             this.toggleNameError('false');
 
         }
+
+    }
+    removeDriver = async (name, email) => {
+
+
+        //check that user filled out all fields 
+        if (email == '' || name == '') {
+            this.ifEmptyToggle(email, name);
+            this.ifNotEmptyToggle(email, name);
+            Alert.alert(
+                'Empty Fields',
+                'Make sure all fields are filled out',
+                [
+                    { text: 'OK', onPress: () => console.log('OK Pressed') },
+                ],
+                { cancelable: false },
+            );
+            return;
+        }
+
+        this.ifNotEmptyToggle(email, name);
 
         try {
 
@@ -248,10 +240,6 @@ const styles = StyleSheet.create({
         color: 'black',
         fontSize: 30
     },
-    transparentButtonText: {
-        color: 'black',
-        fontSize: 20
-    },
     titleContainer: {
         alignItems: "center",
         marginBottom: 25,
@@ -261,13 +249,9 @@ const styles = StyleSheet.create({
         fontSize: 40,
 
     },
-    label: {
-        color: 'black'
-    },
     inputBox: {
         marginTop: 30,
         borderColor: 'black',
-        //backgroundColor: '#fff',
 
     },
     textInput: {

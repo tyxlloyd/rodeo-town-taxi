@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, Alert, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, StatusBar } from 'react-native';
-import { Container, Content, Header, Form, Input, Item, Button, Label, Icon, Left, Body, Right, Title } from 'native-base';
+import { Form, Input, Item, Button, Icon } from 'native-base';
 import Spinner from 'react-native-loading-spinner-overlay';
 
 import * as firebase from 'firebase';
@@ -95,7 +95,6 @@ class AdminLogin extends React.Component {
     //in addition to logging in with a password you will retrieve
     //user type for this user and in this case if the user type
     //is equal to admin then let them in else alert you are not an admin
-    //timeout spinner in case error pops up
 
     //email made lowercase because .exists is case sensitive
     var lEmail = email.toLowerCase();
@@ -103,7 +102,6 @@ class AdminLogin extends React.Component {
 
     const dbh = firebase.firestore();
     var docName = dbh.collection("admin-info").doc(lEmail);
-
 
 
     //check if user is admin
@@ -204,8 +202,6 @@ class AdminLogin extends React.Component {
             <Spinner
               //visibility of Overlay Loading Spinner
               visible={this.state.loading}
-              //Text with the Spinner
-              //textContent={'Loading...'}
               //Text style of the Spinner Text
               textStyle={styles.spinnerTextStyle}
             />
@@ -291,7 +287,6 @@ class AdminLogin extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    //backgroundColor: '#fec33a',
     backgroundColor: '#fff',
     //alignItems: 'center',
     justifyContent: 'center',
@@ -307,11 +302,6 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 30
   },
-  transparentButtonText: {
-    marginTop: 20,
-    color: 'black',
-    fontSize: 22
-  },
   titleContainer: {
     alignItems: "center",
     marginBottom: 40,
@@ -320,10 +310,6 @@ const styles = StyleSheet.create({
   titleLabel: {
     fontSize: 40,
 
-
-  },
-  label: {
-    color: 'black',
 
   },
   inputBox: {

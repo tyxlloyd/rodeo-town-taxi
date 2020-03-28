@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, Alert, TouchableOpacity, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, StatusBar } from 'react-native';
-import { Container, Content, Header, Form, Input, Item, Button, Label, Icon } from 'native-base';
+import { Form, Input, Item, Button, Icon } from 'native-base';
 
 import * as firebase from 'firebase';
 import '@firebase/firestore';
@@ -25,10 +25,10 @@ class AddAdmin extends React.Component {
     }
 
     verifyEmail = (email) => {
-        //let reg = /^([\w -\.] +)@((?: [\w] +\.) +) ([a - zA - Z]{ 2, 4 })$/;
+
         let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
         if (reg.test(email) == false) {
-            //console.log("Email address is formated incorrectly");
+
             Alert.alert("Incorrect Format", "Email address is formated incorrectly")
             return false;
         }
@@ -37,6 +37,7 @@ class AddAdmin extends React.Component {
             return true;
         }
     }
+
     ifEmptyToggle = (email, name, password) => {
         if (email == '') {
 
@@ -94,6 +95,7 @@ class AddAdmin extends React.Component {
             return true;
         }
     }
+
     signUpUser = (name, email, password) => {
 
         try {
@@ -204,6 +206,7 @@ class AddAdmin extends React.Component {
         }
 
     }
+
     showPass = () => {
         if (this.state.press == false) {
             this.setState({ showPass: false, press: true })
@@ -303,7 +306,7 @@ class AddAdmin extends React.Component {
                         <Button style={styles.button}
                             full
                             rounded
-                            transparent
+
 
                             onPress={() => this.props.navigation.navigate('AMain')}
                         >
@@ -338,10 +341,6 @@ const styles = StyleSheet.create({
         color: 'black',
         fontSize: 30
     },
-    transparentButtonText: {
-        color: 'black',
-        fontSize: 20
-    },
     titleContainer: {
         alignItems: "center",
         marginBottom: 25,
@@ -350,9 +349,6 @@ const styles = StyleSheet.create({
     titleLabel: {
         fontSize: 40,
 
-    },
-    label: {
-        color: 'black'
     },
     inputBox: {
         marginTop: 30,

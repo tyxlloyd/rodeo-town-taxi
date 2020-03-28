@@ -1,7 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View, Alert, TouchableOpacity, KeyboardAvoidingView, StatusBar, TouchableWithoutFeedback, Keyboard } from 'react-native';
-import { Container, Content, Header, Form, Input, Item, Button, Label, Icon } from 'native-base';
+import { Form, Input, Item, Button, Icon } from 'native-base';
 import Spinner from 'react-native-loading-spinner-overlay';
+
 import * as firebase from 'firebase';
 
 class DriverLogin extends React.Component {
@@ -23,10 +24,10 @@ class DriverLogin extends React.Component {
     })
   }
 
-
   componentWillUnmount() {
     this.mounted = false;
   }
+
   changeStateOfLoading = () => {
     if (this.mounted) {
       this.setState({
@@ -80,7 +81,6 @@ class DriverLogin extends React.Component {
   numbersOnly = (numbers) => {
     let reg = /^[0-9]+$/;
     if (reg.test(numbers) == false) {
-      //console.log("Email address is formated incorrectly");
       Alert.alert("Incorrect Format", "Taxi numbers should only contain digits without spaces or special characters")
       return false;
     }
@@ -111,6 +111,7 @@ class DriverLogin extends React.Component {
 
     //turn off error if user inputs data
     this.ifNotEmptyToggle(email, taxiNumber, password);
+
     if (this.numbersOnly(taxiNumber) == false) {
       return;
     }
@@ -250,8 +251,6 @@ class DriverLogin extends React.Component {
             <Spinner
               //visibility of Overlay Loading Spinner
               visible={this.state.loading}
-              //Text with the Spinner
-              //textContent={'Loading...'}
               //Text style of the Spinner Text
               textStyle={styles.spinnerTextStyle}
             />
@@ -361,11 +360,6 @@ const styles = StyleSheet.create({
     color: 'black',
     fontSize: 30
   },
-  transparentButtonText: {
-    marginTop: 20,
-    color: 'black',
-    fontSize: 22
-  },
   titleContainer: {
     alignItems: "center",
     marginBottom: 40,
@@ -373,9 +367,6 @@ const styles = StyleSheet.create({
   },
   titleLabel: {
     fontSize: 40,
-  },
-  label: {
-    color: 'black'
   },
   inputBox: {
     marginTop: 30,

@@ -1,8 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Alert, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, StatusBar } from 'react-native';
-import { Container, Content, Header, Form, Input, Item, Button, Label, Icon } from 'native-base';
+import { Form, Input, Item, Button, Icon } from 'native-base';
 import * as WebBrowser from 'expo-web-browser';
-import Constants from 'expo-constants';
 
 import * as firebase from 'firebase';
 import '@firebase/firestore';
@@ -16,16 +15,12 @@ class RemoveAdmin extends React.Component {
         this.state = ({
             name: '',
             email: '',
-            phoneNumber: '',
-            password: '',
             emailError: false,
             nameError: false
-
-
         })
     }
 
-    ifEmptyToggle = (email, name, phoneNumber, password) => {
+    ifEmptyToggle = (email, name) => {
         if (email == '') {
 
             this.toggleEmailError('true');
@@ -38,7 +33,7 @@ class RemoveAdmin extends React.Component {
         }
     }
 
-    ifNotEmptyToggle = (email, name, phoneNumber, password) => {
+    ifNotEmptyToggle = (email, name) => {
         if (email != '') {
 
             this.toggleEmailError('false');
@@ -52,7 +47,7 @@ class RemoveAdmin extends React.Component {
         }
 
     }
-    removeDriver = async (name, email) => {
+    removeAdmin = async (name, email) => {
 
 
         //check that user filled out all fields 
@@ -198,7 +193,7 @@ class RemoveAdmin extends React.Component {
                         <Button style={styles.button}
                             full
                             rounded
-                            onPress={() => this.removeDriver(this.state.name, this.state.email)}
+                            onPress={() => this.removeAdmin(this.state.name, this.state.email)}
                         >
                             <Text adjustsFontSizeToFit
                                 numberOfLines={1} style={styles.regularButtonText}>Remove</Text>
@@ -245,10 +240,6 @@ const styles = StyleSheet.create({
         color: 'black',
         fontSize: 30
     },
-    transparentButtonText: {
-        color: 'black',
-        fontSize: 20
-    },
     titleContainer: {
         alignItems: "center",
         marginBottom: 25,
@@ -258,13 +249,9 @@ const styles = StyleSheet.create({
         fontSize: 40,
 
     },
-    label: {
-        color: 'black'
-    },
     inputBox: {
         marginTop: 30,
         borderColor: 'black',
-        //backgroundColor: '#fff',
 
     },
     textInput: {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, Alert, TouchableOpacity, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, StatusBar } from 'react-native';
-import { Container, Content, Header, Form, Input, Item, Button, Label, Icon } from 'native-base';
+import { Form, Input, Item, Button, Icon } from 'native-base';
 
 import * as firebase from 'firebase';
 import '@firebase/firestore';
@@ -28,10 +28,9 @@ class AddDriver extends React.Component {
     }
 
     verifyEmail = (email) => {
-        //let reg = /^([\w -\.] +)@((?: [\w] +\.) +) ([a - zA - Z]{ 2, 4 })$/;
+
         let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/;
         if (reg.test(email) == false) {
-            //console.log("Email address is formated incorrectly");
             Alert.alert("Incorrect Format", "Email address is formated incorrectly")
             return false;
         }
@@ -40,6 +39,7 @@ class AddDriver extends React.Component {
             return true;
         }
     }
+
     ifEmptyToggle = (email, name, phoneNumber, password) => {
         if (email == '') {
 
@@ -111,7 +111,6 @@ class AddDriver extends React.Component {
     numbersOnly = (numbers) => {
         let reg = /^[0-9]+$/;
         if (reg.test(numbers) == false || numbers.length != 10) {
-            //console.log("Email address is formated incorrectly");
             Alert.alert("Incorrect Format", "Phone numbers should only contain 10 digits without spaces or special characters")
             return false;
         }
@@ -191,8 +190,6 @@ class AddDriver extends React.Component {
 
             });
 
-
-
         } catch (error) {
             Alert.alert("Something Went Wrong", "Try again ");
             this.props.navigation.navigate('AMain')
@@ -270,8 +267,6 @@ class AddDriver extends React.Component {
             return (
 
                 <Text style={styles.titleLabel}>New Driver</Text>
-
-
             );
 
         } else if (Platform.OS == 'ios') {
@@ -366,7 +361,7 @@ class AddDriver extends React.Component {
                         <Button style={styles.button}
                             full
                             rounded
-                            transparent
+                            
 
                             onPress={() => this.props.navigation.navigate('AMain')}
                         >
@@ -401,10 +396,6 @@ const styles = StyleSheet.create({
         color: 'black',
         fontSize: 30
     },
-    transparentButtonText: {
-        color: 'black',
-        fontSize: 20
-    },
     titleContainer: {
         alignItems: "center",
         marginBottom: 25,
@@ -414,14 +405,9 @@ const styles = StyleSheet.create({
         fontSize: 40,
 
     },
-    label: {
-        color: 'black'
-    },
     inputBox: {
         marginTop: 30,
         borderColor: 'black',
-        //backgroundColor: '#fff',
-
     },
     textInput: {
         fontSize: 20
